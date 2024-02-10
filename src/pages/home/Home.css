@@ -1,3 +1,76 @@
-.home {
-  height: 200vh;
+:root {
+  --background-color: #f5f5f5;
+  --color-1-dark-grey: #3f3f37;
+  --color-2-light-grey: #d6d6b1;
+  --color-3-dark-brown: #494331;
+  --color-4-orange: #de541e;
+  --color-5-green: #008b28;
+}
+
+.home-container {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.home-tile {
+  width: 30%;
+  min-width: 250px;
+  height: 200px;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  color: white;
+}
+
+.home-tile:nth-child(5n + 1) {
+  background-color: var(--color-4-orange);
+}
+
+.home-tile:nth-child(5n + 2) {
+  background-color: var(--color-5-green);
+}
+
+.home-tile:nth-child(5n + 3) {
+  background-color: var(--color-3-dark-brown);
+}
+
+.home-tile:nth-child(5n + 4) {
+  background-color: var(--color-2-light-grey);
+}
+.home-tile:nth-child(5n) {
+  background-color: var(--color-1-dark-grey);
+}
+
+.home-tile h1 {
+  font-size: 3em;
+  font-weight: bold;
+}
+.home-tile h2 {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.novi-upit {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 20px;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: var(--color-5-green);
+  color: white;
+  font-size: 1.5em;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
