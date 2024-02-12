@@ -4,6 +4,8 @@ import { BrowserRouter, Routes,Route } from 'react-router-dom';
 import Home from './pages/home/Home';
 import Sidebar from './components/sidebar/Sidebar';
 import './App.css';
+import NovaPonudaDialog from './components/novaPonudaDialog/NovaPonudaDialog';
+import ListaPonuda from './pages/listaPonuda/ListaPonuda';
 
 function App() {
   const isLoggedIn = sessionStorage.getItem('korisnik')!==null;
@@ -18,9 +20,11 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home/>}/>
+            <Route path='/ponude' element={<ListaPonuda/>}/>
           </Routes>
         </BrowserRouter>
         </div>
+        <NovaPonudaDialog/>
       </div>
     );}
     else{

@@ -9,11 +9,12 @@ function Sidebar() {
       <div className='sidebar-content'>
         <img src={Logo} alt='logo'/>
         <ul>
-            <li>Home</li>
-            <li>Products</li>
-            <li>Categories</li>
-            <li>Users</li>
-            <li>Orders</li>
+          <li>
+            <a href='/'>Home</a>
+          </li>
+          <li>
+            <a href='/ponude'>Ponude</a>
+          </li>
         </ul>
       </div>
     </div>
