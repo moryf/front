@@ -43,3 +43,17 @@
   margin-bottom: 20px;
   text-align: center;
 }
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: var(--color-3-dark-brown);
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: block;
+  padding: 10px 0;
+  transition: 0.3s;
+}
+
+.sidebar ul li a:hover {
+  color: var(--color-4-orange);
+}

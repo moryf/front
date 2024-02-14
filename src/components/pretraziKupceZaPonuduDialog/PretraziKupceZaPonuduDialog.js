@@ -14,7 +14,6 @@ function PretraziKupceZaPonuduDialog({ setKupacState }) {
 
     const [kupci, setKupci] = useState([]);
     const [open, setOpen] = useState(false);
-    const [selectedKupac, setSelectedKupac] = useState(null);
     const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
 
     const onClose = () => {
@@ -54,7 +53,7 @@ function PretraziKupceZaPonuduDialog({ setKupacState }) {
             <Dialog
                 open={open}
                 onClose={onClose}
-                sx={{ minWidth: 650 }}
+                sx={{ width: '100%', height: '100%'}}
             >
                 <DialogTitle>
                     Pretrazi kupce

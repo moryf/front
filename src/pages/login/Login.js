@@ -1,5 +1,6 @@
 import React from 'react'
 import AxiosConfig from '../../api/axios/AxiosConfig'
+import './Login.css'
 
 function Login() {
 
@@ -21,15 +22,17 @@ function Login() {
     }
 
   return (
-    <>
-    <h1>Login</h1>
-    <form>
-      <input type="text" placeholder="Username" />
-      <input type="password" placeholder="Password" />
-      
-    </form>
-    <button onClick={()=>login()}>Login</button>
-    </>
+    <div className='login'>
+      <h1>Login</h1>
+      <form>
+        <label htmlFor="korisnickoIme">Korisnicko Ime</label>
+        <input  type="text" placeholder="Korisnicko Ime" />
+        <label htmlFor="lozinka">Lozinka</label>
+        <input  type="password" placeholder="Lozinka" />
+        
+      </form>
+      <button onClick={()=>login()}>Login</button>
+    </div>
   )
 }
 

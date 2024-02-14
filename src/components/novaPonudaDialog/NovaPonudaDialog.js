@@ -12,8 +12,11 @@ function NovaPonudaDialog() {
 
 
     function setKupacState(kupac){
-        console.log(kupac);
         setKupac(kupac);
+        document.getElementById('imeIPrezime').value=kupac.imeIPrezime;
+        document.getElementById('adresa').value=kupac.adresa;
+        document.getElementById('brojTelefona').value=kupac.brojTelefona;
+        document.getElementById('email').value=kupac.email;
     }
 
     const onClose = () => {
@@ -26,7 +29,7 @@ function NovaPonudaDialog() {
 
    async function handleSubmit(){
         let noviKupac = { ...kupacTemplate };
-        if(kupac===null){
+        if(kupac===kupacTemplate){
             noviKupac.imeIPrezime = document.getElementById('imeIPrezime').value;
             if(noviKupac.imeIPrezime==="" || noviKupac.imeIPrezime===null){
                 alert("Ime i prezime mora biti popunjeno")
@@ -43,13 +46,16 @@ function NovaPonudaDialog() {
             noviKupac=kupac
         }
         const novaPonuda = { ...ponudaTemplate };
+
+        novaPonuda.status = "NOVA";
         novaPonuda.datumOtvaranja = new Date();
-        novaPonuda.naziv = document.getElementById('naziv').value;
         novaPonuda.kupac = noviKupac;
         novaPonuda.rokPonude = document.getElementById('rokPonude').value;
         novaPonuda.opis = document.getElementById('opis').value;
         console.log(novaPonuda);
         await postPonuda(novaPonuda);
+        window.location.reload();
+
     }
 
 
@@ -67,20 +73,11 @@ function NovaPonudaDialog() {
             </DialogContentText>
             <PretraziKupceZaPonuduDialog setKupacState={setKupacState}/>
             <TextField
-                autoFocus
-                margin="dense"
-                id="naziv"
-                label="Naziv"
-                type="text"
-                fullWidth
-            />
-            <TextField
                 margin="dense"
                 id="imeIPrezime"
                 label="Ime i prezime"
                 type="text"
                 fullWidth
-                value={kupac.imeIPrezime? kupac.imeIPrezime:""}
             />
             <TextField
                 margin="dense"
@@ -88,7 +85,7 @@ function NovaPonudaDialog() {
                 label="Adresa"
                 type="text"
                 fullWidth
-                value={kupac.adresa? kupac.adresa:""}
+
             />
             <TextField
                 margin="dense"
@@ -96,7 +93,6 @@ function NovaPonudaDialog() {
                 label="Broj telefona"
                 type="text"
                 fullWidth
-                value={kupac.brojTelefona? kupac.brojTelefona:""}
             />
             <TextField
                 margin="dense"
@@ -104,7 +100,6 @@ function NovaPonudaDialog() {
                 label="Email"
                 type="email"
                 fullWidth
-                value={kupac.email? kupac.email:""}
             />
             <TextField
                 margin="dense"

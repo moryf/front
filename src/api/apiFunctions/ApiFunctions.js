@@ -32,6 +32,20 @@ export async function findKupacByImeAndBrojTelefona(imeIPrezime, brojTelefona) {
 export async function getAllPonude(){
   try{
     const response = await AxiosConfig.get('/api/ponuda/sve');
+    console.log(response)
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    // Rethrow the error if you want the calling code to handle it
+    throw error;
+    // Or return a default value or handle the error in some other way
+  }
+}
+
+export async function getPonuda(id) {
+  try {
+    const response = await AxiosConfig.get(`/api/ponuda/${id}`);
     return response.data;
   } catch (error) {
     alert(error.response.data);

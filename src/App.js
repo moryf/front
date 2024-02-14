@@ -6,6 +6,7 @@ import Sidebar from './components/sidebar/Sidebar';
 import './App.css';
 import NovaPonudaDialog from './components/novaPonudaDialog/NovaPonudaDialog';
 import ListaPonuda from './pages/listaPonuda/ListaPonuda';
+import Ponuda from './pages/ponuda/Ponuda';
 
 function App() {
   const isLoggedIn = sessionStorage.getItem('korisnik')!==null;
@@ -21,6 +22,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path='/ponude' element={<ListaPonuda/>}/>
+            <Route path='/ponuda/:id' element={<Ponuda/>}/>
           </Routes>
         </BrowserRouter>
         </div>

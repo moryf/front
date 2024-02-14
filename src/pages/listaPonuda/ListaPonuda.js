@@ -25,50 +25,37 @@ function ListaPonuda() {
 
     // Define columns manually
     const columns = [
-        { field: 'id', headerName: 'Ponuda ID', width: 150 },
-        { field: 'naziv', headerName: 'Naziv', width: 150 },
-        { field: 'kupacId', headerName: 'Kupac ID', width: 150 },
-        { field: 'imeIPrezime', headerName: 'Ime i prezime', width: 150 },
-        { field: 'adresa', headerName: 'Adresa', width: 150 },
-        { field: 'brojTelefona', headerName: 'Broj telefona', width: 150 },
-        { field: 'email', headerName: 'Email', width: 150 },
-        { field: 'datumOtvaranja', headerName: 'Datum otvaranja', width: 150 },
-        { field: 'rokPonude', headerName: 'Rok ponude', width: 150 },
-        { field: 'status', headerName: 'Status', width: 150 },
-        { field: 'opis', headerName: 'Opis', width: 150 }
+        { field: 'id', headerName: 'Ponuda ID', width:100 },
+        { field: 'naziv', headerName: 'Naziv', width:100 },
+        { field: 'kupacId', headerName: 'Kupac ID', width:100 },
+        { field: 'imeIPrezime', headerName: 'Ime i prezime', width:100 },
+        { field: 'adresa', headerName: 'Adresa', width:100 },
+        { field: 'brojTelefona', headerName: 'Broj telefona', width:100 },
+        { field: 'email', headerName: 'Email', width:100 },
+        { field: 'datumOtvaranja', headerName: 'Datum otvaranja', width:100 },
+        { field: 'rokPonude', headerName: 'Rok ponude', width:100 },
+        { field: 'status', headerName: 'Status', width:100 },
+        { field: 'opis', headerName: 'Opis', width:100 }
     ];
 
     return (
         <>
             <h1>Ponude</h1>
-            <div style={{ height: 400, width: "100%"}}>
+            <div style={{ width: "100%"}}>
                 <DataGrid
+                onRowDoubleClick={(row) => {
+                    console.log(row);
+                }
+                }
                     rows={ponude}
                     columns={columns}
                     components={{
                         Toolbar: GridToolbar // Add toolbar to the DataGrid
                     }}
-                    pageSize={5}
-                    rowsPerPageOptions={[5]}
                     autoHeight
-                    columnVisibilityModel={{
-                        columns: [
-                            
-                            'naziv',
-                            'kupacId',
-                            'imeIPrezime',
-                            'adresa',
-                            'brojTelefona',
-                            'email',
-                            'datumOtvaranja',
-                            'rokPonude',
-                            'status'
-                        ],
-                        // Hide the ID column by default
-                        all: false,
-                        id: true
-                    }
-                    }
+                    pageSize={5}
+                    rowsPerPageOptions={[1]}
+                    sx={{ width: '100%', height: '100%'}}
                 />
             </div>
         </>
