@@ -114,6 +114,8 @@ function NovaPonudaDialog() {
                 label="Opis"
                 type="text"
                 fullWidth
+                rows={4}
+                multiline
             />
 
         </DialogContent>

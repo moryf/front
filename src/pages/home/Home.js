@@ -1,5 +1,6 @@
 import React from 'react'
 import './Home.css'
+import NovaPonudaDialog from '../../components/novaPonudaDialog/NovaPonudaDialog'
 
 function Home() {
   return (
@@ -18,6 +19,7 @@ function Home() {
         <div className='home-tile'>
         </div>
       </div>
+      <NovaPonudaDialog/>
       
     </>
   )

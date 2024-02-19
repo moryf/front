@@ -7,6 +7,7 @@ import './App.css';
 import NovaPonudaDialog from './components/novaPonudaDialog/NovaPonudaDialog';
 import ListaPonuda from './pages/listaPonuda/ListaPonuda';
 import Ponuda from './pages/ponuda/Ponuda';
+import ProizvodPonuda from './pages/proizvodPonuda/ProizvodPonuda';
 
 function App() {
   const isLoggedIn = sessionStorage.getItem('korisnik')!==null;
@@ -23,10 +24,11 @@ function App() {
             <Route path="/" element={<Home/>}/>
             <Route path='/ponude' element={<ListaPonuda/>}/>
             <Route path='/ponuda/:id' element={<Ponuda/>}/>
+            <Route path='/proizvod-ponuda/:id' element={<ProizvodPonuda/>}/>
           </Routes>
         </BrowserRouter>
         </div>
-        <NovaPonudaDialog/>
+        
       </div>
     );}
     else{

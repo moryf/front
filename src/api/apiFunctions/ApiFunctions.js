@@ -55,3 +55,58 @@ export async function getPonuda(id) {
     // Or return a default value or handle the error in some other way
   }
 }
+
+export async function getAllProizvodiPonudeForPonuda(id) {
+  try {
+    const response = await AxiosConfig.get(`/api/proizvod-ponuda/ponuda/${id}`);
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    // Rethrow the error if you want the calling code to handle it
+    throw error;
+    // Or return a default value or handle the error in some other way
+  }
+}
+
+export async function getAllTipoviProizvodaPonude() {
+  try {
+    const response = await AxiosConfig.get('/api/tip-proizvoda-ponuda/svi');
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    // Rethrow the error if you want the calling code to handle it
+    throw error;
+    // Or return a default value or handle the error in some other way
+  }
+}
+
+export async function postProizvodPonuda(proizvodPonuda, ponudaId) {
+  try{
+    const response = await AxiosConfig.post(`/api/proizvod-ponuda/ponuda/${ponudaId}/dodaj`, proizvodPonuda);
+    confirm("Uspesno unet proizvod")
+    console.log(response)
+    return response.data;
+  }
+  catch(error){
+    alert(error.response.data);
+    console.error(error);
+    // Rethrow the error if you want the calling code to handle it
+    throw error;
+    // Or return a default value or handle the error in some other way
+  }
+}
+
+export async function findProizvodPonudaById(id) {
+  try {
+    const response = await AxiosConfig.get(`/api/proizvod-ponuda/${id}`);
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    // Rethrow the error if you want the calling code to handle it
+    throw error;
+    // Or return a default value or handle the error in some other way
+  }
+}

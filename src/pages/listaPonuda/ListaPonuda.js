@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getAllPonude } from '../../api/apiFunctions/ApiFunctions';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import NovaPonudaDialog from '../../components/novaPonudaDialog/NovaPonudaDialog';
 
 function ListaPonuda() {
     const [ponude, setPonude] = useState([]);
@@ -44,7 +45,7 @@ function ListaPonuda() {
             <div style={{ width: "100%"}}>
                 <DataGrid
                 onRowDoubleClick={(row) => {
-                    console.log(row);
+                    window.location.href = `/ponuda/${row.id}`; // Redirect to the ponuda page when a row is double-clicked
                 }
                 }
                     rows={ponude}
@@ -58,6 +59,7 @@ function ListaPonuda() {
                     sx={{ width: '100%', height: '100%'}}
                 />
             </div>
+            <NovaPonudaDialog/>
         </>
     );
 }
