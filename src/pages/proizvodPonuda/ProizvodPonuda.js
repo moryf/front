@@ -2,18 +2,32 @@ import React, { useState } from 'react';
 import { Container, Paper, Typography, TextField, Button, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect } from 'react'
-import { findProizvodPonudaById } from '../../api/apiFunctions/ApiFunctions'
-import { Paragliding } from '@mui/icons-material';
+import { findProizvodPonudaById,getKalkulacijeByProizvodPonudaId, novaKalkulacija } from '../../api/apiFunctions/ApiFunctions'
+import { DataGrid } from '@mui/x-data-grid';
 
 
 function ProizvodPonuda() {
     const id = window.location.pathname.split('/')[2];
     const [proizvodPonuda, setProizvodPonuda] = useState(null);
+    const[kalkulacije, setKalkulacije] = useState([])
 
     async function fetchProizvodPonuda() {
         const proizvodPonudaResult = await findProizvodPonudaById(id)
         console.log(proizvodPonudaResult)
         setProizvodPonuda(proizvodPonudaResult)
+        const kalkulacijeResult = await getKalkulacijeByProizvodPonudaId(id)
+        console.log(kalkulacijeResult)
+        const flattenedKalkulacije = kalkulacijeResult.map(kalkulacija => {
+            return {
+                id: kalkulacija.id,
+                naziv: kalkulacija.naziv,
+                datumOtvaranja: new Date(kalkulacija.datumOtvaranja).toLocaleDateString(),
+                poslednjiDatumIzmene: new Date(kalkulacija.poslednjiDatumIzmene).toLocaleDateString(),
+                kreirao: kalkulacija.kreirao.ime
+            }
+        }
+        )
+        setKalkulacije(flattenedKalkulacije)
     }
 
     
@@ -144,6 +158,29 @@ function ProizvodPonuda() {
         /> 
 
         </Paper>
+        <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+        <Typography variant="h5" sx={{ marginBottom: 2 }}>Kalkulacije</Typography>
+        <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {novaKalkulacija(id)}}
+        > Nova kalkulacija
+        </Button>
+        <DataGrid
+            rows={kalkulacije}
+            columns={[
+                { field: 'id', headerName: 'ID', width: 70 },
+                { field: 'naziv', headerName: 'Naziv', width: 130 },
+                { field: 'datumOtvaranja', headerName: 'Datum Otvaranja', width: 130 },
+                { field: 'poslednjiDatumIzmene', headerName: 'Poslednji Datum Izmene', width: 130 },
+                { field: 'kreirao', headerName: 'Kreirao', width: 130 }
+            ]}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            disableSelectionOnClick
+        />
+      </Paper>
+              
     </Container>
   )
 }

@@ -56,4 +56,33 @@ export const ponudaTemplate = {
     visinaPoKomadu: 0.0,
     dubinaPoKomadu: 0.0
   };
+
+
+ export const kalkulacijaTemplate = {
+  id: null,
+  naziv: "",
+  proizvodPonuda: {
+    id: null
+  },
+  datumOtvaranja: null, // Use null or specify a default date if needed
+  poslednjiDatumIzmene: null, // Use null or specify a default date if needed
+  kreirao: {
+    id: null
+  }, // Assuming Kreirao is an object of type Korisnik
+  
+  cinkovanje: false,
+  farbanje: false,
+  montaza: false,
+  izrada: false,
+  materijalPoKg: 0.0,
+  cinkovanjePoKg: 0.0,
+  farbanjePoM2: 0.0,
+  montazaPoKg: 0.0,
+  izradaPoKg: 0.0,
+  rezijskiTroskoviStepen: 0.0,
+  stepenSigurnosti: 0.0,
+  koriscenjeCene: "VELEPRODAJNA_CENA"
+};
+
+  
   

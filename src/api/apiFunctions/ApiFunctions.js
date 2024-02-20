@@ -179,3 +179,39 @@ export async function odbijenePonude() {
     // Or return a default value or handle the error in some other way
   }
 }
+
+export async function getKalkulacijeByProizvodPonudaId(id) {
+  try {
+    const response = await AxiosConfig.get(`/api/kalkulacija/proizvod-ponuda/${id}`);
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getKalkulacija(id) {
+  try {
+    const response = await AxiosConfig.get(`/api/kalkulacija/${id}`);
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+
+export async function novaKalkulacija(idProizvodaPonude) {
+  try {
+    const idKorisnika = JSON.parse(sessionStorage.getItem('korisnik')).id;
+    const response = await AxiosConfig.get(`/api/kalkulacija/proizvod-ponuda/${idProizvodaPonude}/korisnik/${idKorisnika}/nova`);
+    window.location.href = `/kalkulacija/${response.data.id}`;
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
