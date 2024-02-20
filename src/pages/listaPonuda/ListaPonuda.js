@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllPonude } from '../../api/apiFunctions/ApiFunctions';
+import { getAllPonude, novePonude } from '../../api/apiFunctions/ApiFunctions';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import NovaPonudaDialog from '../../components/novaPonudaDialog/NovaPonudaDialog';
 
@@ -7,7 +7,7 @@ function ListaPonuda() {
     const [ponude, setPonude] = useState([]);
 
     async function preuzmiPonude() {
-        const ponudeResult = await getAllPonude();
+        const ponudeResult = await novePonude();
         console.log(ponudeResult);
         // Flatten the structure of the ponude data and parse dates
         const flattenedPonude = ponudeResult.map(ponuda => ({

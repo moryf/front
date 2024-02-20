@@ -14,7 +14,10 @@ export const ponudaTemplate = {
     datumOtvaranja: "",
     rokPonude: "",
     status: "",
-    opis: ""
+    opis: "",
+    otvorioPonudu:{
+      id: null
+    }
   };
 
   export const kupacTemplate = {

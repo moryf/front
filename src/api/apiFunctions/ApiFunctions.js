@@ -110,3 +110,72 @@ export async function findProizvodPonudaById(id) {
     // Or return a default value or handle the error in some other way
   }
 }
+
+
+export async function prihvatiPonudu(id) {
+  try {
+    const response = await AxiosConfig.put(`/api/ponuda/prihvati/${id}`);
+    confirm("Ponuda prihvacena")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    // Rethrow the error if you want the calling code to handle it
+    throw error;
+    // Or return a default value or handle the error in some other way
+  }
+}
+
+export async function odbijPonudu(id) {
+  try {
+    console.log(id)
+    const response = await AxiosConfig.put(`/api/ponuda/odbij/${id}`);
+    confirm("Ponuda odbijena")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    // Rethrow the error if you want the calling code to handle it
+    throw error;
+    // Or return a default value or handle the error in some other way
+  }
+}
+
+export async function novePonude() {
+  try {
+    const response = await AxiosConfig.get('/api/ponuda/nove');
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    // Rethrow the error if you want the calling code to handle it
+    throw error;
+    // Or return a default value or handle the error in some other way
+  }
+}
+
+export async function prihvacenePonude() {
+  try {
+    const response = await AxiosConfig.get('/api/ponuda/prihvacene');
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    // Rethrow the error if you want the calling code to handle it
+    throw error;
+    // Or return a default value or handle the error in some other way
+  }
+}
+
+export async function odbijenePonude() {
+  try {
+    const response = await AxiosConfig.get('/api/ponuda/odbijene');
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    // Rethrow the error if you want the calling code to handle it
+    throw error;
+    // Or return a default value or handle the error in some other way
+  }
+}

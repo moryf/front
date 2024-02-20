@@ -15,6 +15,9 @@ function Sidebar() {
           <li>
             <a href='/ponude'>Ponude</a>
           </li>
+          <li>
+            <a href='/arhiva-ponuda'>Arhiva Ponuda</a>
+          </li>
         </ul>
       </div>
     </div>

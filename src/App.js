@@ -8,6 +8,7 @@ import NovaPonudaDialog from './components/novaPonudaDialog/NovaPonudaDialog';
 import ListaPonuda from './pages/listaPonuda/ListaPonuda';
 import Ponuda from './pages/ponuda/Ponuda';
 import ProizvodPonuda from './pages/proizvodPonuda/ProizvodPonuda';
+import ArhivaPonuda from './pages/arhivaPonuda/ArhivaPonuda';
 
 function App() {
   const isLoggedIn = sessionStorage.getItem('korisnik')!==null;
@@ -25,6 +26,7 @@ function App() {
             <Route path='/ponude' element={<ListaPonuda/>}/>
             <Route path='/ponuda/:id' element={<Ponuda/>}/>
             <Route path='/proizvod-ponuda/:id' element={<ProizvodPonuda/>}/>
+            <Route path='/arhiva-ponuda' element={<ArhivaPonuda/>}/>
           </Routes>
         </BrowserRouter>
         </div>

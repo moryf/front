@@ -1,5 +1,5 @@
 import React from 'react'
-import { getPonuda, getAllProizvodiPonudeForPonuda } from '../../api/apiFunctions/ApiFunctions'
+import { getPonuda, getAllProizvodiPonudeForPonuda, prihvatiPonudu, odbijPonudu } from '../../api/apiFunctions/ApiFunctions'
 import { Container, Paper, Typography, TextField, Button,Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState, useEffect } from 'react'
@@ -21,6 +21,8 @@ function Ponuda() {
 
   const id = window.location.pathname.split("/")[2]
   const [ponuda, setPonuda] = useState(null)
+
+
   async function fetchPonuda() {
     const ponuda = await getPonuda(id)
     const proizvodiPonude = await getAllProizvodiPonudeForPonuda(id)
@@ -37,6 +39,17 @@ function Ponuda() {
     setProizvodiPonude(flattenedProizvodiPonude)
     setPonuda(ponuda)
   }
+
+  async function prihvatiTrenutnuPonudu() {
+    await prihvatiPonudu(id).then(window.location.reload())
+  }
+
+  async function odbijTrenutnuPonudu() {
+    await odbijPonudu(id).then(window.location.reload())
+  }
+
+
+
 
   useEffect(() => {
     fetchPonuda()
@@ -59,12 +72,52 @@ function Ponuda() {
     backgroundColor: 'var(--background-color)',
     marginBottom: 4,
   }}>
+
+
+
+
+
       <Typography variant="h4" component="h1" sx={{
     color: 'var(--color-5-green)',
     marginBottom: 2,
   }}>
         Ponuda
       </Typography>
+
+
+          {ponuda.status === "NOVA" &&
+          
+          <div>
+          <Button variant="contained" sx={{
+              margin: 1,
+              backgroundColor: 'var(--color-5-green)',
+              color: '#fff',
+              '&:hover': {
+                backgroundColor: 'var(--color-4-orange)',
+              },
+            }}
+            onClick={prihvatiTrenutnuPonudu}
+          >
+            Prihvacena ponuda
+          </Button>
+          <Button variant="contained" sx={{
+
+              margin: 1,
+              backgroundColor: 'var(--color-4-orange)',
+              color: '#fff',
+              '&:hover': {
+                backgroundColor: 'var(--color-5-green)',
+              },
+            }}
+            onClick={odbijTrenutnuPonudu}
+          >
+            Odbijena ponuda
+          </Button>
+
+          </div>
+
+          }
+
 
       <TextField
         label="Naziv"
@@ -172,6 +225,27 @@ function Ponuda() {
         }}
 
         value={ponuda.opis || ''}
+        InputProps={{
+          readOnly: true,
+        }}
+      />
+      <TextField
+        label="Otvorio Ponudu"
+        variant="outlined"
+        fullWidth
+        margin="dense"
+        sx={ {   marginBottom: 3,
+          '& .MuiInputBase-root': {
+            color: 'var(--color-1-dark-grey)', // Text color
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'var(--color-3-dark-brown)', // Border color
+          },
+          '& .MuiInputLabel-root': {
+            color: 'var(--color-3-dark-brown)', // Label color
+          },
+        }}
+        value={ponuda.otvorioPonudu.ime || ''}
         InputProps={{
           readOnly: true,
         }}
