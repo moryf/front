@@ -9,6 +9,7 @@ import Ponuda from './pages/ponuda/Ponuda';
 import ProizvodPonuda from './pages/proizvodPonuda/ProizvodPonuda';
 import ArhivaPonuda from './pages/arhivaPonuda/ArhivaPonuda';
 import Kalkulacija from './pages/kalkulacija/Kalkulacija';
+import Podesavanja from './pages/podesavanja/Podesavanja';
 
 function App() {
   const isLoggedIn = sessionStorage.getItem('korisnik')!==null;
@@ -28,6 +29,7 @@ function App() {
             <Route path='/proizvod-ponuda/:id' element={<ProizvodPonuda/>}/>
             <Route path='/arhiva-ponuda' element={<ArhivaPonuda/>}/>
             <Route path='/kalkulacija/:id' element={<Kalkulacija/>}/>
+            <Route path='/podesavanja' element={<Podesavanja/>}/>
           </Routes>
         </BrowserRouter>
         </div>

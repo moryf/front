@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Paper, Typography, TextField, Button, Switch, FormControlLabel, FormGroup } from '@mui/material';
 import { kalkulacijaTemplate } from '../../api/josnTemplates/JSONTemplates';
-import { getKalkulacija } from '../../api/apiFunctions/ApiFunctions';
+import { getKalkulacija, updateKalkulacija } from '../../api/apiFunctions/ApiFunctions';
+import NoviSablon from '../../components/noviSablon/NoviSablon';
 
 
 export default function Kalkulacija() {
@@ -31,9 +32,16 @@ export default function Kalkulacija() {
   };
 
   const handleSubmit = async () => {
+    kalkulacija.poslednjiDatumIzmene = new Date();
     // Submit logic, possibly involving an API call
     console.log(kalkulacija);
     // Implement API call or state update logic here
+    try {
+      const novaKalkulacija = await updateKalkulacija(kalkulacija);
+      setKalkulacija(novaKalkulacija);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   if(kalkulacija === kalkulacijaTemplate) {
@@ -57,20 +65,53 @@ export default function Kalkulacija() {
         {/* Assuming the "id" fields will be dropdowns or auto-complete components. For simplicity, they are text fields here. */}
         <TextField
           fullWidth
-          label="Proizvod Ponuda ID"
+          label="Proizvod Ponude"
           margin="normal"
-          name="proizvodPonuda.id"
-          value={kalkulacija.proizvodPonuda.id}
-          onChange={handleInputChange}
+          name="proizvodPonuda.naziv"
+          value={kalkulacija.proizvodPonuda.naziv}
+          InputProps={
+            {
+              readOnly: true
+            }
+          }
         />
 
         <TextField
           fullWidth
-          label="Kreirao Korisnik ID"
+          label="Kreirao Korisnik"
           margin="normal"
-          name="kreirao.id"
-          value={kalkulacija.kreirao.id}
-          onChange={handleInputChange}
+          name="kreirao.ime"
+          value={kalkulacija.kreirao.ime}
+          InputProps={
+            {
+              readOnly: true
+            }
+          
+          }
+        />
+        <TextField
+          fullWidth
+          label="Datum Otvaranja"
+          margin="normal"
+          name="datumOtvaranja"
+          value={new Date(kalkulacija.datumOtvaranja).toLocaleDateString()}
+          InputProps={
+            {
+              readOnly: true
+            }
+          }
+        />
+        <TextField
+          fullWidth
+          label="Poslednji datum izmene"
+          margin="normal"
+          name="poslednjiDatumIzmene"
+          value={new Date(kalkulacija.poslednjiDatumIzmene).toLocaleDateString()}
+          InputProps={
+            {
+              readOnly: true
+            }
+          }
         />
 
         {/* Switch components for boolean fields */}
@@ -83,25 +124,91 @@ export default function Kalkulacija() {
             control={<Switch checked={kalkulacija.farbanje} onChange={handleInputChange} name="farbanje" />}
             label="Farbanje"
           />
+          <FormControlLabel
+            control={<Switch checked={kalkulacija.montaza} onChange={handleInputChange} name="montaza" />}
+            label="Montaza"
+          />
+          <FormControlLabel
+            control={<Switch checked={kalkulacija.izrada} onChange={handleInputChange} name="izrada" />}
+            label="Izrada"
+          />
           {/* Repeat for other boolean fields */}
         </FormGroup>
 
         {/* Numeric fields */}
-        <TextField
-          fullWidth
-          label="Materijal po Kg"
-          margin="normal"
-          name="materijalPoKg"
-          type="number"
-          value={kalkulacija.materijalPoKg}
-          onChange={handleInputChange}
-        />
+        <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+          <TextField
+            sx={{ margin: 1}}
+            label="Materijal po Kg"
+            margin="normal"
+            name="materijalPoKg"
+            type="number"
+            value={kalkulacija.materijalPoKg}
+            onChange={handleInputChange}
+          />
+          <TextField
+            sx={{ margin: 1}}
+            label = "Cinkovanje po Kg"
+            margin="normal"
+            name="cinkovanjePoKg"
+            type="number"
+            value={kalkulacija.cinkovanjePoKg}
+            onChange={handleInputChange}
+          />
+          <TextField
+            sx={{ margin: 1}}
+            label = "Farbanje po M2"
+            margin="normal"
+            name="farbanjePoM2"
+            type="number"
+            value={kalkulacija.farbanjePoM2}
+            onChange={handleInputChange}
+          />
+          <TextField
+            sx={{ margin: 1}}
+            label = "Montaza po Kg"
+            margin="normal"
+            name="montazaPoKg"
+            type="number"
+            value={kalkulacija.montazaPoKg}
+            onChange={handleInputChange}
+          />
+          <TextField
+            sx={{ margin: 1}}
+            label = "Izrada po Kg"
+            margin="normal"
+            name="izradaPoKg"
+            type="number"
+            value={kalkulacija.izradaPoKg}
+            onChange={handleInputChange}
+          />
+          <TextField
+            sx={{ margin: 1}}
+            label="Rezijski troskovi stepen"
+            margin="normal"
+            name="rezijskiTroskoviStepen"
+            type="number"
+            value={kalkulacija.rezijskiTroskoviStepen}
+            onChange={handleInputChange}
+          />
+          <TextField
+            sx={{ margin: 1}}
+            label="Stepen sigurnosti"
+            margin="normal"
+            name="stepenSigurnosti"
+            type="number"
+            value={kalkulacija.stepenSigurnosti}
+            onChange={handleInputChange}
+          />
+
+        </Paper>
 
         {/* Repeat for other numeric fields */}
 
-        <Button variant="contained" color="primary" sx={{ marginTop: 2 }} onClick={handleSubmit}>
+        <Button variant="contained" color="primary" sx={{ margin: 2 }} onClick={handleSubmit}>
           Save Changes
         </Button>
+        <NoviSablon idKalkulacije={kalkulacija.id} />
       </Paper>
     </Container>
   );

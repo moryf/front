@@ -4,6 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect } from 'react'
 import { findProizvodPonudaById,getKalkulacijeByProizvodPonudaId, novaKalkulacija } from '../../api/apiFunctions/ApiFunctions'
 import { DataGrid } from '@mui/x-data-grid';
+import KalkulacijaIzSablonaDialog from '../../components/kalkulacijaIzSablonaDialog/KalkulacijaIzSablonaDialog';
 
 
 function ProizvodPonuda() {
@@ -164,10 +165,13 @@ function ProizvodPonuda() {
             variant="contained"
             color="primary"
             onClick={() => {novaKalkulacija(id)}}
+            sx={{ margin: 2 }}
         > Nova kalkulacija
         </Button>
+        <KalkulacijaIzSablonaDialog idProizvodaPonude={id} />
         <DataGrid
             rows={kalkulacije}
+            onRowDoubleClick={(row) => {window.location.href = `/kalkulacija/${row.id}`;} }
             columns={[
                 { field: 'id', headerName: 'ID', width: 70 },
                 { field: 'naziv', headerName: 'Naziv', width: 130 },

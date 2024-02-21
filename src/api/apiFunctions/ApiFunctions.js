@@ -215,3 +215,78 @@ export async function novaKalkulacija(idProizvodaPonude) {
     throw error;
   }
 }
+
+
+export async function updateKalkulacija(kalkulacija) {
+  try {
+    const response = await AxiosConfig.put(`/api/kalkulacija`, kalkulacija);
+    confirm("Uspesno izmenjena kalkulacija")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function noviSablon(naziv, idKalkulacije){
+  try {
+    const response = await AxiosConfig.post(`/api/sablon-kalkulacija/sacuvaj/${idKalkulacije}/naziv=${naziv}`);
+    confirm("Uspesno sacuvan sablon")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+
+export async function findSablonByNaziv(naziv){
+  try {
+    const response = await AxiosConfig.get(`/api/sablon-kalkulacija/naziv=${naziv}`);
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function novaKalkulacijaIzSablona(idSablona, idProizvodaPonude){
+  try {
+    const response = await AxiosConfig.get(`/api/kalkulacija/sablon/${idSablona}/proizvod-ponuda/${idProizvodaPonude}/nova`);
+    window.location.href = `/kalkulacija/${response.data.id}`;
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+
+export async function getAllPodrazumevaneVrednosti(){
+  try {
+    const response = await AxiosConfig.get('/api/podrazumevane-vrednosti/sve');
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+
+export async function updateKorisnik(ime,prezime,korisnickoIme){
+  try {
+    const id = JSON.parse(sessionStorage.getItem('korisnik')).id;
+    const response = await AxiosConfig.put(`/api/korisnik/izmeni/${id}/ime=${ime}/prezime=${prezime}/korisnickoIme=${korisnickoIme}`);
+    confirm("Uspesno izmenjen korisnik")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}

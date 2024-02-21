@@ -17,12 +17,13 @@
 .login form{
     margin: 1rem 0;
     width: 50%;
-    max-width: 400px;
+    min-width: 400px;
+    max-width: 600px;
     padding: 2rem;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     background: #fff;
-    display: flex;
+    display: flex; 
     flex-direction: column;
 }
 
@@ -35,6 +36,7 @@
 
 .login button{
     width: 50%;
+    max-width: 600px;
     padding: 1rem;
     border: none;
     border-radius: 5px;
