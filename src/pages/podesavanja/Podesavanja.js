@@ -1,12 +1,11 @@
 import { Accordion, AccordionDetails, AccordionSummary, Typography, TextField, AccordionActions, Button } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { useEffect } from 'react'
-import { getAllPodrazumevaneVrednosti,updateKorisnik } from '../../api/apiFunctions/ApiFunctions';
+import { getAllPodrazumevaneVrednosti,updateKorisnik, updatePodrazumevanaVrednost } from '../../api/apiFunctions/ApiFunctions';
 
 function Podesavanja() {
-    const korisnikStorage = JSON.parse(sessionStorage.getItem('korisnik'));
 
-    const [korisnik, setKorisnik] = React.useState(korisnikStorage);
+    const [korisnik, setKorisnik] = React.useState(JSON.parse(sessionStorage.getItem('korisnik')));
 
     const [podrazumevaneVrednosti, setPodrazumevaneVrednosti] = React.useState(null);
 
@@ -27,11 +26,18 @@ function Podesavanja() {
         sessionStorage.setItem('korisnik', JSON.stringify(korisnik));
     }
 
+    async function azurirajPodrazumevaneVrednosti(){
+        for(let i = 0; i < podrazumevaneVrednosti.length; i++){
+            await updatePodrazumevanaVrednost(podrazumevaneVrednosti[i].oznaka, podrazumevaneVrednosti[i].vrednost);
+        }
+        confirm("Uspesno azurirane podrazumevane vrednosti");
+    }
+
     useEffect(() => {
         fetchPodrazumevaneVrednosti();
     }, [])
 
-    if(korisnikStorage === null || podrazumevaneVrednosti === null){
+    if(korisnik === null || podrazumevaneVrednosti === null){
         return <>Loading...</>
     }
 
@@ -48,7 +54,7 @@ function Podesavanja() {
                 margin="normal"
                 name="ime"
                 value={korisnik.ime}
-                
+                onChange={(e) => setKorisnik({...korisnik, ime: e.target.value})}
             />
             <TextField
                 fullWidth
@@ -56,6 +62,7 @@ function Podesavanja() {
                 margin="normal"
                 name="prezime"
                 value={korisnik.prezime}
+                onChange={(e) => setKorisnik({...korisnik, prezime: e.target.value})}
             />
             <TextField
                 fullWidth
@@ -63,6 +70,7 @@ function Podesavanja() {
                 margin="normal"
                 name="korisnickoIme"
                 value={korisnik.korisnickoIme}
+                onChange={(e) => setKorisnik({...korisnik, korisnickoIme: e.target.value})}
 
             />
         </AccordionDetails>
@@ -82,15 +90,21 @@ function Podesavanja() {
                         fullWidth
                         label={vrednost.oznaka}
                         margin="normal"
+                        type='number'
                         name={vrednost.oznaka}
                         value={vrednost.vrednost}
+                        onChange={(e) => {
+                            let noveVrednosti = [...podrazumevaneVrednosti];
+                            noveVrednosti[index].vrednost = e.target.value;
+                            setPodrazumevaneVrednosti(noveVrednosti);
+                        }}
                     />
                 )
             }
             )}
         </AccordionDetails>
         <AccordionActions>
-            <Button size="small">Sacuvaj</Button>
+            <Button onClick={azurirajPodrazumevaneVrednosti} size="small">Sacuvaj</Button>
         </AccordionActions>
     </Accordion>   
     </>

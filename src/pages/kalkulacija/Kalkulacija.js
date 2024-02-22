@@ -204,11 +204,16 @@ export default function Kalkulacija() {
         </Paper>
 
         {/* Repeat for other numeric fields */}
+          {(kalkulacija.proizvodPonuda.ponuda.status !== "ODBIJENA" && kalkulacija.proizvodPonuda.ponuda.status !== "PRIHVACENA") &&
+          
+          <>
+            <Button variant="contained" color="primary" sx={{ margin: 2 }} onClick={handleSubmit}>
+              Save Changes
+            </Button>
+            <NoviSablon idKalkulacije={kalkulacija.id} />
+          </>
+          }
 
-        <Button variant="contained" color="primary" sx={{ margin: 2 }} onClick={handleSubmit}>
-          Save Changes
-        </Button>
-        <NoviSablon idKalkulacije={kalkulacija.id} />
       </Paper>
     </Container>
   );

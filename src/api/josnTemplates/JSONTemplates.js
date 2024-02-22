@@ -84,5 +84,14 @@ export const ponudaTemplate = {
   koriscenjeCene: "VELEPRODAJNA_CENA"
 };
 
+export const dashboardTemplate = {
+  nove: "",
+  obradjene: "",
+  ponudeSaRokomOveNedelje: "",
+  ponudaSaIsteklimRokom: "",
+  novihPonudaOveNedelje: ""
+};
+
+
   
   

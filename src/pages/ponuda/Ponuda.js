@@ -417,7 +417,8 @@ function Ponuda() {
       Nazad
     </Button>
   </Container>
-  <NoviProizvodPonudaDialog ponudaId={id} />
+  {ponuda.status === "NOVA" && <NoviProizvodPonudaDialog ponudaId={id} />}
+  
   </>
   )
 }

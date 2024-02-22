@@ -18,42 +18,37 @@
 
 .home-tile {
   width: 30%;
+  border: 2px solid;
+  background-color: white;
   min-width: 250px;
+  max-width: 350px;
   height: 200px;
   margin: 5px;
   padding: 10px;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-  color: white;
+  color: var(--color-1-dark-grey);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 .home-tile:nth-child(5n + 1) {
-  background-color: var(--color-4-orange);
+  border-color: var(--color-4-orange);
 }
 
 .home-tile:nth-child(5n + 2) {
-  background-color: var(--color-5-green);
+  border-color: var(--color-5-green);
 }
 
 .home-tile:nth-child(5n + 3) {
-  background-color: var(--color-3-dark-brown);
+  border-color: var(--color-3-dark-brown);
 }
 
 .home-tile:nth-child(5n + 4) {
-  background-color: var(--color-2-light-grey);
+  border-color: var(--color-2-light-grey);
 }
 .home-tile:nth-child(5n) {
-  background-color: var(--color-1-dark-grey);
-}
-
-.home-tile h1 {
-  font-size: 3em;
-  font-weight: bold;
-}
-.home-tile h2 {
-  font-size: 1em;
-  font-weight: bold;
+  border-color: var(--color-1-dark-grey);
 }

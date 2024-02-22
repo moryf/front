@@ -141,9 +141,9 @@ export async function odbijPonudu(id) {
   }
 }
 
-export async function novePonude() {
+export async function nezavrsenePonude() {
   try {
-    const response = await AxiosConfig.get('/api/ponuda/nove');
+    const response = await AxiosConfig.get('/api/ponuda/nezavrsene');
     return response.data;
   } catch (error) {
     alert(error.response.data);
@@ -283,6 +283,30 @@ export async function updateKorisnik(ime,prezime,korisnickoIme){
     const id = JSON.parse(sessionStorage.getItem('korisnik')).id;
     const response = await AxiosConfig.put(`/api/korisnik/izmeni/${id}/ime=${ime}/prezime=${prezime}/korisnickoIme=${korisnickoIme}`);
     confirm("Uspesno izmenjen korisnik")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+
+export async function updatePodrazumevanaVrednost(oznaka, vrednost){
+  try {
+    const response = await AxiosConfig.put(`/api/podrazumevane-vrednosti/izmeni/oznaka=${oznaka}/vrednost=${vrednost}`);
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function dashboard(){
+  try {
+    const response = await AxiosConfig.get('/api/ponuda/dashboard');
+    console.log(response)
     return response.data;
   } catch (error) {
     alert(error.response.data);

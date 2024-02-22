@@ -11,13 +11,12 @@ function ProizvodPonuda() {
     const id = window.location.pathname.split('/')[2];
     const [proizvodPonuda, setProizvodPonuda] = useState(null);
     const[kalkulacije, setKalkulacije] = useState([])
+    var zavrsenaPonuda = false;
 
     async function fetchProizvodPonuda() {
         const proizvodPonudaResult = await findProizvodPonudaById(id)
-        console.log(proizvodPonudaResult)
         setProizvodPonuda(proizvodPonudaResult)
         const kalkulacijeResult = await getKalkulacijeByProizvodPonudaId(id)
-        console.log(kalkulacijeResult)
         const flattenedKalkulacije = kalkulacijeResult.map(kalkulacija => {
             return {
                 id: kalkulacija.id,
@@ -161,14 +160,19 @@ function ProizvodPonuda() {
         </Paper>
         <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
         <Typography variant="h5" sx={{ marginBottom: 2 }}>Kalkulacije</Typography>
-        <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {novaKalkulacija(id)}}
-            sx={{ margin: 2 }}
-        > Nova kalkulacija
-        </Button>
-        <KalkulacijaIzSablonaDialog idProizvodaPonude={id} />
+
+              {(proizvodPonuda.ponuda.status !== "ODBIJENA" && proizvodPonuda.ponuda.status !== "PRIHVACENA") &&
+              <>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {novaKalkulacija(id)}}
+                            sx={{ margin: 2 }}
+                        > Nova kalkulacija
+                        </Button>
+                        <KalkulacijaIzSablonaDialog idProizvodaPonude={id} />
+              </>}
+
         <DataGrid
             rows={kalkulacije}
             onRowDoubleClick={(row) => {window.location.href = `/kalkulacija/${row.id}`;} }
