@@ -337,3 +337,15 @@ export async function findProizvodyBySifraAndNaziv(sifra, naziv){
     throw error;
   }
 }
+
+export async function addStavkaKalkulacije(stavkaKalkulacije, kalkulacijaId){
+  try {
+    const response = await AxiosConfig.post(`/api/stavka-kalkulacije/dodaj/kalkulacija/${kalkulacijaId}`, stavkaKalkulacije);
+    confirm("Uspesno uneta stavka")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}

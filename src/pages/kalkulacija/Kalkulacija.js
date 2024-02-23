@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Paper, Typography, TextField, Button, Switch, FormControlLabel, FormGroup, Select } from '@mui/material';
 import { kalkulacijaTemplate } from '../../api/josnTemplates/JSONTemplates';
-import { getKalkulacija, updateKalkulacija,getStavkeKalkulacijeByKalkulacijaId } from '../../api/apiFunctions/ApiFunctions';
+import { getKalkulacija, updateKalkulacija,getStavkeKalkulacijeByKalkulacijaId, addStavkaKalkulacije } from '../../api/apiFunctions/ApiFunctions';
 import NoviSablon from '../../components/noviSablon/NoviSablon';
 import { DataGrid } from '@mui/x-data-grid';
 import NovaStavkaKalkulacijeDialog from '../../components/novaStavkaKalkulacijeDialog/NovaStavkaKalkulacijeDialog';
@@ -13,6 +13,22 @@ export default function Kalkulacija() {
     const [kalkulacija, setKalkulacija] = useState(kalkulacijaTemplate);
     const [stavkeKalkulacije, setStavkeKalkulacije] = useState([]);
     const[flatennedStavkeKalkulacije, setFlatennedStavkeKalkulacije] = useState([]);
+
+    async function addStavka(stavka) {
+      try {
+        const novaStavka = await addStavkaKalkulacije(stavka,id);
+        setStavkeKalkulacije(prevState => [...prevState, novaStavka]);
+        setFlatennedStavkeKalkulacije(prevState => [...prevState, {
+          ...novaStavka,
+          ...novaStavka.proizvod,
+          ...novaStavka.proizvod.jedinicaMere,
+          proizvodId: novaStavka.proizvod.sifra,
+          jedinicaMereId: novaStavka.proizvod.jedinicaMere
+        }]);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
 
     async function fetchKalkulacija() {
@@ -65,6 +81,33 @@ export default function Kalkulacija() {
   if(kalkulacija === kalkulacijaTemplate) {
     return <h1>Loading...</h1>
   }
+
+
+  const handleKoriscenjeCeneChange = (event) => {
+    const { name, value } = event.target;
+    setKalkulacija(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+    setFlatennedStavkeKalkulacije(prevState => prevState.map(stavka => {
+      if(value === "VELEPRODAJNA_CENA") {
+        stavka.cena = stavka.proizvod.veleprodajnaCena;
+      } else {
+        stavka.cena = stavka.proizvod.cenaA;
+      }
+      return stavka;
+    }));
+    setStavkeKalkulacije(prevState => prevState.map(stavka => {
+      if(value === "VELEPRODAJNA_CENA") {
+        stavka.cena = stavka.proizvod.veleprodajnaCena;
+      } else {
+        stavka.cena = stavka.proizvod.cenaA;
+      }
+      return stavka;
+    }
+    ));
+  }
+
 
   return (
     <Container maxWidth="md">
@@ -224,11 +267,11 @@ export default function Kalkulacija() {
             label="Koriscenje cene"
             name="koriscenjeCene"
             value={kalkulacija.koriscenjeCene}
-            onChange={handleInputChange}
+            onChange={handleKoriscenjeCeneChange}
 
             >
-            <option value={"VELEPRODAJNA_CENA"}>VELEPRODAJNA_CENA</option>
-            <option value={"CENA_A"}>CENA_A</option>
+            <option  value={"VELEPRODAJNA_CENA"}>VELEPRODAJNA_CENA</option>
+            <option  value={"CENA_A"}>CENA_A</option>
             </Select>
 
         </Paper>
@@ -241,15 +284,19 @@ export default function Kalkulacija() {
               { field: 'naziv', headerName: 'Naziv', width: 150 },
               { field: 'proizvodId', headerName: 'Sifra Proizvoda', width: 150 },
               { field: 'jedinicaMereId', headerName: 'Jedinica Mere', width: 100 },
-              { field: 'kolicina', headerName: 'Kolicina', width: 100 },
+              { field: 'kolicina', headerName: 'Kolicina', width: 100, editable: true},
               { field: 'cena', headerName: 'Cena', width: 150 },
             ]}
             autoHeight
             pageSize={5}
             rowsPerPageOptions={[5]}
             sx={{ width: '100%', height: '100%' }}
+            getRowId={(row) => {
+              return row.proizvodId;
+            }
+            }
           />
-          <NovaStavkaKalkulacijeDialog />
+          <NovaStavkaKalkulacijeDialog addStavka={addStavka} />
 
         </Paper>
 

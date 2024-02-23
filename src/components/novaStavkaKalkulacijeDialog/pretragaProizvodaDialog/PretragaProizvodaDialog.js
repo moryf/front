@@ -8,12 +8,10 @@ function PretragaProizvodaDialog({setProizvodState}) {
 
 
     const [open, setOpen] = React.useState(false);
-    const[proizvod, setProizvod] = React.useState({
-        sifra: '',
-        naziv: ''
-    });
+
     const handleClickOpen = () => {
         setOpen(true);
+        setSelectionModel([]);
     }
     const handleClose = () => {
         setOpen(false);
@@ -21,8 +19,8 @@ function PretragaProizvodaDialog({setProizvodState}) {
     const [proizvodi, setProizvodi] = React.useState([]);
     const[flattenedProizvodi, setFlattenedProizvodi] = React.useState([]);
 
-    async function pretraziProizvode() {
-        const proizvodiResult = await findProizvodyBySifraAndNaziv(proizvod.sifra, proizvod.naziv);
+    async function pretraziProizvode(sifra, naziv) {
+        const proizvodiResult = await findProizvodyBySifraAndNaziv(sifra, naziv);
         console.log(proizvodiResult);
         setProizvodi(proizvodiResult);
         setFlattenedProizvodi(proizvodiResult.map(proizvod => ({
@@ -33,39 +31,34 @@ function PretragaProizvodaDialog({setProizvodState}) {
     }
 
     const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setProizvod(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-        if (proizvod.naziv.length>2 || proizvod.sifra.length>2) {
-            pretraziProizvode();
+        const sifra = document.getElementsByName("sifraProizvoda")[0].value;
+        const naziv = document.getElementsByName("nazivProizvoda")[0].value;
+        if(sifra.length>2 || naziv.length>2){
+            pretraziProizvode(sifra, naziv);
         }
     }
 
 
   return (
     <>
-    <Button onClick={handleClickOpen} variant="contained" color="primary">Pretraga proizvoda</Button>
+    <Button sx={{marginBottom:"20px"}} onClick={handleClickOpen} variant="contained" color="primary">Pretraga proizvoda</Button>
     <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Pretraga proizvoda</DialogTitle>
-        <DialogContent>
+        <DialogContent >
             <TextField
                 sx={{ margin: 1}}
                 label="Naziv"
                 margin="normal"
-                name="naziv"
+                name="nazivProizvoda"
                 type="text"
-                value={proizvod.naziv}
                 onChange={handleInputChange}
             />
             <TextField
                 sx={{ margin: 1}}
                 label="Sifra"
                 margin="normal"
-                name="sifra"
+                name="sifraProizvoda"
                 type="text"
-                value={proizvod.sifra}
                 onChange={handleInputChange}
             />
         </DialogContent>
