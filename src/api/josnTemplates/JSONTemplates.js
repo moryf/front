@@ -92,6 +92,42 @@ export const dashboardTemplate = {
   novihPonudaOveNedelje: ""
 };
 
+export const proizvodTemplate = {
+  sifra: "",
+  naziv: "",
+  opis: "",
+  jedinicaMere: "",
+  masa: 0.0,
+  specificnaPovrsina: 0.0,
+  cenaA: 0.0,
+  veleprodajnaCena: 0.0
+};
+
+
+export const stavkaKalkulacijeTemplate = {
+  id: null,
+  kalkulacija: {
+    id: null
+  },
+  proizvod: {
+    sifra: "",
+    naziv: "",
+    opis: "",
+    jedinicaMere: "",
+    masa: 0.0,
+    specificnaPovrsina: 0.0,
+    cenaA: 0.0,
+    veleprodajnaCena: 0.0
+  },
+  kolicina: 0.0,
+  cinkovanje: false,
+  farbanje: false,
+  montaza: false,
+  izrada: false,
+  cena: 0.0
+};
+
+
 
   
   

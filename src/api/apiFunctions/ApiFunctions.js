@@ -314,3 +314,26 @@ export async function dashboard(){
     throw error;
   }
 }
+
+export async function getStavkeKalkulacijeByKalkulacijaId(id){
+  try {
+    const response = await AxiosConfig.get(`/api/stavka-kalkulacije/kalkulacija/${id}`);
+    console.log(response)
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function findProizvodyBySifraAndNaziv(sifra, naziv){
+  try {
+    const response = await AxiosConfig.get(`/api/proizvod/pretrazi/sifra=${sifra}/naziv=${naziv}`);
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}

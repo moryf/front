@@ -1,19 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Paper, Typography, TextField, Button, Switch, FormControlLabel, FormGroup } from '@mui/material';
+import { Container, Paper, Typography, TextField, Button, Switch, FormControlLabel, FormGroup, Select } from '@mui/material';
 import { kalkulacijaTemplate } from '../../api/josnTemplates/JSONTemplates';
-import { getKalkulacija, updateKalkulacija } from '../../api/apiFunctions/ApiFunctions';
+import { getKalkulacija, updateKalkulacija,getStavkeKalkulacijeByKalkulacijaId } from '../../api/apiFunctions/ApiFunctions';
 import NoviSablon from '../../components/noviSablon/NoviSablon';
+import { DataGrid } from '@mui/x-data-grid';
+import NovaStavkaKalkulacijeDialog from '../../components/novaStavkaKalkulacijeDialog/NovaStavkaKalkulacijeDialog';
 
 
 export default function Kalkulacija() {
 
     const id = window.location.pathname.split('/')[2];
     const [kalkulacija, setKalkulacija] = useState(kalkulacijaTemplate);
+    const [stavkeKalkulacije, setStavkeKalkulacije] = useState([]);
+    const[flatennedStavkeKalkulacije, setFlatennedStavkeKalkulacije] = useState([]);
+
 
     async function fetchKalkulacija() {
         try {
             const response = await getKalkulacija(id);
             setKalkulacija(response);
+        } catch (error) {
+            console.error(error);
+        }
+        try {
+          const response = await getStavkeKalkulacijeByKalkulacijaId(id);
+          setStavkeKalkulacije(response);
+          setFlatennedStavkeKalkulacije(response.map(stavka => ({
+            ...stavka,
+            ...stavka.proizvod,
+            ...stavka.proizvod.jedinicaMere,
+            proizvodId: stavka.proizvod.sifra,
+            jedinicaMereId: stavka.proizvod.jedinicaMere
+          })));
         } catch (error) {
             console.error(error);
         }
@@ -200,6 +218,38 @@ export default function Kalkulacija() {
             value={kalkulacija.stepenSigurnosti}
             onChange={handleInputChange}
           />
+          <Select
+            sx={{ margin: 1}}
+            native
+            label="Koriscenje cene"
+            name="koriscenjeCene"
+            value={kalkulacija.koriscenjeCene}
+            onChange={handleInputChange}
+
+            >
+            <option value={"VELEPRODAJNA_CENA"}>VELEPRODAJNA_CENA</option>
+            <option value={"CENA_A"}>CENA_A</option>
+            </Select>
+
+        </Paper>
+
+        <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+          <DataGrid
+            rows={flatennedStavkeKalkulacije}
+            columns={[
+              { field: 'id', headerName: 'ID', width: 50 },
+              { field: 'naziv', headerName: 'Naziv', width: 150 },
+              { field: 'proizvodId', headerName: 'Sifra Proizvoda', width: 150 },
+              { field: 'jedinicaMereId', headerName: 'Jedinica Mere', width: 100 },
+              { field: 'kolicina', headerName: 'Kolicina', width: 100 },
+              { field: 'cena', headerName: 'Cena', width: 150 },
+            ]}
+            autoHeight
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            sx={{ width: '100%', height: '100%' }}
+          />
+          <NovaStavkaKalkulacijeDialog />
 
         </Paper>
 
