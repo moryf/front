@@ -29,15 +29,21 @@ const NoviProizvodPonudaDialog = ({ ponudaId }) => {
         const tipProizvoda = tipoviProizvodaPonude.find((tipProizvodaPonuda) => tipProizvodaPonuda.id == tipProizvodaId);
 
         noviProizvodPonuda.tipProizvodaPonuda = tipProizvoda;
-        noviProizvodPonuda.ukupnoMetara = document.getElementById('ukupnoMetara').value;
+        
         noviProizvodPonuda.ukupnoKomada = document.getElementById('ukupnoKomada').value;
         noviProizvodPonuda.duzinaPoKomadu = document.getElementById('duzinaPoKomadu').value;
         noviProizvodPonuda.visinaPoKomadu = document.getElementById('visinaPoKomadu').value;
         noviProizvodPonuda.dubinaPoKomadu = document.getElementById('dubinaPoKomadu').value;
+
+        noviProizvodPonuda.ukupnoMetara = parseFloat(noviProizvodPonuda.ukupnoKomada ) * parseFloat(noviProizvodPonuda.duzinaPoKomadu);
+
+
+
+
        console.log(noviProizvodPonuda);
        
-        await postProizvodPonuda(noviProizvodPonuda, ponudaId);
-        onClose();
+      await postProizvodPonuda(noviProizvodPonuda, ponudaId);
+       onClose();
     }
 
     async function fetchTipoviProizvodaPonude() {
@@ -83,13 +89,6 @@ const NoviProizvodPonudaDialog = ({ ponudaId }) => {
                     <option key={tipProizvodaPonuda.id} value={tipProizvodaPonuda.id}>{tipProizvodaPonuda.naziv}</option>
                 ))}
             </Select>
-            <TextField
-                margin="dense"
-                id="ukupnoMetara"
-                label="Ukupno metara"
-                type="number"
-                fullWidth
-            />
             <TextField
                 margin="dense"
                 id="ukupnoKomada"

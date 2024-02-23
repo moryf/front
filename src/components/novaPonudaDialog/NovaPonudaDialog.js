@@ -17,7 +17,8 @@ function NovaPonudaDialog() {
         document.getElementById('adresa').value=kupac.adresa;
         document.getElementById('brojTelefona').value=kupac.brojTelefona;
         document.getElementById('email').value=kupac.email;
-    }
+        }
+
 
     const onClose = () => {
         setOpen(false);
@@ -66,6 +67,7 @@ function NovaPonudaDialog() {
     <Dialog
         open={open}
         onClose={onClose}
+        id='nova-ponuda-dialog'
     >
         <DialogTitle id="form-dialog-title">Nova ponuda</DialogTitle>
         <DialogContent>
@@ -79,6 +81,16 @@ function NovaPonudaDialog() {
                 label="Ime i prezime"
                 type="text"
                 fullWidth
+                value={kupac.imeIPrezime}
+                onChange={
+                    (event) => {
+                        const { value } = event.target;
+                        setKupac(prevState => ({
+                            ...prevState,
+                            imeIPrezime: value
+                        }));
+                    }
+                }
             />
             <TextField
                 margin="dense"
@@ -86,6 +98,16 @@ function NovaPonudaDialog() {
                 label="Adresa"
                 type="text"
                 fullWidth
+                value={kupac.adresa}
+                onChange={
+                    (event) => {
+                        const { value } = event.target;
+                        setKupac(prevState => ({
+                            ...prevState,
+                            adresa: value
+                        }));
+                    }
+                }
 
             />
             <TextField
@@ -94,6 +116,16 @@ function NovaPonudaDialog() {
                 label="Broj telefona"
                 type="text"
                 fullWidth
+                value={kupac.brojTelefona}
+                onChange={
+                    (event) => {
+                        const { value } = event.target;
+                        setKupac(prevState => ({
+                            ...prevState,
+                            brojTelefona: value
+                        }));
+                    }
+                }
             />
             <TextField
                 margin="dense"
@@ -101,6 +133,16 @@ function NovaPonudaDialog() {
                 label="Email"
                 type="email"
                 fullWidth
+                value={kupac.email}
+                onChange={
+                    (event) => {
+                        const { value } = event.target;
+                        setKupac(prevState => ({
+                            ...prevState,
+                            email: value
+                        }));
+                    }
+                }
             />
             <TextField
                 margin="dense"
