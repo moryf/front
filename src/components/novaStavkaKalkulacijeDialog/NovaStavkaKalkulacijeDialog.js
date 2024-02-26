@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogContent, DialogTitle, TextField , Paper, Container, DialogActions} from '@mui/material'
+import { Button, Dialog, DialogContent, DialogTitle, TextField , Paper, Container, DialogActions, Select} from '@mui/material'
 import React, { useState } from 'react'
 import PretragaProizvodaDialog from './pretragaProizvodaDialog/PretragaProizvodaDialog'
 import { proizvodTemplate } from '../../api/josnTemplates/JSONTemplates'
@@ -40,6 +40,13 @@ export default function NovaStavkaKalkulacijeDialog({addStavka}) {
     }
 
 
+    const handleInputChange = (e) => {
+        const {name, value} = e.target;
+        setStavkaKalkulacije(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    }
 
 
 
@@ -83,19 +90,41 @@ export default function NovaStavkaKalkulacijeDialog({addStavka}) {
                     disabled
                     fullWidth
                 />
-                {
-                    jmKomada ?
+                <Container elevation={3}>
+                    <Select
+                        sx={{ margin: 1}}
+                        native
+                        name='nacinRacunanjaKomada'
+                        value={stavkaKalkulacije.nacinRacunanjaKomada}
+                        onChange={handleInputChange}>
+                        <option value={"KOMAD"}>Komad</option>
+                        <option value={"PO_DUZNOM_METRU"}>Po duzini na svakih</option>
+                        <option value={"PO_VISINSKOM_METRU"}>Po visini na svakih</option>
+                        <option value={"PO_DUBINSKOM_METRU"}>Po dubini na svakih</option>
+                    </Select>
                     <TextField
                         sx={{ margin: 1}}
-                        label="Kolicina"
+                        label="Multiplikator"
                         margin="normal"
-                        name="kolicina"
+                        name="multiplikator"
                         type="number"
-                        value={stavkaKalkulacije.kolicina}
+                        value={stavkaKalkulacije.multiplikator}
+                        onChange={handleInputChange}
                         fullWidth
                     />
-                    : null
-                }
+                    <TextField
+                        sx={{ margin: 1}}
+                        label="Rucni dodatak"
+                        margin="normal"
+                        name="rucniDodatak"
+                        type="number"
+                        value={stavkaKalkulacije.rucniDodatak}
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
+                </Container>
+
+                    
                 </Container>
                 : null
 
