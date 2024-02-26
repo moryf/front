@@ -169,6 +169,16 @@ export default function NovaStavkaKalkulacijeDialog({addStavka,visinaProizvoda,d
                         onChange={handleInputChange}
                         fullWidth
                     />
+                    <TextField
+                        sx={{ margin: 1}}
+                        label="Duzina komada"
+                        margin="normal"
+                        name="duzinaKomada"
+                        type="number"
+                        value={stavkaKalkulacije.duzinaKomada}
+                        disabled
+                        fullWidth
+                    />
                 </Container>
                 : null
                 }

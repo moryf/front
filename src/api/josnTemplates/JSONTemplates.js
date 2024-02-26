@@ -120,6 +120,7 @@ export const stavkaKalkulacijeTemplate = {
     veleprodajnaCena: 0.0
   },
   nacinRacunanjaKomada: "KOMAD", // Replace null with the actual value
+  razmak: 0.0,
   multiplikator: 1.0,
   rucniDodatak: 0,
   kolicinaKomada: 0,

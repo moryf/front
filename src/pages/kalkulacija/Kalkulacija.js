@@ -17,7 +17,6 @@ export default function Kalkulacija() {
     async function addStavka(stavka) {
       try {
         const novaStavka = await addStavkaKalkulacije(stavka,id);
-        setStavkeKalkulacije(prevState => [...prevState, novaStavka]);
         setFlatennedStavkeKalkulacije(prevState => [...prevState, {
           ...novaStavka,
           ...novaStavka.proizvod,
@@ -293,7 +292,7 @@ export default function Kalkulacija() {
             rowsPerPageOptions={[5]}
             sx={{ width: '100%', height: '100%' }}
             getRowId={(row) => {
-              return row.proizvodId;
+              return row.id;
             }
             }
           />
