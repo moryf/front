@@ -35,6 +35,7 @@ export default function Kalkulacija() {
         try {
             const response = await getKalkulacija(id);
             setKalkulacija(response);
+            console.log(response);
         } catch (error) {
             console.error(error);
         }
@@ -296,7 +297,10 @@ export default function Kalkulacija() {
             }
             }
           />
-          <NovaStavkaKalkulacijeDialog addStavka={addStavka} />
+          <NovaStavkaKalkulacijeDialog addStavka={addStavka}
+           duzinaProizvoda={kalkulacija.proizvodPonuda.duzinaPoKomadu}
+            dubinaProizvoda={kalkulacija.proizvodPonuda.dubinaPoKomadu}
+             visinaProizvoda={kalkulacija.proizvodPonuda.visinaPoKomadu} />
 
         </Paper>
 

@@ -119,12 +119,14 @@ export const stavkaKalkulacijeTemplate = {
     cenaA: 0.0,
     veleprodajnaCena: 0.0
   },
-  nacinRacunanjaKomada: null, // Replace null with the actual value
-  multiplikator: 0.0,
-  rucniDodatak: 0.0,
+  nacinRacunanjaKomada: "KOMAD", // Replace null with the actual value
+  multiplikator: 1.0,
+  rucniDodatak: 0,
+  kolicinaKomada: 0,
   nacinRacunanjaDuzineKomada: null, // Replace null with the actual value
   duzina: 0.0,
   razlikaDuzine: 0.0,
+  duzinaKomada: 0.0,
   kolicina: 0.0,
   cinkovanje: false,
   farbanje: false,
