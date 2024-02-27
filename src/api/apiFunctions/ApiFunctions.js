@@ -349,3 +349,15 @@ export async function addStavkaKalkulacije(stavkaKalkulacije, kalkulacijaId){
     throw error;
   }
 }
+
+export async function updateStavkeKalkulacije(stavkeKalkulacije){
+  try {
+    const response = await AxiosConfig.put(`/api/stavka-kalkulacije/izmeni/lista`, stavkeKalkulacije);
+    confirm("Uspesno izmenjene stavke")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}

@@ -15,7 +15,7 @@
   background-color: var(--background-color);
   color: black;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .content {
@@ -28,4 +28,6 @@
   position: relative;
   width: 100%;
   overflow: hidden;
+  max-width: 1200px;
+  margin: auto;
 }

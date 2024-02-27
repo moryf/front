@@ -1,18 +1,42 @@
 import { Button, Dialog, DialogContent, DialogTitle, TextField , Paper, Container, DialogActions, Select} from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PretragaProizvodaDialog from './pretragaProizvodaDialog/PretragaProizvodaDialog'
 import { proizvodTemplate, stavkaKalkulacijeTemplate } from '../../api/josnTemplates/JSONTemplates'
 
 
-export default function NovaStavkaKalkulacijeDialog({addStavka,visinaProizvoda,duzinaProizvoda,dubinaProizvoda}) {
+export default function NovaStavkaKalkulacijeDialog({mode,izmenaStavka,addStavka,visinaProizvoda,duzinaProizvoda,dubinaProizvoda, koriscenjeCene,cinkovanje,farbanje,montaza,izrada}) {
+
+
+
+
+    //Proizvod
     const[proizvod, setProizvod] = useState(proizvodTemplate);
     const [proizvodLoaded, setProizvodLoaded] = useState(false);
-
+// Da li je merna jedinica proizvoda komadi true ako jeste, false ako je metarski proizvod
     const [jmKomada, setJmKomada] = useState(false);
+// Nacin racunanja duzine komada
+    const[nacinRacunanjaDuzineKomada, setNacinRacunanjaDuzineKomada] = useState("UPISANO");
+// Nacin racunanja komada
+    const[nacinRacunanjaKomada, setNacinRacunanjaKomada] = useState("KOMAD");
+// Vrednosti za stavku kalkulacije
+    const[referentnaDuzina, setReferentnaDuzina] = useState(0);
+    const[razlikaDuzine, setRazlikaDuzine] = useState(0);
+    const[duzinaKomada, setDuzinaKomada] = useState(0);
+    const[razmak, setRazmak] = useState(0);
+    const[multiplikator, setMultiplikator] = useState(1);
+    const[rucniDodatak, setRucniDodatak] = useState(0);
+    const[kolicinaKomada, setKolicinaKomada] = useState(0);
+    const[kolicina, setKolicina] = useState(0);
+    const[cena, setCena] = useState(0);
 
-    const[stavkaKalkulacije, setStavkaKalkulacije] = useState(stavkaKalkulacijeTemplate);
+    const[sacuvano,setSacuvano] = useState(false);
+
+
+    const[stavkaKalkulacije, setStavkaKalkulacije] = useState(izmenaStavka);
 
     const [open, setOpen] = React.useState(false);
+
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -23,78 +47,119 @@ export default function NovaStavkaKalkulacijeDialog({addStavka,visinaProizvoda,d
     function setProizvodState(proizvod) {
         setProizvodLoaded(true);
         setProizvod(proizvod);
-        console.log(proizvod);
         setStavkaKalkulacije(prevState => ({
             ...prevState,
-            proizvod: proizvod
+            proizvod: proizvod,
         }));
+        if(koriscenjeCene === "VELEPRODAJNA_CENA"){
+            setCena(proizvod.veleprodajnaCena);
+        }else{
+            setCena(proizvod.cenaA);
+        }
         if (proizvod.jedinicaMere === "KOMAD") {
             setJmKomada(true);
         } else {
             setJmKomada(false);
-            setStavkaKalkulacije(prevState => ({
-                ...prevState,
-                nacinRacunanjaDuzineKomada: "UPISANO"
-            }));
         }
     }
 
+    const handleNacinRacunanjaDuzineKomada = (e) => {
+        setNacinRacunanjaDuzineKomada(e.target.value);
+    }
 
-    const handleInputChange = (e) => {
-        const {name, value} = e.target;
+    const handleNacinRacunanjaKomada = (e) => {
+        setNacinRacunanjaKomada(e.target.value);
+    }
+
+    const preracunajDuzinuKomada = () => {
+        if(nacinRacunanjaDuzineKomada === "UPISANO"){
+            setReferentnaDuzina(0);
+            setDuzinaKomada(duzinaKomada);
+        }else if(nacinRacunanjaDuzineKomada === "DUZINA"){
+            setReferentnaDuzina(duzinaProizvoda);
+            setDuzinaKomada(duzinaProizvoda + razlikaDuzine);
+        }else if(nacinRacunanjaDuzineKomada === "VISINA"){
+            setReferentnaDuzina(visinaProizvoda);
+            setDuzinaKomada(visinaProizvoda + razlikaDuzine);
+        }else if(nacinRacunanjaDuzineKomada === "DUBINA"){
+            setReferentnaDuzina(dubinaProizvoda);
+            setDuzinaKomada(dubinaProizvoda + razlikaDuzine);
+        }
+    }
+
+    const preracunajKolicinuKomada = () => {
+        if(nacinRacunanjaKomada === "KOMAD"){
+            setKolicinaKomada(kolicinaKomada);
+        }else if(nacinRacunanjaKomada === "PO_DUZNOM_METRU"){
+            setKolicinaKomada(Math.floor(duzinaProizvoda/razmak+ rucniDodatak)*multiplikator );
+        }else if(nacinRacunanjaKomada === "PO_VISINSKOM_METRU"){
+            setKolicinaKomada(Math.floor(visinaProizvoda/razmak+ rucniDodatak)*multiplikator );
+        }else if(nacinRacunanjaKomada === "PO_DUBINSKOM_METRU"){
+            setKolicinaKomada(Math.floor(dubinaProizvoda/razmak+ rucniDodatak)*multiplikator );
+        }
+    }
+
+    const preracunajKolicinu = () => {
+        if(jmKomada){
+            setKolicina(kolicinaKomada);
+        }else{
+            setKolicina(kolicinaKomada*duzinaKomada);
+        }
+    }
+
+    useEffect(() => {
+        preracunajDuzinuKomada();
+        preracunajKolicinuKomada();
+        preracunajKolicinu();
+        setSacuvano(false);
+    }, [duzinaKomada, razlikaDuzine, razmak, multiplikator, rucniDodatak, kolicinaKomada, cena,nacinRacunanjaDuzineKomada,nacinRacunanjaKomada]);
+
+    const sacuvajPromene = () => {
+        setStavkaKalkulacijeState();
+        setSacuvano(true);
+        return;
+    }
+
+    const setStavkaKalkulacijeState = () => {
         setStavkaKalkulacije(prevState => ({
             ...prevState,
-            [name]: value
+            duzinaKomada: duzinaKomada,
+            razlikaDuzine: razlikaDuzine,
+            razmak: razmak,
+            multiplikator: multiplikator,
+            rucniDodatak: rucniDodatak,
+            kolicinaKomada: kolicinaKomada,
+            kolicina: kolicina,
+            cena: cena,
+            cinkovanje: cinkovanje,
+            farbanje: farbanje,
+            montaza: montaza,
+            izrada: izrada
         }));
-        console.log(stavkaKalkulacije);
-        if(name === "nacinRacunanjaDuzineKomada") {
-            preracunajDuzinu(value, stavkaKalkulacije.razlikaDuzine,stavkaKalkulacije.duzina);
-        }
-        if(name === "duzina") {
-            preracunajDuzinu(stavkaKalkulacije.nacinRacunanjaDuzineKomada,stavkaKalkulacije.razlikaDuzine,value);
-        }
-        if(name === "razlikaDuzine") {
-            preracunajDuzinu(stavkaKalkulacije.nacinRacunanjaDuzineKomada,value,stavkaKalkulacije.duzina);
-        }
     }
 
-    const preracunajDuzinu = (nacinRacunanjaDuzineKomada, razlikaDuzine,duzina) => {
-        console.log(visinaProizvoda + " " + duzinaProizvoda + " " + dubinaProizvoda);
-        console.log(nacinRacunanjaDuzineKomada);
-        let duzinaKomada = 0;
-        if(nacinRacunanjaDuzineKomada === "UPISANO") {
-            duzinaKomada = parseFloat(duzina);
-        } else if(nacinRacunanjaDuzineKomada === "DUZINA") {
-            setStavkaKalkulacije(prevState => ({
-                ...prevState,
-                duzina: duzinaProizvoda
-            }));
-            duzinaKomada = duzinaProizvoda + parseFloat(razlikaDuzine);
-        } else if(nacinRacunanjaDuzineKomada === "VISINA") {
-            setStavkaKalkulacije(prevState => ({
-                ...prevState,
-                duzina: visinaProizvoda
-            }));
-            duzinaKomada = visinaProizvoda + parseFloat(razlikaDuzine);
+    const dodajStavku = () => {
+        if(!sacuvano){
+            sacuvajPromene();
+            alert("Stavka je sacuvana")
+            return;
         }
-        else if(nacinRacunanjaDuzineKomada === "DUBINA") {
-            setStavkaKalkulacije(prevState => ({
-                ...prevState,
-                duzina: dubinaProizvoda
-            }));
-            duzinaKomada = dubinaProizvoda + parseFloat(razlikaDuzine);
-        }
-        setStavkaKalkulacije(prevState => ({
-            ...prevState,
-            duzinaKomada: duzinaKomada
-        }));
-        console.log(duzinaKomada);
-
+        addStavka(stavkaKalkulacije);
+        handleClose();
     }
 
-
-
-
+    if(mode==="IZMENA"){
+        if(izmenaStavka == null){
+            return null;
+        }
+        if(proizvodLoaded === false){
+            return null;
+        }
+        if(proizvod === null){
+            return null;
+        }
+    }
+    
 
   return (
     <>
@@ -106,6 +171,7 @@ export default function NovaStavkaKalkulacijeDialog({addStavka,visinaProizvoda,d
             {
                 proizvodLoaded ?
                 <Container>
+                {sacuvano ? <h5 style={{color:"green"}}>Sacuvano</h5> : <h5 style={{color:"red"}}>Nije sacuvano</h5>}
                 <TextField
                     sx={{ margin: 1}}
                     label="Sifra"
@@ -142,71 +208,97 @@ export default function NovaStavkaKalkulacijeDialog({addStavka,visinaProizvoda,d
                         native
                         sx={{ margin: 1}}
                         name='nacinRacunanjaDuzineKomada'
-                        value={stavkaKalkulacije.nacinRacunanjaDuzineKomada}
-                        onChange={handleInputChange}>
+                        value={nacinRacunanjaDuzineKomada}
+                        onChange={
+                            handleNacinRacunanjaDuzineKomada
+                        }>
                         <option value={"UPISANO"}>Upisati</option>
                         <option value={"DUZINA"}>Duzina + razlika</option>
                         <option value={"VISINA"}>Visina + razlika</option>
                         <option value={"DUBINA"}>Dubina + razlika</option>
                     </Select>
-                    <TextField
-                        sx={{ margin: 1}}
-                        label="Duzina"
-                        margin="normal"
-                        name="duzina"
-                        type="number"
-                        value={stavkaKalkulacije.duzina}
-                        onChange={handleInputChange}
-                        fullWidth
-                    />
-                    <TextField
-                        sx={{ margin: 1}}
-                        label="Razlika duzine"
-                        margin="normal"
-                        name="razlikaDuzine"
-                        type="number"
-                        value={stavkaKalkulacije.razlikaDuzine}
-                        onChange={handleInputChange}
-                        fullWidth
-                    />
+                    {nacinRacunanjaDuzineKomada !== "UPISANO" ?
+                        <>
+                        <TextField
+                            sx={{ margin: 1}}
+                            label="Referentna duzina"
+                            margin="normal"
+                            name="referentnaDuzina"
+                            type="number"
+                            value={referentnaDuzina}
+                            fullWidth
+                            disabled
+                        />
+                        <TextField
+                            sx={{ margin: 1}}
+                            label="Razlika duzine"
+                            margin="normal"
+                            name="razlikaDuzine"
+                            type="number"
+                            value={razlikaDuzine}
+                            onChange={(e) => setRazlikaDuzine(parseFloat(e.target.value))}
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{ margin: 1}}
+                            label="Duzina komada"
+                            margin="normal"
+                            name="duzinaKomada"
+                            type="number"
+                            value={duzinaKomada}
+                            disabled
+                            fullWidth
+                        />
+                    </>: 
                     <TextField
                         sx={{ margin: 1}}
                         label="Duzina komada"
                         margin="normal"
                         name="duzinaKomada"
                         type="number"
-                        value={stavkaKalkulacije.duzinaKomada}
-                        disabled
-                        fullWidth
-                    />
+                        value={duzinaKomada}
+                        onChange={(e) => setDuzinaKomada(parseFloat(e.target.value))}
+                        fullWidth/>
+                    }
+                    
                 </Container>
                 : null
                 }
 
 
 
-                <Container elevation={3}>
+                <Container>
                     <Select
                         sx={{ margin: 1}}
                         native
                         name='nacinRacunanjaKomada'
-                        value={stavkaKalkulacije.nacinRacunanjaKomada}
-                        onChange={handleInputChange}>
+                        value={nacinRacunanjaKomada}
+                        onChange={handleNacinRacunanjaKomada}>
                         <option value={"KOMAD"}>Komad</option>
                         <option value={"PO_DUZNOM_METRU"}>Po duzini na svakih</option>
                         <option value={"PO_VISINSKOM_METRU"}>Po visini na svakih</option>
                         <option value={"PO_DUBINSKOM_METRU"}>Po dubini na svakih</option>
                     </Select>
+                    {nacinRacunanjaKomada!=="KOMAD"?<>
+                        <TextField
+                            sx={{ margin: 1}}
+                            label="Razmak"
+                            margin="normal"
+                            name="razmak"
+                            type="number"
+                            value={razmak}
+                            onChange={(e) => setRazmak(parseFloat(e.target.value))}
+                            fullWidth
+                        />
                     <TextField
                         sx={{ margin: 1}}
                         label="Multiplikator"
                         margin="normal"
                         name="multiplikator"
                         type="number"
-                        value={stavkaKalkulacije.multiplikator}
-                        onChange={handleInputChange}
+                        value={multiplikator}
+                        onChange={(e) => setMultiplikator(parseFloat(e.target.value))}
                         fullWidth
-                        defaultValue={1}
                     />
                     <TextField
                         sx={{ margin: 1}}
@@ -214,12 +306,49 @@ export default function NovaStavkaKalkulacijeDialog({addStavka,visinaProizvoda,d
                         margin="normal"
                         name="rucniDodatak"
                         type="number"
-                        value={stavkaKalkulacije.rucniDodatak}
-                        onChange={handleInputChange}
+                        value={rucniDodatak}
+                        onChange={(e) => setRucniDodatak(parseFloat(e.target.value))}
                         fullWidth
-                        defaultValue={0}
+                    />
+                    </>: null
+                    
+                    }
+                    
+
+                    <TextField
+                        sx={{ margin: 1}}
+                        label="Kolicina komada"
+                        margin="normal"
+                        name="kolicinaKomada"
+                        type="number"
+                        value={kolicinaKomada}
+                        onChange={(e) => setKolicinaKomada(parseFloat(e.target.value))}
+                        fullWidth
+                        disabled={nacinRacunanjaKomada !== "KOMAD"}
                     />
                 </Container>
+
+                <TextField
+                    sx={{ margin: 1}}
+                    label="Kolicina"
+                    margin="normal"
+                    name="kolicina"
+                    type="number"
+                    value={kolicina}
+                    disabled
+                    fullWidth
+                    
+                />
+                <TextField
+                    sx={{ margin: 1}}
+                    label="Cena"
+                    margin="normal"
+                    name="cena"
+                    type="number"
+                    value={cena}
+                    fullWidth
+                    disabled
+                />
 
                     
                 </Container>
@@ -232,7 +361,7 @@ export default function NovaStavkaKalkulacijeDialog({addStavka,visinaProizvoda,d
 
         <DialogActions>
             <Button onClick={handleClose}>Odustani</Button>
-            <Button onClick={() => {addStavka(stavkaKalkulacije); handleClose()}}>Dodaj</Button>
+            <Button onClick={dodajStavku}>Dodaj</Button>
         </DialogActions>
     </Dialog>
     </>

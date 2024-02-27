@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Paper, Typography, TextField, Button, Switch, FormControlLabel, FormGroup, Select } from '@mui/material';
 import { kalkulacijaTemplate } from '../../api/josnTemplates/JSONTemplates';
-import { getKalkulacija, updateKalkulacija,getStavkeKalkulacijeByKalkulacijaId, addStavkaKalkulacije } from '../../api/apiFunctions/ApiFunctions';
+import { getKalkulacija, updateKalkulacija,getStavkeKalkulacijeByKalkulacijaId, addStavkaKalkulacije,updateStavkeKalkulacije } from '../../api/apiFunctions/ApiFunctions';
 import NoviSablon from '../../components/noviSablon/NoviSablon';
 import { DataGrid } from '@mui/x-data-grid';
 import NovaStavkaKalkulacijeDialog from '../../components/novaStavkaKalkulacijeDialog/NovaStavkaKalkulacijeDialog';
@@ -16,7 +16,8 @@ export default function Kalkulacija() {
 
     async function addStavka(stavka) {
       try {
-        const novaStavka = await addStavkaKalkulacije(stavka,id);
+
+       const novaStavka = await addStavkaKalkulacije(stavka,id);
         setFlatennedStavkeKalkulacije(prevState => [...prevState, {
           ...novaStavka,
           ...novaStavka.proizvod,
@@ -34,7 +35,6 @@ export default function Kalkulacija() {
         try {
             const response = await getKalkulacija(id);
             setKalkulacija(response);
-            console.log(response);
         } catch (error) {
             console.error(error);
         }
@@ -46,7 +46,8 @@ export default function Kalkulacija() {
             ...stavka.proizvod,
             ...stavka.proizvod.jedinicaMere,
             proizvodId: stavka.proizvod.sifra,
-            jedinicaMereId: stavka.proizvod.jedinicaMere
+            jedinicaMere: stavka.proizvod.jedinicaMere,
+            ukupno: stavka.kolicina * stavka.cena
           })));
         } catch (error) {
             console.error(error);
@@ -68,17 +69,26 @@ export default function Kalkulacija() {
   const handleSubmit = async () => {
     kalkulacija.poslednjiDatumIzmene = new Date();
     // Submit logic, possibly involving an API call
-    console.log(kalkulacija);
     // Implement API call or state update logic here
     try {
       const novaKalkulacija = await updateKalkulacija(kalkulacija);
       setKalkulacija(novaKalkulacija);
-    } catch (error) {
+      const noveStavke = await updateStavkeKalkulacije(stavkeKalkulacije);
+      setStavkeKalkulacije(noveStavke);
+      setFlatennedStavkeKalkulacije(noveStavke.map(stavka => ({
+        ...stavka,
+        ...stavka.proizvod,
+        ...stavka.proizvod.jedinicaMere,
+        proizvodId: stavka.proizvod.sifra,
+        jedinicaMere: stavka.proizvod.jedinicaMere,
+        ukupno: stavka.kolicina * stavka.cena
+      })));
+          } catch (error) {
       console.error(error);
     }
   };
 
-  if(kalkulacija === kalkulacijaTemplate) {
+  if(kalkulacija === kalkulacijaTemplate || stavkeKalkulacije.length === 0) {
     return <h1>Loading...</h1>
   }
 
@@ -92,8 +102,10 @@ export default function Kalkulacija() {
     setFlatennedStavkeKalkulacije(prevState => prevState.map(stavka => {
       if(value === "VELEPRODAJNA_CENA") {
         stavka.cena = stavka.proizvod.veleprodajnaCena;
+        stavka.ukupno = stavka.kolicina * stavka.proizvod.veleprodajnaCena;
       } else {
         stavka.cena = stavka.proizvod.cenaA;
+        stavka.ukupno= stavka.kolicina * stavka.proizvod.cenaA;
       }
       return stavka;
     }));
@@ -196,6 +208,36 @@ export default function Kalkulacija() {
           {/* Repeat for other boolean fields */}
         </FormGroup>
 
+        <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+          <TextField
+            sx={{ margin: 1}}
+            label="Duzina po komadu"
+            margin="normal"
+            name="proizvodPonuda.duzinaPoKomadu"
+            type="number"
+            value={kalkulacija.proizvodPonuda.duzinaPoKomadu}
+            disabled
+          />
+          <TextField
+            sx={{ margin: 1}}
+            label="Dubina po komadu"
+            margin="normal"
+            name="proizvodPonuda.dubinaPoKomadu"
+            type="number"
+            value={kalkulacija.proizvodPonuda.dubinaPoKomadu}
+            disabled
+          />
+          <TextField
+            sx={{ margin: 1}}
+            label="Visina po komadu"
+            margin="normal"
+            name="proizvodPonuda.visinaPoKomadu"
+            type="number"
+            value={kalkulacija.proizvodPonuda.visinaPoKomadu}
+            disabled
+          />
+        </Paper>
+
         {/* Numeric fields */}
         <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
           <TextField
@@ -281,25 +323,36 @@ export default function Kalkulacija() {
             rows={flatennedStavkeKalkulacije}
             columns={[
               { field: 'id', headerName: 'ID', width: 50 },
-              { field: 'naziv', headerName: 'Naziv', width: 150 },
-              { field: 'proizvodId', headerName: 'Sifra Proizvoda', width: 150 },
-              { field: 'jedinicaMereId', headerName: 'Jedinica Mere', width: 100 },
-              { field: 'kolicina', headerName: 'Kolicina', width: 100, editable: true},
-              { field: 'cena', headerName: 'Cena', width: 150 },
+              { field: 'naziv', headerName: 'Naziv', width: 100 },
+              { field: 'proizvodId', headerName: 'Sifra Proizvoda', width: 100 },
+              { field: 'jedinicaMere', headerName: 'Jedinica Mere', width: 100 },
+              { field: 'kolicina', headerName: 'Kolicina', width: 50},
+              { field: 'cena', headerName: 'Cena', width: 50 },
+              { field: 'ukupno', headerName: 'Ukupno', width: 50},
             ]}
             autoHeight
             pageSize={5}
             rowsPerPageOptions={[5]}
             sx={{ width: '100%', height: '100%' }}
-            getRowId={(row) => {
-              return row.id;
+              getRowId={(row) => {
+                return row.id;
+              }
             }
-            }
+            
           />
-          <NovaStavkaKalkulacijeDialog addStavka={addStavka}
+          <NovaStavkaKalkulacijeDialog 
+          mode={"NOVI"}
+          izmenaStavka={null}
+          addStavka={addStavka}
            duzinaProizvoda={kalkulacija.proizvodPonuda.duzinaPoKomadu}
             dubinaProizvoda={kalkulacija.proizvodPonuda.dubinaPoKomadu}
-             visinaProizvoda={kalkulacija.proizvodPonuda.visinaPoKomadu} />
+             visinaProizvoda={kalkulacija.proizvodPonuda.visinaPoKomadu}
+             koriscenjeCene={kalkulacija.koriscenjeCene}
+             cinkovanje={kalkulacija.cinkovanje}
+              farbanje={kalkulacija.farbanje}
+              montaza={kalkulacija.montaza}
+              izrada={kalkulacija.izrada}
+             />
 
         </Paper>
 

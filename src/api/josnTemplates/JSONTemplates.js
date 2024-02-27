@@ -125,7 +125,7 @@ export const stavkaKalkulacijeTemplate = {
   rucniDodatak: 0,
   kolicinaKomada: 0,
   nacinRacunanjaDuzineKomada: null, // Replace null with the actual value
-  duzina: 0.0,
+  referentnaDuzina: 0.0,
   razlikaDuzine: 0.0,
   duzinaKomada: 0.0,
   kolicina: 0.0,
