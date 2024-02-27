@@ -9,6 +9,20 @@ import NovaStavkaKalkulacijeDialog from '../../components/novaStavkaKalkulacijeD
 
 export default function Kalkulacija() {
 
+  const [open, setOpen] = React.useState(false);
+
+  const [mode, setMode] = useState("NOVI");
+  const[izmenaStavka, setIzmenaStavka] = useState(null);
+
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+        setIzmenaStavka(null);
+    };
+
     const id = window.location.pathname.split('/')[2];
     const [kalkulacija, setKalkulacija] = useState(kalkulacijaTemplate);
     const [stavkeKalkulacije, setStavkeKalkulacije] = useState([]);
@@ -23,8 +37,10 @@ export default function Kalkulacija() {
           ...novaStavka.proizvod,
           ...novaStavka.proizvod.jedinicaMere,
           proizvodId: novaStavka.proizvod.sifra,
-          jedinicaMereId: novaStavka.proizvod.jedinicaMere
+          jedinicaMereId: novaStavka.proizvod.jedinicaMere,
+          ukupno: novaStavka.kolicina * novaStavka.cena
         }]);
+        setStavkeKalkulacije(prevState => [...prevState, novaStavka]);
       } catch (error) {
         console.error(error);
       }
@@ -88,7 +104,7 @@ export default function Kalkulacija() {
     }
   };
 
-  if(kalkulacija === kalkulacijaTemplate || stavkeKalkulacije.length === 0) {
+  if(kalkulacija === kalkulacijaTemplate) {
     return <h1>Loading...</h1>
   }
 
@@ -326,9 +342,17 @@ export default function Kalkulacija() {
               { field: 'naziv', headerName: 'Naziv', width: 100 },
               { field: 'proizvodId', headerName: 'Sifra Proizvoda', width: 100 },
               { field: 'jedinicaMere', headerName: 'Jedinica Mere', width: 100 },
-              { field: 'kolicina', headerName: 'Kolicina', width: 50},
-              { field: 'cena', headerName: 'Cena', width: 50 },
-              { field: 'ukupno', headerName: 'Ukupno', width: 50},
+              { field: 'kolicina', headerName: 'Kolicina', width: 100},
+              { field: 'cena', headerName: 'Cena', width: 100 },
+              { field: 'ukupno', headerName: 'Ukupno', width: 150},
+              { field: 'actions', headerName: 'Actions', width: 150, renderCell: (params) => (
+                <Button variant="contained" color="primary" onClick={() => {
+                  setMode("IZMENA");
+                  setIzmenaStavka(stavkeKalkulacije.find(stavka => stavka.id === params.row.id));
+                  handleClickOpen();
+                }}>Izmeni</Button>
+              )
+              }
             ]}
             autoHeight
             pageSize={5}
@@ -340,9 +364,12 @@ export default function Kalkulacija() {
             }
             
           />
+          <Button variant="contained" color="primary" onClick={handleClickOpen}>Nova stavka kalkulacije</Button>
           <NovaStavkaKalkulacijeDialog 
-          mode={"NOVI"}
-          izmenaStavka={null}
+          open={open}
+          handleClose={handleClose}
+          mode={mode}
+          izmenaStavka={izmenaStavka}
           addStavka={addStavka}
            duzinaProizvoda={kalkulacija.proizvodPonuda.duzinaPoKomadu}
             dubinaProizvoda={kalkulacija.proizvodPonuda.dubinaPoKomadu}
