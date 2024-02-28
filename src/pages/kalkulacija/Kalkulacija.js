@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Paper, Typography, TextField, Button, Switch, FormControlLabel, FormGroup, Select } from '@mui/material';
 import { kalkulacijaTemplate } from '../../api/josnTemplates/JSONTemplates';
-import { getKalkulacija, updateKalkulacija,getStavkeKalkulacijeByKalkulacijaId, addStavkaKalkulacije,updateStavkeKalkulacije } from '../../api/apiFunctions/ApiFunctions';
+import {deleteStavkaKalkulacije, getKalkulacija, updateKalkulacija,getStavkeKalkulacijeByKalkulacijaId, addStavkaKalkulacije,updateStavkeKalkulacije, updateStavkaKalkulacije } from '../../api/apiFunctions/ApiFunctions';
 import NoviSablon from '../../components/noviSablon/NoviSablon';
 import { DataGrid } from '@mui/x-data-grid';
 import NovaStavkaKalkulacijeDialog from '../../components/novaStavkaKalkulacijeDialog/NovaStavkaKalkulacijeDialog';
@@ -21,6 +21,7 @@ export default function Kalkulacija() {
     const handleClose = () => {
         setOpen(false);
         setIzmenaStavka(null);
+        setMode("NOVI");
     };
 
     const id = window.location.pathname.split('/')[2];
@@ -29,20 +30,48 @@ export default function Kalkulacija() {
     const[flatennedStavkeKalkulacije, setFlatennedStavkeKalkulacije] = useState([]);
 
     async function addStavka(stavka) {
+     if(mode === "NOVI") {
       try {
-
-       const novaStavka = await addStavkaKalkulacije(stavka,id);
-        setFlatennedStavkeKalkulacije(prevState => [...prevState, {
-          ...novaStavka,
-          ...novaStavka.proizvod,
-          ...novaStavka.proizvod.jedinicaMere,
-          proizvodId: novaStavka.proizvod.sifra,
-          jedinicaMereId: novaStavka.proizvod.jedinicaMere,
-          ukupno: novaStavka.kolicina * novaStavka.cena
-        }]);
-        setStavkeKalkulacije(prevState => [...prevState, novaStavka]);
-      } catch (error) {
-        console.error(error);
+        const novaStavka = await addStavkaKalkulacije(stavka,id);
+         setFlatennedStavkeKalkulacije(prevState => [...prevState, {
+           ...novaStavka,
+           ...novaStavka.proizvod,
+           ...novaStavka.proizvod.jedinicaMere,
+           proizvodId: novaStavka.proizvod.sifra,
+           jedinicaMereId: novaStavka.proizvod.jedinicaMere,
+           ukupno: novaStavka.kolicina * novaStavka.cena
+         }]);
+         setStavkeKalkulacije(prevState => [...prevState, novaStavka]);
+         setMode("NOVI");
+       } catch (error) {
+         console.error(error);
+       }
+      } else {
+        try {
+          const novaStavka = await updateStavkaKalkulacije(stavka);
+          setFlatennedStavkeKalkulacije(prevState => prevState.map(stavka => {
+            if(stavka.id === novaStavka.id) {
+              return {
+                ...novaStavka,
+                ...novaStavka.proizvod,
+                ...novaStavka.proizvod.jedinicaMere,
+                proizvodId: novaStavka.proizvod.sifra,
+                jedinicaMereId: novaStavka.proizvod.jedinicaMere,
+                ukupno: novaStavka.kolicina * novaStavka.cena
+              }
+            }
+            return stavka;
+          }));
+          setStavkeKalkulacije(prevState => prevState.map(stavka => {
+            if(stavka.id === novaStavka.id) {
+              return novaStavka;
+            }
+            return stavka;
+          }));
+          setMode("NOVI");
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
 
@@ -134,6 +163,17 @@ export default function Kalkulacija() {
       return stavka;
     }
     ));
+  }
+
+
+  const deleteStavka = async (id) => {
+    try {
+      await deleteStavkaKalkulacije(id);
+      setFlatennedStavkeKalkulacije(prevState => prevState.filter(stavka => stavka.id !== id));
+      setStavkeKalkulacije(prevState => prevState.filter(stavka => stavka.id !== id));
+    } catch (error) {
+      console.error(error);
+    }
   }
 
 
@@ -345,12 +385,16 @@ export default function Kalkulacija() {
               { field: 'kolicina', headerName: 'Kolicina', width: 100},
               { field: 'cena', headerName: 'Cena', width: 100 },
               { field: 'ukupno', headerName: 'Ukupno', width: 150},
-              { field: 'actions', headerName: 'Actions', width: 150, renderCell: (params) => (
+              { field: 'izmeni', headerName: 'Izmeni', width: 100, renderCell: (params) => (
                 <Button variant="contained" color="primary" onClick={() => {
                   setMode("IZMENA");
                   setIzmenaStavka(stavkeKalkulacije.find(stavka => stavka.id === params.row.id));
                   handleClickOpen();
                 }}>Izmeni</Button>
+              )
+              },
+              { field: 'obrisi', headerName: 'Obrisi', width: 100, renderCell: (params) => (
+                <Button variant="contained" color="secondary" onClick={() => deleteStavka(params.row.id)}>Obrisi</Button>
               )
               }
             ]}
@@ -364,22 +408,47 @@ export default function Kalkulacija() {
             }
             
           />
-          <Button variant="contained" color="primary" onClick={handleClickOpen}>Nova stavka kalkulacije</Button>
-          <NovaStavkaKalkulacijeDialog 
+          {mode==="IZMENA" &&
+          <NovaStavkaKalkulacijeDialog
           open={open}
           handleClose={handleClose}
-          mode={mode}
+          mode="IZMENA"
           izmenaStavka={izmenaStavka}
           addStavka={addStavka}
-           duzinaProizvoda={kalkulacija.proizvodPonuda.duzinaPoKomadu}
-            dubinaProizvoda={kalkulacija.proizvodPonuda.dubinaPoKomadu}
-             visinaProizvoda={kalkulacija.proizvodPonuda.visinaPoKomadu}
-             koriscenjeCene={kalkulacija.koriscenjeCene}
-             cinkovanje={kalkulacija.cinkovanje}
-              farbanje={kalkulacija.farbanje}
-              montaza={kalkulacija.montaza}
-              izrada={kalkulacija.izrada}
-             />
+          duzinaProizvoda={kalkulacija.proizvodPonuda.duzinaPoKomadu}
+          dubinaProizvoda={kalkulacija.proizvodPonuda.dubinaPoKomadu}
+          visinaProizvoda={kalkulacija.proizvodPonuda.visinaPoKomadu}
+          koriscenjeCene={kalkulacija.koriscenjeCene}
+          cinkovanje={kalkulacija.cinkovanje}
+          farbanje={kalkulacija.farbanje}
+          montaza={kalkulacija.montaza}
+          izrada={kalkulacija.izrada}
+          />
+          
+          }
+
+
+
+
+          <Button variant="contained" color="primary" onClick={handleClickOpen}>Nova stavka kalkulacije</Button>
+        {mode!=="IZMENA" &&
+        <NovaStavkaKalkulacijeDialog 
+        open={open}
+        handleClose={handleClose}
+        mode="NOVI"
+        izmenaStavka={null}
+        addStavka={addStavka}
+         duzinaProizvoda={kalkulacija.proizvodPonuda.duzinaPoKomadu}
+          dubinaProizvoda={kalkulacija.proizvodPonuda.dubinaPoKomadu}
+           visinaProizvoda={kalkulacija.proizvodPonuda.visinaPoKomadu}
+           koriscenjeCene={kalkulacija.koriscenjeCene}
+           cinkovanje={kalkulacija.cinkovanje}
+            farbanje={kalkulacija.farbanje}
+            montaza={kalkulacija.montaza}
+            izrada={kalkulacija.izrada}
+           />
+        
+        }  
 
         </Paper>
 

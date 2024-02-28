@@ -1,10 +1,18 @@
-import { Button, Dialog, DialogContent, DialogTitle, TextField , Paper, Container, DialogActions, Select} from '@mui/material'
+import { Button, Dialog, DialogContent, DialogTitle, TextField , Paper, Container, DialogActions, Select, FormGroup, FormControlLabel, Switch} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import PretragaProizvodaDialog from './pretragaProizvodaDialog/PretragaProizvodaDialog'
 import { proizvodTemplate, stavkaKalkulacijeTemplate } from '../../api/josnTemplates/JSONTemplates'
 
 
 export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izmenaStavka,addStavka,visinaProizvoda,duzinaProizvoda,dubinaProizvoda, koriscenjeCene,cinkovanje,farbanje,montaza,izrada}) {
+
+    const stavkaTemplateLoadValues = {
+        ...stavkaKalkulacijeTemplate,
+        cinkovanje: cinkovanje,
+        farbanje: farbanje,
+        montaza: montaza,
+        izrada: izrada,
+    }
 
 
     //Proizvod
@@ -13,22 +21,17 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
 // Da li je merna jedinica proizvoda komadi true ako jeste, false ako je metarski proizvod
     const [jmKomada, setJmKomada] = useState(false);
 // Nacin racunanja duzine komada
-    const[nacinRacunanjaDuzineKomada, setNacinRacunanjaDuzineKomada] = useState("UPISANO");
+    const[nacinRacunanjaDuzineKomada, setNacinRacunanjaDuzineKomada] = useState(mode==="IZMENA"? izmenaStavka.nacinRacunanjaDuzineKomada : "UPISANO");
 // Nacin racunanja komada
-    const[nacinRacunanjaKomada, setNacinRacunanjaKomada] = useState("KOMAD");
+    const[nacinRacunanjaKomada, setNacinRacunanjaKomada] = useState(mode === "IZMENA" ? izmenaStavka.nacinRacunanjaKomada : "KOMAD");
 // Vrednosti za stavku kalkulacije
     const[sacuvano,setSacuvano] = useState(false);
-    const[stavkaKalkulacije, setStavkaKalkulacije] = useState(mode === "IZMENA" ? izmenaStavka : stavkaKalkulacijeTemplate)
-    
+    const[stavkaKalkulacije, setStavkaKalkulacije] = useState(mode === "IZMENA" ? izmenaStavka : stavkaTemplateLoadValues);
 
-    if(mode === "IZMENA" ){
-        
-        console.log(mode);
-        console.log(izmenaStavka);
-        console.log(stavkaKalkulacije);
-        console.log(proizvod);
-        console.log(proizvodLoaded);
-    }
+    console.log("Stavka kalkulacije template");
+    console.log(stavkaTemplateLoadValues);
+    console.log("Stavka kalkulacije");
+    console.log(stavkaKalkulacije);
 
     function setProizvodState(proizvod) {
         setProizvodLoaded(true);
@@ -56,10 +59,10 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
     }
 
     const handleInputChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value, type, checked } = event.target;
         setStavkaKalkulacije(prevState => ({
             ...prevState,
-            [name]: value,
+            [name]: type === 'checkbox' ? checked : value,
         }));
     }
 
@@ -138,8 +141,17 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
         preracunajKolicinuKomada();
         preracunajDuzinuKomada();
         preracunajKolicinu();
+        if(mode === "NOVI"){
+            setStavkaKalkulacije(prevState => ({
+                ...prevState,
+                cinkovanje: cinkovanje,
+                farbanje: farbanje,
+                montaza: montaza,
+                izrada: izrada,
+            }));
+        }
     }
-    ,[nacinRacunanjaDuzineKomada,nacinRacunanjaKomada,stavkaKalkulacije.multiplikator, stavkaKalkulacije.razlikaDuzine,stavkaKalkulacije.razmak,stavkaKalkulacije.rucniDodatak,stavkaKalkulacije.kolicinaKomada,stavkaKalkulacije.duzinaKomada ]);
+    ,[cinkovanje,farbanje,montaza,izrada,nacinRacunanjaDuzineKomada,nacinRacunanjaKomada,stavkaKalkulacije.multiplikator, stavkaKalkulacije.razlikaDuzine,stavkaKalkulacije.razmak,stavkaKalkulacije.rucniDodatak,stavkaKalkulacije.kolicinaKomada,stavkaKalkulacije.duzinaKomada ]);
 
     const dodajStavku = () => {
         addStavka(stavkaKalkulacije);
@@ -151,11 +163,19 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
         return;
     }
 
+    const handleClickClose = () => {
+        handleClose();
+        setStavkaKalkulacije(stavkaKalkulacijeTemplate);
+        setProizvod(proizvodTemplate);
+        setProizvodLoaded(false);
+        return;
+    }
+
 
   return (
     <>
     
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClickClose}>
         <DialogTitle>Nova Stavka Kalkulacije</DialogTitle>
         <DialogContent>
             <PretragaProizvodaDialog setProizvodState={setProizvodState} />
@@ -193,6 +213,28 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                     disabled
                     fullWidth
                 />
+                <FormGroup>
+                    <FormControlLabel
+                        control={<Switch checked={stavkaKalkulacije.cinkovanje} onChange={handleInputChange} name="cinkovanje" />}
+                        label="Cinkovanje"
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={stavkaKalkulacije.farbanje} onChange={handleInputChange} name="farbanje" />}
+                        label="Farbanje"
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={stavkaKalkulacije.montaza} onChange={handleInputChange} name="montaza" />}
+                        label="Montaza"
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={stavkaKalkulacije.izrada} onChange={handleInputChange} name="izrada" />}
+                        label="Izrada"
+                    />
+                    {/* Repeat for other boolean fields */}
+                </FormGroup>
+
+
+
                 {!jmKomada ?
                 <Container>
                     <Select
@@ -351,7 +393,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
         </DialogContent>
 
         <DialogActions>
-            <Button onClick={handleClose}>Odustani</Button>
+            <Button onClick={handleClickClose}>Odustani</Button>
             <Button onClick={dodajStavku}>Dodaj</Button>
         </DialogActions>
     </Dialog>

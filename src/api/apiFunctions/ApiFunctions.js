@@ -361,3 +361,28 @@ export async function updateStavkeKalkulacije(stavkeKalkulacije){
     throw error;
   }
 }
+
+export async function updateStavkaKalkulacije(stavkaKalkulacije){
+  try {
+    const response = await AxiosConfig.put(`/api/stavka-kalkulacije/izmeni`, stavkaKalkulacije);
+    confirm("Uspesno izmenjena stavka")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+
+export async function deleteStavkaKalkulacije(id){
+  try {
+    const response = await AxiosConfig.delete(`/api/stavka-kalkulacije/obrisi/${id}`);
+    confirm("Uspesno obrisana stavka")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}

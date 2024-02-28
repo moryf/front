@@ -178,7 +178,7 @@ function ProizvodPonuda() {
             onRowDoubleClick={(row) => {window.location.href = `/kalkulacija/${row.id}`;} }
             columns={[
                 { field: 'id', headerName: 'ID', width: 70 },
-                { field: 'naziv', headerName: 'Naziv', width: 130 },
+                { field: 'naziv', headerName: 'Naziv', width: 250 },
                 { field: 'datumOtvaranja', headerName: 'Datum Otvaranja', width: 130 },
                 { field: 'poslednjiDatumIzmene', headerName: 'Poslednji Datum Izmene', width: 130 },
                 { field: 'kreirao', headerName: 'Kreirao', width: 130 }
