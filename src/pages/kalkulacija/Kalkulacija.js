@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Paper, Typography, TextField, Button, Switch, FormControlLabel, FormGroup, Select } from '@mui/material';
+import {AccordionSummary,AccordionDetails, Container, Paper, Typography, TextField, Button, Switch, FormControlLabel, FormGroup, Select, Accordion } from '@mui/material';
 import { kalkulacijaTemplate } from '../../api/josnTemplates/JSONTemplates';
 import {deleteStavkaKalkulacije, getKalkulacija, updateKalkulacija,getStavkeKalkulacijeByKalkulacijaId, addStavkaKalkulacije,updateStavkeKalkulacije, updateStavkaKalkulacije } from '../../api/apiFunctions/ApiFunctions';
 import NoviSablon from '../../components/noviSablon/NoviSablon';
@@ -13,6 +13,8 @@ export default function Kalkulacija() {
 
   const [mode, setMode] = useState("NOVI");
   const[izmenaStavka, setIzmenaStavka] = useState(null);
+
+
 
 
     const handleClickOpen = () => {
@@ -264,6 +266,8 @@ export default function Kalkulacija() {
           {/* Repeat for other boolean fields */}
         </FormGroup>
 
+        {/* Numeric fields */}
+
         <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
           <TextField
             sx={{ margin: 1}}
@@ -374,85 +378,98 @@ export default function Kalkulacija() {
 
         </Paper>
 
+        {/* DataGrid for the "stavkeKalkulacije" array */}
+
         <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
-          <DataGrid
-            rows={flatennedStavkeKalkulacije}
-            columns={[
-              { field: 'id', headerName: 'ID', width: 50 },
-              { field: 'naziv', headerName: 'Naziv', width: 100 },
-              { field: 'proizvodId', headerName: 'Sifra Proizvoda', width: 100 },
-              { field: 'jedinicaMere', headerName: 'Jedinica Mere', width: 100 },
-              { field: 'kolicina', headerName: 'Kolicina', width: 100},
-              { field: 'cena', headerName: 'Cena', width: 100 },
-              { field: 'ukupno', headerName: 'Ukupno', width: 150},
-              { field: 'izmeni', headerName: 'Izmeni', width: 100, renderCell: (params) => (
-                <Button variant="contained" color="primary" onClick={() => {
-                  setMode("IZMENA");
-                  setIzmenaStavka(stavkeKalkulacije.find(stavka => stavka.id === params.row.id));
-                  handleClickOpen();
-                }}>Izmeni</Button>
-              )
-              },
-              { field: 'obrisi', headerName: 'Obrisi', width: 100, renderCell: (params) => (
-                <Button variant="contained" color="secondary" onClick={() => deleteStavka(params.row.id)}>Obrisi</Button>
-              )
+          <Typography variant="h6">Stavke Kalkulacije po Komadu</Typography>
+            <DataGrid
+              rows={flatennedStavkeKalkulacije}
+              columns={[
+                { field: 'id', headerName: 'ID', width: 50 },
+                { field: 'naziv', headerName: 'Naziv', width: 100 },
+                { field: 'proizvodId', headerName: 'Sifra Proizvoda', width: 100 },
+                { field: 'jedinicaMere', headerName: 'Jedinica Mere', width: 100 },
+                { field: 'kolicina', headerName: 'Kolicina', width: 100},
+                { field: 'cena', headerName: 'Cena', width: 100 },
+                { field: 'ukupno', headerName: 'Ukupno', width: 150},
+                { field: 'izmeni', headerName: 'Izmeni', width: 100, renderCell: (params) => (
+                  <Button variant="contained" color="primary" onClick={() => {
+                    setMode("IZMENA");
+                    setIzmenaStavka(stavkeKalkulacije.find(stavka => stavka.id === params.row.id));
+                    handleClickOpen();
+                  }}>Izmeni</Button>
+                )
+                },
+                { field: 'obrisi', headerName: 'Obrisi', width: 100, renderCell: (params) => (
+                  <Button variant="contained" color="secondary" onClick={() => deleteStavka(params.row.id)}>Obrisi</Button>
+                )
+                }
+              ]}
+              autoHeight
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              sx={{ width: '100%', height: '100%' }}
+                getRowId={(row) => {
+                  return row.id;
+                }
               }
-            ]}
-            autoHeight
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            sx={{ width: '100%', height: '100%' }}
-              getRowId={(row) => {
-                return row.id;
-              }
-            }
-            
-          />
-          {mode==="IZMENA" &&
-          <NovaStavkaKalkulacijeDialog
-          open={open}
-          handleClose={handleClose}
-          mode="IZMENA"
-          izmenaStavka={izmenaStavka}
-          addStavka={addStavka}
-          duzinaProizvoda={kalkulacija.proizvodPonuda.duzinaPoKomadu}
-          dubinaProizvoda={kalkulacija.proizvodPonuda.dubinaPoKomadu}
-          visinaProizvoda={kalkulacija.proizvodPonuda.visinaPoKomadu}
-          koriscenjeCene={kalkulacija.koriscenjeCene}
-          cinkovanje={kalkulacija.cinkovanje}
-          farbanje={kalkulacija.farbanje}
-          montaza={kalkulacija.montaza}
-          izrada={kalkulacija.izrada}
-          />
-          
-          }
-
-
-
-
-          <Button variant="contained" color="primary" onClick={handleClickOpen}>Nova stavka kalkulacije</Button>
-        {mode!=="IZMENA" &&
-        <NovaStavkaKalkulacijeDialog 
-        open={open}
-        handleClose={handleClose}
-        mode="NOVI"
-        izmenaStavka={null}
-        addStavka={addStavka}
-         duzinaProizvoda={kalkulacija.proizvodPonuda.duzinaPoKomadu}
-          dubinaProizvoda={kalkulacija.proizvodPonuda.dubinaPoKomadu}
-           visinaProizvoda={kalkulacija.proizvodPonuda.visinaPoKomadu}
-           koriscenjeCene={kalkulacija.koriscenjeCene}
-           cinkovanje={kalkulacija.cinkovanje}
+              
+            />
+            {mode==="IZMENA" &&
+            <NovaStavkaKalkulacijeDialog
+            open={open}
+            handleClose={handleClose}
+            mode="IZMENA"
+            izmenaStavka={izmenaStavka}
+            addStavka={addStavka}
+            duzinaProizvoda={kalkulacija.proizvodPonuda.duzinaPoKomadu}
+            dubinaProizvoda={kalkulacija.proizvodPonuda.dubinaPoKomadu}
+            visinaProizvoda={kalkulacija.proizvodPonuda.visinaPoKomadu}
+            koriscenjeCene={kalkulacija.koriscenjeCene}
+            cinkovanje={kalkulacija.cinkovanje}
             farbanje={kalkulacija.farbanje}
             montaza={kalkulacija.montaza}
             izrada={kalkulacija.izrada}
-           />
-        
-        }  
+            />
+            
+            }
+
+
+
+
+            <Button variant="contained" color="primary" onClick={handleClickOpen}>Nova stavka kalkulacije</Button>
+          {mode!=="IZMENA" &&
+          <NovaStavkaKalkulacijeDialog 
+          open={open}
+          handleClose={handleClose}
+          mode="NOVI"
+          izmenaStavka={null}
+          addStavka={addStavka}
+          duzinaProizvoda={kalkulacija.proizvodPonuda.duzinaPoKomadu}
+            dubinaProizvoda={kalkulacija.proizvodPonuda.dubinaPoKomadu}
+            visinaProizvoda={kalkulacija.proizvodPonuda.visinaPoKomadu}
+            koriscenjeCene={kalkulacija.koriscenjeCene}
+            cinkovanje={kalkulacija.cinkovanje}
+              farbanje={kalkulacija.farbanje}
+              montaza={kalkulacija.montaza}
+              izrada={kalkulacija.izrada}
+            />
+          
+          }  
 
         </Paper>
+        {/*Racunanje kalkulacije */}
+        <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+          <Accordion>
+            <AccordionSummary>
+              <Typography variant="h6">Racunanje kalkulacije</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography variant="body1">Racunanje kalkulacije</Typography>
+            </AccordionDetails>
+          </Accordion>
+        </Paper>
 
-        {/* Repeat for other numeric fields */}
           {(kalkulacija.proizvodPonuda.ponuda.status !== "ODBIJENA" && kalkulacija.proizvodPonuda.ponuda.status !== "PRIHVACENA") &&
           
           <>

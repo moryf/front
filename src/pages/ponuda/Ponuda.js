@@ -85,7 +85,7 @@ function Ponuda() {
       </Typography>
 
 
-          {ponuda.status === "NOVA" &&
+          {(ponuda.status === "NOVA" || ponuda.status ==="OBRADJENA") &&
           
           <div>
           <Button variant="contained" sx={{

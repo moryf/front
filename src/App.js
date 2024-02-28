@@ -10,6 +10,7 @@ import ProizvodPonuda from './pages/proizvodPonuda/ProizvodPonuda';
 import ArhivaPonuda from './pages/arhivaPonuda/ArhivaPonuda';
 import Kalkulacija from './pages/kalkulacija/Kalkulacija';
 import Podesavanja from './pages/podesavanja/Podesavanja';
+import Calculator from './pages/test/calculator/Calculator';
 
 function App() {
   const isLoggedIn = sessionStorage.getItem('korisnik')!==null;
@@ -30,6 +31,7 @@ function App() {
             <Route path='/arhiva-ponuda' element={<ArhivaPonuda/>}/>
             <Route path='/kalkulacija/:id' element={<Kalkulacija/>}/>
             <Route path='/podesavanja' element={<Podesavanja/>}/>
+            <Route path='/calculator' element={<Calculator/>}/>
           </Routes>
         </BrowserRouter>
         </div>
