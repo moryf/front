@@ -2,6 +2,7 @@ import { Button, Dialog, DialogContent, DialogTitle, TextField , Paper, Containe
 import React, { useEffect, useState } from 'react'
 import PretragaProizvodaDialog from './pretragaProizvodaDialog/PretragaProizvodaDialog'
 import { proizvodTemplate, stavkaKalkulacijeTemplate } from '../../api/josnTemplates/JSONTemplates'
+import NoviProizvod from '../noviProizvod/NoviProizvod'
 
 
 export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izmenaStavka,addStavka,visinaProizvoda,duzinaProizvoda,dubinaProizvoda, koriscenjeCene,cinkovanje,farbanje,montaza,izrada}) {
@@ -19,7 +20,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
     const[proizvod, setProizvod] = useState(mode === "IZMENA" ? izmenaStavka.proizvod : proizvodTemplate);
     const [proizvodLoaded, setProizvodLoaded] = useState(mode === "IZMENA" ? true : false);
 // Da li je merna jedinica proizvoda komadi true ako jeste, false ako je metarski proizvod
-    const [jmKomada, setJmKomada] = useState(false);
+    const [jmKomada, setJmKomada] = useState(mode === "IZMENA" ? (izmenaStavka.proizvod.jedinicaMere === "KOMAD" ? true : false) : true);
 // Nacin racunanja duzine komada
     const[nacinRacunanjaDuzineKomada, setNacinRacunanjaDuzineKomada] = useState(mode==="IZMENA"? izmenaStavka.nacinRacunanjaDuzineKomada : "UPISANO");
 // Nacin racunanja komada
@@ -27,11 +28,6 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
 // Vrednosti za stavku kalkulacije
     const[sacuvano,setSacuvano] = useState(false);
     const[stavkaKalkulacije, setStavkaKalkulacije] = useState(mode === "IZMENA" ? izmenaStavka : stavkaTemplateLoadValues);
-
-    console.log("Stavka kalkulacije template");
-    console.log(stavkaTemplateLoadValues);
-    console.log("Stavka kalkulacije");
-    console.log(stavkaKalkulacije);
 
     function setProizvodState(proizvod) {
         setProizvodLoaded(true);
@@ -179,6 +175,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
         <DialogTitle>Nova Stavka Kalkulacije</DialogTitle>
         <DialogContent>
             <PretragaProizvodaDialog setProizvodState={setProizvodState} />
+            <NoviProizvod setProizvodState={setProizvodState}/>
             {
                 proizvodLoaded ?
                 <Container>

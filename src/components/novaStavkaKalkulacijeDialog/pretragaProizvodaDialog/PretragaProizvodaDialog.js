@@ -41,7 +41,7 @@ function PretragaProizvodaDialog({setProizvodState}) {
 
   return (
     <>
-    <Button sx={{marginBottom:"20px"}} onClick={handleClickOpen} variant="contained" color="primary">Pretraga proizvoda</Button>
+    <Button sx={{margin:"10px"}} onClick={handleClickOpen} variant="contained" color="primary">Pretraga proizvoda</Button>
     <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Pretraga proizvoda</DialogTitle>
         <DialogContent >

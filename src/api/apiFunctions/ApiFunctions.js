@@ -386,3 +386,15 @@ export async function deleteStavkaKalkulacije(id){
     throw error;
   }
 }
+
+export async function saveProizvod(proizvod){
+  try {
+    const response = await AxiosConfig.post('/api/proizvod/sacuvaj', proizvod);
+    confirm("Uspesno sacuvan proizvod")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}

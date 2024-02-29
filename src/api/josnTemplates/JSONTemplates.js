@@ -96,7 +96,7 @@ export const proizvodTemplate = {
   sifra: "",
   naziv: "",
   opis: "",
-  jedinicaMere: "",
+  jedinicaMere: "METAR",
   masa: 0.0,
   specificnaPovrsina: 0.0,
   cenaA: 0.0,
