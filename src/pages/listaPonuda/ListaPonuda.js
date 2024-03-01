@@ -26,22 +26,22 @@ function ListaPonuda() {
 
     // Define columns manually
     const columns = [
-        { field: 'id', headerName: 'Ponuda ID', width:100 },
+        { field: 'id', headerName: 'Ponuda ID', width:50 },
         { field: 'naziv', headerName: 'Naziv', width:100 },
-        { field: 'kupacId', headerName: 'Kupac ID', width:100 },
+        { field: 'kupacId', headerName: 'Kupac ID', width:50 },
         { field: 'imeIPrezime', headerName: 'Ime i prezime', width:100 },
         { field: 'adresa', headerName: 'Adresa', width:100 },
         { field: 'brojTelefona', headerName: 'Broj telefona', width:100 },
         { field: 'email', headerName: 'Email', width:100 },
         { field: 'datumOtvaranja', headerName: 'Datum otvaranja', width:100 },
         { field: 'rokPonude', headerName: 'Rok ponude', width:100 },
-        { field: 'status', headerName: 'Status', width:100 },
-        { field: 'opis', headerName: 'Opis', width:100 }
+        { field: 'status', headerName: 'Status', width:150 },
+        { field: 'opis', headerName: 'Opis', width:150 }
     ];
 
     return (
         <>
-            <h1>Ponude</h1>
+            <h1>Upiti</h1>
             <div style={{ width: "100%"}}>
                 <DataGrid
                 onRowDoubleClick={(row) => {

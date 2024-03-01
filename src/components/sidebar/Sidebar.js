@@ -26,10 +26,10 @@ function Sidebar() {
             <a href='/'>Home</a>
           </li>
           <li>
-            <a href='/ponude'>Ponude</a>
+            <a href='/ponude'>Upiti</a>
           </li>
           <li>
-            <a href='/arhiva-ponuda'>Arhiva Ponuda</a>
+            <a href='/arhiva-ponuda'>Arhiva Upita</a>
           </li>
           <li>
             <a href='/podesavanja'>Podesavanja</a>

@@ -81,7 +81,7 @@ function Ponuda() {
     color: 'var(--color-5-green)',
     marginBottom: 2,
   }}>
-        Ponuda
+        Upit
       </Typography>
 
 

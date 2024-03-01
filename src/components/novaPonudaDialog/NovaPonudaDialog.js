@@ -69,11 +69,8 @@ function NovaPonudaDialog() {
         onClose={onClose}
         id='nova-ponuda-dialog'
     >
-        <DialogTitle id="form-dialog-title">Nova ponuda</DialogTitle>
+        <DialogTitle id="form-dialog-title">Novi upit</DialogTitle>
         <DialogContent>
-            <DialogContentText>
-                Unesite novu ponudu
-            </DialogContentText>
             <PretraziKupceZaPonuduDialog setKupacState={setKupacState}/>
             <TextField
                 margin="dense"

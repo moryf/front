@@ -62,7 +62,7 @@ export default function Kalkulacija() {
            ...novaStavka.proizvod.jedinicaMere,
            proizvodId: novaStavka.proizvod.sifra,
            jedinicaMereId: novaStavka.proizvod.jedinicaMere,
-           ukupno: novaStavka.kolicina * novaStavka.cena
+           ukupno: (novaStavka.kolicina * novaStavka.cena).toFixed(2)
          }]);
          setStavkeKalkulacije(prevState => [...prevState, novaStavka]);
          setMode("NOVI");
@@ -80,7 +80,7 @@ export default function Kalkulacija() {
                 ...novaStavka.proizvod.jedinicaMere,
                 proizvodId: novaStavka.proizvod.sifra,
                 jedinicaMereId: novaStavka.proizvod.jedinicaMere,
-                ukupno: novaStavka.kolicina * novaStavka.cena
+                ukupno: (novaStavka.kolicina * novaStavka.cena).toFixed(2)
               }
             }
             return stavka;
@@ -115,7 +115,7 @@ export default function Kalkulacija() {
             ...stavka.proizvod.jedinicaMere,
             proizvodId: stavka.proizvod.sifra,
             jedinicaMere: stavka.proizvod.jedinicaMere,
-            ukupno: stavka.kolicina * stavka.cena
+            ukupno: (stavka.kolicina * stavka.cena).toFixed(2)
           })));
         } catch (error) {
             console.error(error);
@@ -187,7 +187,7 @@ export default function Kalkulacija() {
         ...stavka.proizvod.jedinicaMere,
         proizvodId: stavka.proizvod.sifra,
         jedinicaMere: stavka.proizvod.jedinicaMere,
-        ukupno: stavka.kolicina * stavka.cena
+        ukupno: (stavka.kolicina * stavka.cena).toFixed(2)
       })));
           } catch (error) {
       console.error(error);
@@ -208,10 +208,10 @@ export default function Kalkulacija() {
     setFlatennedStavkeKalkulacije(prevState => prevState.map(stavka => {
       if(value === "VELEPRODAJNA_CENA") {
         stavka.cena = stavka.proizvod.veleprodajnaCena;
-        stavka.ukupno = stavka.kolicina * stavka.proizvod.veleprodajnaCena;
+        stavka.ukupno = (stavka.kolicina * stavka.proizvod.veleprodajnaCena).toFixed(2);
       } else {
         stavka.cena = stavka.proizvod.cenaA;
-        stavka.ukupno= stavka.kolicina * stavka.proizvod.cenaA;
+        stavka.ukupno= (stavka.kolicina * stavka.proizvod.cenaA).toFixed(2);
       }
       return stavka;
     }));

@@ -202,11 +202,11 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                 />
                 <TextField
                     sx={{ margin: 1}}
-                    label="Jedinica mere"
+                    label="Opis"
                     margin="normal"
-                    name="jedinicaMere"
+                    name="opis"
                     type="text"
-                    value={proizvod.jedinicaMere}
+                    value={proizvod.opis}
                     disabled
                     fullWidth
                 />
