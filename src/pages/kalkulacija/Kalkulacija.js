@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {AccordionSummary,AccordionDetails, Container, Paper, Typography, TextField, Button, Switch, FormControlLabel, FormGroup, Select, Accordion } from '@mui/material';
+import {AccordionSummary,AccordionDetails, Container, Paper, Typography, TextField, Button, Switch, FormControlLabel, FormGroup, Select, Accordion, Divider, TableRow, TableCell, Table, Tab } from '@mui/material';
 import { kalkulacijaTemplate } from '../../api/josnTemplates/JSONTemplates';
 import {deleteStavkaKalkulacije, getKalkulacija, updateKalkulacija,getStavkeKalkulacijeByKalkulacijaId, addStavkaKalkulacije,updateStavkeKalkulacije, updateStavkaKalkulacije } from '../../api/apiFunctions/ApiFunctions';
 import NoviSablon from '../../components/noviSablon/NoviSablon';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridRow } from '@mui/x-data-grid';
 import NovaStavkaKalkulacijeDialog from '../../components/novaStavkaKalkulacijeDialog/NovaStavkaKalkulacijeDialog';
 
 
@@ -13,6 +13,27 @@ export default function Kalkulacija() {
 
   const [mode, setMode] = useState("NOVI");
   const[izmenaStavka, setIzmenaStavka] = useState(null);
+
+  const[stavkeIzrada, setStavkeIzrada] = useState([]);
+  const[stavkeMontaza, setStavkeMontaza] = useState([]);
+  const[stavkeFarbanje, setStavkeFarbanje] = useState([]);
+  const[stavkeCinkovanje, setStavkeCinkovanje] = useState([]);
+
+  const[cinkovanjeSuma, setCinkovanjeSuma] = useState(0);
+  const[farbanjeSuma, setFarbanjeSuma] = useState(0);
+  const[montazaSuma, setMontazaSuma] = useState(0);
+  const[izradaSuma, setIzradaSuma] = useState(0);
+
+  const[sumaMaterijal, setSumaMaterijal] = useState(0);
+
+  const[masaProizvoda, setMasaProizvoda] = useState(0);
+  const[specificnaPovrsina, setSpecificnaPovrsina] = useState(0);
+
+  const[sumaCenaPoKomadu, setsumaCenaPoKomadu] = useState(0);
+
+  const[sumaCenaUkupno, setSumaCenaUkupno] = useState(0);
+
+  const[povrsinaProizvoda, setPovrsinaProizvoda] = useState(0);
 
 
 
@@ -105,6 +126,44 @@ export default function Kalkulacija() {
         fetchKalkulacija();
     }, []);
 
+    useEffect(() => {
+      const cinkovanjeStavke = stavkeKalkulacije.filter(stavka => stavka.cinkovanje);
+      console.log(cinkovanjeStavke);
+      const farbanjeStavke = stavkeKalkulacije.filter(stavka => stavka.farbanje);
+      const montazaStavke = stavkeKalkulacije.filter(stavka => stavka.montaza);
+      const izradaStavke = stavkeKalkulacije.filter(stavka => stavka.izrada);
+      setStavkeCinkovanje(cinkovanjeStavke);
+      setStavkeFarbanje(farbanjeStavke);
+      setStavkeMontaza(montazaStavke);
+      setStavkeIzrada(izradaStavke);
+      //Calculate cinkovanje as a sum of all cinkovanjeStavke.masa * cinkovanjePoKg
+      const cinkovanjeSuma = cinkovanjeStavke.reduce((acc, stavka) => acc + (stavka.proizvod.masa*stavka.kolicina * kalkulacija.cinkovanjePoKg), 0);
+      setCinkovanjeSuma(cinkovanjeSuma);
+      const farbanjeSuma = farbanjeStavke.reduce((acc, stavka) => acc + (stavka.proizvod.specificnaPovrsina*stavka.kolicina * kalkulacija.farbanjePoM2), 0);
+      setFarbanjeSuma(farbanjeSuma);
+      const montazaSuma = montazaStavke.reduce((acc, stavka) => acc + (stavka.proizvod.masa*stavka.kolicina * kalkulacija.montazaPoKg), 0);
+      setMontazaSuma(montazaSuma);
+      const izradaSuma = izradaStavke.reduce((acc, stavka) => acc + (stavka.proizvod.masa*stavka.kolicina * kalkulacija.izradaPoKg), 0);
+      setIzradaSuma(izradaSuma);
+      const sumaMaterijal = stavkeKalkulacije.reduce((acc, stavka) => acc + (stavka.cena*stavka.kolicina), 0);
+      setSumaMaterijal(sumaMaterijal);
+      const masaProizvoda = stavkeKalkulacije.reduce((acc, stavka) => acc + (stavka.proizvod.masa*stavka.kolicina), 0);
+      setMasaProizvoda(masaProizvoda);
+      const specificnaPovrsina = stavkeKalkulacije.reduce((acc, stavka) => acc + (stavka.proizvod.specificnaPovrsina*stavka.kolicina), 0);
+      setSpecificnaPovrsina(specificnaPovrsina);
+      const sumaCenaPoKomadu = (cinkovanjeSuma + farbanjeSuma + montazaSuma + izradaSuma + sumaMaterijal)*kalkulacija.stepenSigurnosti*kalkulacija.rezijskiTroskoviStepen;
+      setsumaCenaPoKomadu(sumaCenaPoKomadu);
+
+      const sumaCenaUkupno = sumaCenaPoKomadu * kalkulacija.proizvodPonuda.ukupnoKomada;
+      setSumaCenaUkupno(sumaCenaUkupno);
+
+      const povrsinaProizvoda = kalkulacija.proizvodPonuda.duzinaPoKomadu  * kalkulacija.proizvodPonuda.visinaPoKomadu;
+      setPovrsinaProizvoda(povrsinaProizvoda);
+
+    }, [stavkeKalkulacije]);
+
+    
+
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
     setKalkulacija(prevState => ({
@@ -179,6 +238,30 @@ export default function Kalkulacija() {
   }
 
 
+
+const handleSwitchChange = (event) => {
+  const { name, checked } = event.target;
+  setKalkulacija(prevState => ({
+    ...prevState,
+    [name]: checked
+  }));
+  setFlatennedStavkeKalkulacije(prevState => prevState.map(stavka => {
+    if(stavka[name] !== undefined) {
+      stavka[name] = checked;
+    }
+    return stavka;
+  }));
+  setStavkeKalkulacije(prevState => prevState.map(stavka => {
+    if(stavka[name] !== undefined) {
+      stavka[name] = checked;
+    }
+    return stavka;
+  }));
+}
+ 
+
+
+
   return (
     <Container maxWidth="md">
       <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
@@ -248,19 +331,19 @@ export default function Kalkulacija() {
         {/* Switch components for boolean fields */}
         <FormGroup>
           <FormControlLabel
-            control={<Switch checked={kalkulacija.cinkovanje} onChange={handleInputChange} name="cinkovanje" />}
+            control={<Switch checked={kalkulacija.cinkovanje} onChange={handleSwitchChange} name="cinkovanje" />}
             label="Cinkovanje"
           />
           <FormControlLabel
-            control={<Switch checked={kalkulacija.farbanje} onChange={handleInputChange} name="farbanje" />}
+            control={<Switch checked={kalkulacija.farbanje} onChange={handleSwitchChange} name="farbanje" />}
             label="Farbanje"
           />
           <FormControlLabel
-            control={<Switch checked={kalkulacija.montaza} onChange={handleInputChange} name="montaza" />}
+            control={<Switch checked={kalkulacija.montaza} onChange={handleSwitchChange} name="montaza" />}
             label="Montaza"
           />
           <FormControlLabel
-            control={<Switch checked={kalkulacija.izrada} onChange={handleInputChange} name="izrada" />}
+            control={<Switch checked={kalkulacija.izrada} onChange={handleSwitchChange} name="izrada" />}
             label="Izrada"
           />
           {/* Repeat for other boolean fields */}
@@ -460,14 +543,192 @@ export default function Kalkulacija() {
         </Paper>
         {/*Racunanje kalkulacije */}
         <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+          <Typography variant="h5">Racunanje kalkulacije - po komadu</Typography>
           <Accordion>
             <AccordionSummary>
-              <Typography variant="h6">Racunanje kalkulacije</Typography>
+              <Typography variant="h6">Ukupno cinkovanje - {cinkovanjeSuma.toFixed(2)} rsd</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography variant="body1">Racunanje kalkulacije</Typography>
+              <Table>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Naziv</TableCell>
+                <TableCell>Sifra</TableCell>
+                <TableCell>Masa * Kolicina</TableCell>
+                <TableCell>Ukupno</TableCell>
+              </TableRow>
+              {stavkeCinkovanje.map(stavka => {
+                return (
+                  <TableRow>
+                    <TableCell>{stavka.id}</TableCell>
+                    <TableCell>{stavka.proizvod.naziv}</TableCell>
+                    <TableCell>{stavka.proizvod.sifra}</TableCell>
+                    <TableCell>{stavka.proizvod.masa} * {stavka.kolicina}</TableCell>
+                    <TableCell>{(stavka.proizvod.masa*stavka.kolicina * kalkulacija.cinkovanjePoKg).toFixed(2)} rsd</TableCell>
+
+                  </TableRow>
+                )
+              }
+              )}
+              </Table>
+            
             </AccordionDetails>
           </Accordion>
+          <Accordion>
+            <AccordionSummary>
+              <Typography variant="h6">Ukupno farbanje - {farbanjeSuma.toFixed(2)} rsd</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Table>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Naziv</TableCell>
+                <TableCell>Sifra</TableCell>
+                <TableCell>Specificna povrsina * Kolicina</TableCell>
+                <TableCell>Ukupno</TableCell>
+              </TableRow>
+              {stavkeFarbanje.map(stavka => {
+                return (
+                  <TableRow>
+                    <TableCell>{stavka.id}</TableCell>
+                    <TableCell>{stavka.proizvod.naziv}</TableCell>
+                    <TableCell>{stavka.proizvod.sifra}</TableCell>
+                    <TableCell>{stavka.proizvod.specificnaPovrsina} * {stavka.kolicina}</TableCell>
+                    <TableCell>{(stavka.proizvod.specificnaPovrsina*stavka.kolicina * kalkulacija.farbanjePoM2).toFixed(2)} rsd</TableCell>
+
+                  </TableRow>
+                )
+              }
+              )}
+              </Table>
+            
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary>
+              <Typography variant="h6">Ukupno montaza - {montazaSuma.toFixed(2)} rsd</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Table>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Naziv</TableCell>
+                <TableCell>Sifra</TableCell>
+                <TableCell>Masa * Kolicina</TableCell>
+                <TableCell>Ukupno</TableCell>
+              </TableRow>
+              {stavkeMontaza.map(stavka => {
+                return (
+                  <>
+                  <TableRow>
+                    <TableCell>{stavka.id}</TableCell>
+                    <TableCell>{stavka.proizvod.naziv}</TableCell>
+                    <TableCell>{stavka.proizvod.sifra}</TableCell>
+                    <TableCell>{stavka.proizvod.masa} * {stavka.kolicina}</TableCell>
+                    <TableCell>{(stavka.proizvod.masa*stavka.kolicina * kalkulacija.montazaPoKg).toFixed(2)} rsd</TableCell>
+
+                  </TableRow>
+                  </>
+                )
+              })}
+              </Table>
+            
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary>
+              <Typography variant="h6">Ukupno izrada - {izradaSuma.toFixed(2)} rsd</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Table
+              sx={{ width: '100%', height: '100%' }}
+              >
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Naziv</TableCell>
+                <TableCell>Sifra</TableCell>
+                <TableCell>Masa * Kolicina</TableCell>
+                <TableCell>Ukupno</TableCell>
+              </TableRow>
+              {stavkeIzrada.map(stavka => {
+                return (
+                  <>
+                  <TableRow>
+                    <TableCell>{stavka.id}</TableCell>
+                    <TableCell>{stavka.proizvod.naziv}</TableCell>
+                    <TableCell>{stavka.proizvod.sifra}</TableCell>
+                    <TableCell>{stavka.proizvod.masa} * {stavka.kolicina}</TableCell>
+                    <TableCell>{(stavka.proizvod.masa*stavka.kolicina * kalkulacija.izradaPoKg).toFixed(2)} rsd</TableCell>
+
+                  </TableRow>
+                  </>
+                )
+              })}
+              </Table>
+              
+            </AccordionDetails>
+          </Accordion>
+          <Table>
+            <TableRow>
+              <TableCell>Suma materijal</TableCell>
+              <TableCell>{sumaMaterijal.toFixed(2)} rsd</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Masa proizvoda</TableCell>
+              <TableCell>{masaProizvoda.toFixed(2)} kg</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Specificna povrsina</TableCell>
+              <TableCell>{specificnaPovrsina.toFixed(2)} m2</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Povrsina proizvoda</TableCell>
+              <TableCell>{povrsinaProizvoda.toFixed(2)} m2</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell><b>Suma cena po komadu</b></TableCell>
+              <TableCell><b>{sumaCenaPoKomadu.toFixed(2)} rsd</b></TableCell>
+            </TableRow>
+            <TableRow>
+                  <TableCell><b>Suma cena ukupno</b></TableCell>
+                  <TableCell><b>{sumaCenaUkupno.toFixed(2)} rsd</b></TableCell>
+            </TableRow>
+            <TableRow>
+                  <TableCell><b>Cena sa PDV-om</b></TableCell>
+                  <TableCell><b>{(sumaCenaUkupno*1.2).toFixed(2)} rsd</b></TableCell>
+            </TableRow>
+          </Table>
+
+          <Divider variant='fullWidth' sx={{margin:"10px"}} />
+          
+          <Accordion>
+            <AccordionSummary>
+              <Typography variant="h6">Rezultat kalkulacije</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Table>
+                <TableRow>
+                  <TableCell>Cena po kg</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/masaProizvoda).toFixed(2)} rsd</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Cena po m2</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/povrsinaProizvoda).toFixed(2)} rsd</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Cena po duzini</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/kalkulacija.proizvodPonuda.duzinaPoKomadu).toFixed(2)} rsd</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Cena po komadu</TableCell>
+                  <TableCell>{sumaCenaPoKomadu.toFixed(2)} rsd</TableCell>
+                </TableRow>
+
+              </Table>
+            </AccordionDetails>
+          </Accordion>
+
+
         </Paper>
 
           {(kalkulacija.proizvodPonuda.ponuda.status !== "ODBIJENA" && kalkulacija.proizvodPonuda.ponuda.status !== "PRIHVACENA") &&

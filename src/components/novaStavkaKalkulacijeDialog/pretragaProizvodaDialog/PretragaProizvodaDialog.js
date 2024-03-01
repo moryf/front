@@ -19,8 +19,8 @@ function PretragaProizvodaDialog({setProizvodState}) {
     const [proizvodi, setProizvodi] = React.useState([]);
     const[flattenedProizvodi, setFlattenedProizvodi] = React.useState([]);
 
-    async function pretraziProizvode(sifra, naziv) {
-        const proizvodiResult = await findProizvodyBySifraAndNaziv(sifra, naziv);
+    async function pretraziProizvode(sifra, naziv, opis) {
+        const proizvodiResult = await findProizvodyBySifraAndNaziv(sifra, naziv, opis);
         console.log(proizvodiResult);
         setProizvodi(proizvodiResult);
         setFlattenedProizvodi(proizvodiResult.map(proizvod => ({
@@ -33,8 +33,9 @@ function PretragaProizvodaDialog({setProizvodState}) {
     const handleInputChange = (event) => {
         const sifra = document.getElementsByName("sifraProizvoda")[0].value;
         const naziv = document.getElementsByName("nazivProizvoda")[0].value;
+        const opis = document.getElementsByName("opisProizvoda")[0].value;
         if(sifra.length>2 || naziv.length>2){
-            pretraziProizvode(sifra, naziv);
+            pretraziProizvode(sifra, naziv,opis);
         }
     }
 
@@ -55,6 +56,14 @@ function PretragaProizvodaDialog({setProizvodState}) {
             />
             <TextField
                 sx={{ margin: 1}}
+                label="Opis"
+                margin="normal"
+                name="opisProizvoda"
+                type="text"
+                onChange={handleInputChange}
+            />
+            <TextField
+                sx={{ margin: 1}}
                 label="Sifra"
                 margin="normal"
                 name="sifraProizvoda"
@@ -68,13 +77,15 @@ function PretragaProizvodaDialog({setProizvodState}) {
                 columns={[
                     { field: 'sifra', headerName: 'Sifra', width: 100 },
                     { field: 'naziv', headerName: 'Naziv', width: 100 },
-                    { field: 'tipProizvoda', headerName: 'Tip proizvoda', width: 100 },
+                    { field: 'opis', headerName: 'Opis', width: 150, flex: 1},
                     { field: 'jedinicaMere', headerName: 'Jedinica mere', width: 100 }
                 ]}
                 autoHeight
                 pageSize={5}
+                pagination
+                paginationMode='server'
                 rowsPerPageOptions={[5]}
-                sx={{ width: '100%', height: '100%' }}
+                sx={{ width: '100%', height: '100%', margin: '10px'}}
                 getRowId={(row) => {
                     return row.sifra;
                 }

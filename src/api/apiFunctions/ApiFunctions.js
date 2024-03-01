@@ -327,9 +327,9 @@ export async function getStavkeKalkulacijeByKalkulacijaId(id){
   }
 }
 
-export async function findProizvodyBySifraAndNaziv(sifra, naziv){
+export async function findProizvodyBySifraAndNaziv(sifra, naziv, opis){
   try {
-    const response = await AxiosConfig.get(`/api/proizvod/pretrazi/sifra=${sifra}/naziv=${naziv}`);
+    const response = await AxiosConfig.get(`/api/proizvod/pretrazi/sifra=${sifra}/naziv=${naziv}/opis=${opis}`);
     return response.data;
   } catch (error) {
     alert(error.response.data);
