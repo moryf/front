@@ -5,6 +5,7 @@ import {deleteStavkaKalkulacije, getKalkulacija, updateKalkulacija,getStavkeKalk
 import NoviSablon from '../../components/noviSablon/NoviSablon';
 import { DataGrid, GridRow } from '@mui/x-data-grid';
 import NovaStavkaKalkulacijeDialog from '../../components/novaStavkaKalkulacijeDialog/NovaStavkaKalkulacijeDialog';
+import './Kalkulacija.css';
 
 
 export default function Kalkulacija() {
@@ -263,8 +264,8 @@ const handleSwitchChange = (event) => {
 
 
   return (
-    <Container maxWidth="md">
-      <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+    <Container maxWidth="xl">
+      <Paper elevation={3} sx={{ padding: 2, margin: 2, backgroundColor:"var(--background-color)" }}>
         <Typography variant="h5" sx={{ marginBottom: 2 }}>Edit Kalkulacija</Typography>
         
         <TextField
@@ -351,7 +352,7 @@ const handleSwitchChange = (event) => {
 
         {/* Numeric fields */}
 
-        <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+        <Paper elevation={3} sx={{ padding: 2, margin: 2, backgroundColor:"var(--color-2-light-grey)" }}>
           <TextField
             sx={{ margin: 1}}
             label="Duzina po komadu"
@@ -382,7 +383,7 @@ const handleSwitchChange = (event) => {
         </Paper>
 
         {/* Numeric fields */}
-        <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+        <Paper elevation={3} sx={{ padding: 2, margin: 2, boxShadow:"0 0 5px 0 var(--color-2-light-grey)" }}>
           <TextField
             sx={{ margin: 1}}
             label="Materijal po Kg"
@@ -463,19 +464,20 @@ const handleSwitchChange = (event) => {
 
         {/* DataGrid for the "stavkeKalkulacije" array */}
 
-        <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+        <Paper elevation={3} sx={{ padding: 2, margin: 2}}>
           <Typography variant="h6">Stavke Kalkulacije po Komadu</Typography>
             <DataGrid
               rows={flatennedStavkeKalkulacije}
               columns={[
-                { field: 'id', headerName: 'ID', width: 50 },
-                { field: 'naziv', headerName: 'Naziv', width: 100 },
-                { field: 'proizvodId', headerName: 'Sifra Proizvoda', width: 100 },
-                { field: 'jedinicaMere', headerName: 'Jedinica Mere', width: 100 },
-                { field: 'kolicina', headerName: 'Kolicina', width: 100},
-                { field: 'cena', headerName: 'Cena', width: 100 },
-                { field: 'ukupno', headerName: 'Ukupno', width: 150},
-                { field: 'izmeni', headerName: 'Izmeni', width: 100, renderCell: (params) => (
+                { field: 'id', headerName: 'ID', width: 50, headerClassName: 'datagrid-header'},
+                { field: 'naziv', headerName: 'Naziv', width: 150 , headerClassName: 'datagrid-header'},
+                {field: 'opis', headerName: 'Opis', width: 150, headerClassName: 'datagrid-header' },
+                { field: 'proizvodId', headerName: 'Sifra Proizvoda', width: 100, headerClassName: 'datagrid-header' },
+                { field: 'jedinicaMere', headerName: 'Jedinica Mere', width: 100 , headerClassName: 'datagrid-header'},
+                { field: 'kolicina', headerName: 'Kolicina', width: 100, headerClassName: 'datagrid-header'},
+                { field: 'cena', headerName: 'Cena', width: 100 , headerClassName: 'datagrid-header'},
+                { field: 'ukupno', headerName: 'Ukupno', width: 150, headerClassName: 'datagrid-header'},
+                { field: 'izmeni', headerName: 'Izmeni', width: 100, headerClassName: 'datagrid-header', renderCell: (params) => (
                   <Button variant="contained" color="primary" onClick={() => {
                     setMode("IZMENA");
                     setIzmenaStavka(stavkeKalkulacije.find(stavka => stavka.id === params.row.id));
@@ -483,7 +485,7 @@ const handleSwitchChange = (event) => {
                   }}>Izmeni</Button>
                 )
                 },
-                { field: 'obrisi', headerName: 'Obrisi', width: 100, renderCell: (params) => (
+                { field: 'obrisi', headerName: 'Obrisi', width: 100, headerClassName: 'datagrid-header', renderCell: (params) => (
                   <Button variant="contained" color="secondary" onClick={() => deleteStavka(params.row.id)}>Obrisi</Button>
                 )
                 }
@@ -542,9 +544,9 @@ const handleSwitchChange = (event) => {
 
         </Paper>
         {/*Racunanje kalkulacije */}
-        <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
+        <Paper elevation={3} sx={{ padding: 2, margin: 2,border:"1px solid var(--color-5-green)" }}>
           <Typography variant="h5">Racunanje kalkulacije - po komadu</Typography>
-          <Accordion>
+          <Accordion sx={{backgroundColor:"var(--background-color)"}}>
             <AccordionSummary>
               <Typography variant="h6">Ukupno cinkovanje - {cinkovanjeSuma.toFixed(2)} rsd</Typography>
             </AccordionSummary>
@@ -574,7 +576,7 @@ const handleSwitchChange = (event) => {
             
             </AccordionDetails>
           </Accordion>
-          <Accordion>
+          <Accordion sx={{backgroundColor:"var(--background-color)"}}>
             <AccordionSummary>
               <Typography variant="h6">Ukupno farbanje - {farbanjeSuma.toFixed(2)} rsd</Typography>
             </AccordionSummary>
@@ -604,7 +606,7 @@ const handleSwitchChange = (event) => {
             
             </AccordionDetails>
           </Accordion>
-          <Accordion>
+          <Accordion sx={{backgroundColor:"var(--background-color)"}}>
             <AccordionSummary>
               <Typography variant="h6">Ukupno montaza - {montazaSuma.toFixed(2)} rsd</Typography>
             </AccordionSummary>
@@ -635,7 +637,7 @@ const handleSwitchChange = (event) => {
             
             </AccordionDetails>
           </Accordion>
-          <Accordion>
+          <Accordion sx={{backgroundColor:"var(--background-color)"}}>
             <AccordionSummary>
               <Typography variant="h6">Ukupno izrada - {izradaSuma.toFixed(2)} rsd</Typography>
             </AccordionSummary>
@@ -685,23 +687,27 @@ const handleSwitchChange = (event) => {
               <TableCell>Povrsina proizvoda</TableCell>
               <TableCell>{povrsinaProizvoda.toFixed(2)} m2</TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell><b>Suma cena po komadu</b></TableCell>
-              <TableCell><b>{sumaCenaPoKomadu.toFixed(2)} rsd</b></TableCell>
+            <TableRow sx={{color:"var( --color-3-dark-brown)"}}>
+              <TableCell ><b>Cena po Komadu</b></TableCell>
+              <TableCell ><b>{sumaCenaPoKomadu.toFixed(2)} rsd</b></TableCell>
             </TableRow>
-            <TableRow>
+            <TableRow sx={{color:"var( --color-5-green)"}}>
+              <TableCell><b>Cena po komadu sa PDV-om</b></TableCell>
+              <TableCell sx={{ fontSize:"16px"}}><b>{sumaCenaPoKomadu.toFixed(2)*1.2} rsd</b></TableCell>
+            </TableRow>
+            <TableRow sx={{color:"var( --color-3-dark-brown)"}}>
                   <TableCell><b>Suma cena ukupno</b></TableCell>
                   <TableCell><b>{sumaCenaUkupno.toFixed(2)} rsd</b></TableCell>
             </TableRow>
-            <TableRow>
-                  <TableCell><b>Cena sa PDV-om</b></TableCell>
-                  <TableCell><b>{(sumaCenaUkupno*1.2).toFixed(2)} rsd</b></TableCell>
+            <TableRow sx={{color:"var( --color-5-green)",borderTop:"2px solid black"}}>
+                  <TableCell sx={{ fontSize:"18px"}}><b>Cena sa PDV-om</b></TableCell>
+                  <TableCell sx={{ fontSize:"18px"}}><b>{(sumaCenaUkupno*1.2).toFixed(2)} rsd</b></TableCell>
             </TableRow>
           </Table>
 
-          <Divider variant='fullWidth' sx={{margin:"10px"}} />
+          <Divider  variant='fullWidth' sx={{margin:"10px"}} />
           
-          <Accordion>
+          <Accordion sx={{backgroundColor:"var(--color-5-green)", color:"white"}} >
             <AccordionSummary>
               <Typography variant="h6">Rezultat kalkulacije</Typography>
             </AccordionSummary>

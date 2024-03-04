@@ -210,25 +210,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                     disabled
                     fullWidth
                 />
-                <FormGroup>
-                    <FormControlLabel
-                        control={<Switch checked={stavkaKalkulacije.cinkovanje} onChange={handleInputChange} name="cinkovanje" />}
-                        label="Cinkovanje"
-                    />
-                    <FormControlLabel
-                        control={<Switch checked={stavkaKalkulacije.farbanje} onChange={handleInputChange} name="farbanje" />}
-                        label="Farbanje"
-                    />
-                    <FormControlLabel
-                        control={<Switch checked={stavkaKalkulacije.montaza} onChange={handleInputChange} name="montaza" />}
-                        label="Montaza"
-                    />
-                    <FormControlLabel
-                        control={<Switch checked={stavkaKalkulacije.izrada} onChange={handleInputChange} name="izrada" />}
-                        label="Izrada"
-                    />
-                    {/* Repeat for other boolean fields */}
-                </FormGroup>
+                
 
 
 
@@ -379,6 +361,26 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                     fullWidth
                     disabled
                 />
+
+                <FormGroup>
+                    <FormControlLabel
+                        control={<Switch checked={stavkaKalkulacije.cinkovanje} onChange={handleInputChange} name="cinkovanje" />}
+                        label="Cinkovanje"
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={stavkaKalkulacije.farbanje} onChange={handleInputChange} name="farbanje" />}
+                        label="Farbanje"
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={stavkaKalkulacije.montaza} onChange={handleInputChange} name="montaza" />}
+                        label="Montaza"
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={stavkaKalkulacije.izrada} onChange={handleInputChange} name="izrada" />}
+                        label="Izrada"
+                    />
+                    {/* Repeat for other boolean fields */}
+                </FormGroup>
 
                     
                 </Container>

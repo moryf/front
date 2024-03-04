@@ -5,6 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState, useEffect } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import NoviProizvodPonudaDialog from '../../components/noviProizvodPonudaDialog/NoviProizvodPonudaDialog';
+import './Ponuda.css'
 
 
 function Ponuda() {
@@ -61,7 +62,7 @@ function Ponuda() {
 
   return (
     <>
-    <Container maxWidth="md" sx={{
+    <Container maxWidth="xl" sx={{
       backgroundColor: 'var(--background-color)',
       color: 'var(--color-1-dark-grey)',
       paddingTop: 4,
@@ -381,18 +382,19 @@ function Ponuda() {
   }}>
         Proizvodi Ponude
       </Typography>
+      {(ponuda.status === "NOVA" || ponuda.status === "OBRADJENA") && <NoviProizvodPonudaDialog ponudaId={id} />}
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={proizvodiPonude}
           columns={[
-            { field: 'id', headerName: 'ID', width: 70 },
-            { field: 'tipProizvodaPonuda', headerName: 'Tip Proizvoda Ponude', width:100 },
-            { field: 'naziv', headerName: 'Naziv', width:100 },
-            { field: 'ukupnoMetara', headerName: 'Ukupno Metara', width:100 },
-            { field: 'ukupnoKomada', headerName: 'Ukupno Komada', width:100 },
-            { field: 'duzinaPoKomadu', headerName: 'Duzina Po Komadu', width:100 },
-            { field: 'visinaPoKomadu', headerName: 'Visina Po Komadu', width:100 },
-            { field: 'dubinaPoKomadu', headerName: 'Dubina Po Komadu', width:100 },
+            { field: 'id', headerName: 'ID', width: 100, headerAlign: 'center',align: 'center',headerClassName: 'datagrid-header'},
+            { field: 'tipProizvodaPonuda', headerName: 'Tip Proizvoda Ponude', width:200 ,headerClassName: 'datagrid-header'},
+            { field: 'naziv', headerName: 'Naziv', width:250 ,headerClassName: 'datagrid-header'},
+            { field: 'ukupnoMetara', headerName: 'Metara', width:120 ,headerClassName: 'datagrid-header'},
+            { field: 'ukupnoKomada', headerName: 'Komada', width:120 ,headerClassName: 'datagrid-header'},
+            { field: 'duzinaPoKomadu', headerName: 'Duzina Po Komadu', width:120 ,headerClassName: 'datagrid-header'},
+            { field: 'visinaPoKomadu', headerName: 'Visina Po Komadu', width:120 ,headerClassName: 'datagrid-header'},
+            { field: 'dubinaPoKomadu', headerName: 'Dubina Po Komadu', width:120,headerClassName: 'datagrid-header'},
           ]}
           onRowDoubleClick={(row) => {
             window.location.href = `/proizvod-ponuda/${row.id}`; // Redirect to the ponuda page when a row is double-clicked
@@ -417,7 +419,7 @@ function Ponuda() {
       Nazad
     </Button>
   </Container>
-  {(ponuda.status === "NOVA" || ponuda.status === "OBRADJENA") && <NoviProizvodPonudaDialog ponudaId={id} />}
+  
   
   </>
   )

@@ -31,9 +31,12 @@ function NoviSablon({idKalkulacije}) {
     <>
         <Button sx={{ margin: 2 }} variant="contained" color="primary" onClick={handleClickOpen}>Sacuvaj kao sablon</Button>
         <Dialog open={open} onClose={handleClose}>
+
             <DialogTitle>Unesite naziv sablona</DialogTitle>
+            <DialogTitle sx={{color:"red"}}>Obavezno sacuvajte sve izmene koje ste imali na kalkulaciji pre nego sto napravite sablon</DialogTitle>
             <DialogContent>
                 <TextField
+                fullWidth
                     sx={{ margin: 1}}
                     label = "Naziv sablona"
                     margin="normal"

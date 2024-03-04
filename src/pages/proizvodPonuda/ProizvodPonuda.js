@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Container, Paper, Typography, TextField, Button, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect } from 'react'
-import { findProizvodPonudaById,getKalkulacijeByProizvodPonudaId, novaKalkulacija } from '../../api/apiFunctions/ApiFunctions'
+import { findProizvodPonudaById,getKalkulacijeByProizvodPonudaId, novaKalkulacija , kopirajKalkulaciju} from '../../api/apiFunctions/ApiFunctions'
 import { DataGrid } from '@mui/x-data-grid';
 import KalkulacijaIzSablonaDialog from '../../components/kalkulacijaIzSablonaDialog/KalkulacijaIzSablonaDialog';
-
+import './ProizvodPonuda.css'
 
 function ProizvodPonuda() {
     const id = window.location.pathname.split('/')[2];
@@ -41,10 +41,10 @@ function ProizvodPonuda() {
     }
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="xl">
       <Paper elevation={3} sx={{ padding: 2, margin: 2 }}>
         <Typography variant="h5" sx={{ marginBottom: 2 }}>Proizvod Ponuda</Typography>
-        <Accordion>
+        <Accordion sx={{backgroundColor:"var(--color-5-green)"}}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} onDoubleClick={()=>{window.location.href = `/ponuda/${proizvodPonuda.ponuda.id}`;}}>
             <Typography>Ponuda Details</Typography>
           </AccordionSummary>
@@ -60,7 +60,7 @@ function ProizvodPonuda() {
           </AccordionDetails>
         </Accordion>
 
-        <Accordion>
+        <Accordion sx={{backgroundColor:"var(--color-4-orange)"}}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Kupac Details</Typography>
           </AccordionSummary>
@@ -76,7 +76,7 @@ function ProizvodPonuda() {
           </AccordionDetails>
         </Accordion>
 
-        <Accordion>
+        <Accordion sx={{backgroundColor:"var(--color-2-light-grey)"}}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Tip Proizvoda Ponuda Details</Typography>
           </AccordionSummary>
@@ -165,23 +165,34 @@ function ProizvodPonuda() {
               <>
                         <Button
                             variant="contained"
-                            color="primary"
                             onClick={() => {novaKalkulacija(id)}}
-                            sx={{ margin: 2 }}
+                            sx={{ margin: 2, backgroundColor: "var(--color-5-green)", color: "white"}}
                         > Nova kalkulacija
                         </Button>
                         <KalkulacijaIzSablonaDialog idProizvodaPonude={id} />
               </>}
 
         <DataGrid
+        
             rows={kalkulacije}
             onRowDoubleClick={(row) => {window.location.href = `/kalkulacija/${row.id}`;} }
             columns={[
-                { field: 'id', headerName: 'ID', width: 70 },
-                { field: 'naziv', headerName: 'Naziv', width: 250 },
-                { field: 'datumOtvaranja', headerName: 'Datum Otvaranja', width: 130 },
-                { field: 'poslednjiDatumIzmene', headerName: 'Poslednji Datum Izmene', width: 130 },
-                { field: 'kreirao', headerName: 'Kreirao', width: 130 }
+                { field: 'id', headerName: 'ID', width: 100, headerClassName: 'datagrid-header-kalkulacije'},
+                { field: 'naziv', headerName: 'Naziv', width: 350,headerClassName: 'datagrid-header-kalkulacije' },
+                { field: 'datumOtvaranja', headerName: 'Otvoren', width: 150,headerClassName: 'datagrid-header-kalkulacije' },
+                { field: 'poslednjiDatumIzmene', headerName: 'Izmenjen', width: 150 ,headerClassName: 'datagrid-header-kalkulacije'},
+                { field: 'kreirao', headerName: 'Kreirao', width: 150,headerClassName: 'datagrid-header-kalkulacije' },
+                {field: 'kopiraj', headerName: 'Kopiraj', width: 250, headerClassName: 'datagrid-header-kalkulacije', renderCell: (params) => {
+                    return (
+                        <Button
+                            variant="contained"
+                            onClick={() => {kopirajKalkulaciju(params.row.id)}}
+                            sx={{ margin: 2, backgroundColor: "var(--color-5-green)", color: "white"}}
+                        > Kopiraj Kalkulaciju
+                        </Button>
+                    )
+                }
+              }
             ]}
             pageSize={5}
             rowsPerPageOptions={[5]}

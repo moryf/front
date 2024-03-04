@@ -398,3 +398,15 @@ export async function saveProizvod(proizvod){
     throw error;
   }
 }
+
+export async function kopirajKalkulaciju(kalkulacijaId){
+  try {
+    const response = await AxiosConfig.get(`/api/kalkulacija/kopiraj/${kalkulacijaId}`);
+    window.location.href = `/kalkulacija/${response.data.id}`;
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}

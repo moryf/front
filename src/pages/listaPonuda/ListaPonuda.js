@@ -26,17 +26,17 @@ function ListaPonuda() {
 
     // Define columns manually
     const columns = [
-        { field: 'id', headerName: 'Ponuda ID', width:50 },
-        { field: 'naziv', headerName: 'Naziv', width:100 },
-        { field: 'kupacId', headerName: 'Kupac ID', width:50 },
-        { field: 'imeIPrezime', headerName: 'Ime i prezime', width:100 },
-        { field: 'adresa', headerName: 'Adresa', width:100 },
-        { field: 'brojTelefona', headerName: 'Broj telefona', width:100 },
-        { field: 'email', headerName: 'Email', width:100 },
-        { field: 'datumOtvaranja', headerName: 'Datum otvaranja', width:100 },
-        { field: 'rokPonude', headerName: 'Rok ponude', width:100 },
-        { field: 'status', headerName: 'Status', width:150 },
-        { field: 'opis', headerName: 'Opis', width:150 }
+        { field: 'id', headerName: 'Ponuda ID', width:50 ,headerClassName: 'datagrid-header'},
+        { field: 'naziv', headerName: 'Naziv', width:100,headerClassName: 'datagrid-header' },
+        { field: 'kupacId', headerName: 'Kupac ID', width:50 ,headerClassName: 'datagrid-header'},
+        { field: 'imeIPrezime', headerName: 'Ime i prezime', width:150 ,headerClassName: 'datagrid-header'},
+        { field: 'adresa', headerName: 'Adresa', width:150,headerClassName: 'datagrid-header' },
+        { field: 'brojTelefona', headerName: 'Broj telefona', width:100,headerClassName: 'datagrid-header' },
+        { field: 'email', headerName: 'Email', width:100 ,headerClassName: 'datagrid-header'},
+        { field: 'datumOtvaranja', headerName: 'Datum otvaranja', width:150 ,headerClassName: 'datagrid-header'},
+        { field: 'rokPonude', headerName: 'Rok ponude', width:100,headerClassName: 'datagrid-header' },
+        { field: 'status', headerName: 'Status', width:150,headerClassName: 'datagrid-header' },
+        { field: 'opis', headerName: 'Opis', width:200 ,headerClassName: 'datagrid-header'}
     ];
 
     return (

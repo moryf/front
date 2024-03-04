@@ -47,7 +47,7 @@ function KalkulacijaIzSablonaDialog({idProizvodaPonude}) {
     
   return (
     <>
-        <Button sx={{ margin: 2 }} variant="contained" color="primary" onClick={handleClickOpen}>Kalkulacija iz sablona</Button>
+        <Button sx={{ margin: 2 , backgroundColor:"var(--color-2-light-grey)", color:"black"}} variant="contained" onClick={handleClickOpen}>Kalkulacija iz sablona</Button>
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Odaberite sablon</DialogTitle>
             <DialogContent>

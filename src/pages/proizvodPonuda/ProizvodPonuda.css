@@ -1,0 +1,8 @@
+.datagrid-header-kalkulacije{
+    background-color: var( --color-2-light-grey);
+    padding: 5px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: 12px;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+}

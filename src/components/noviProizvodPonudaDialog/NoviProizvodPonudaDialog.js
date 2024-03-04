@@ -62,7 +62,7 @@ const NoviProizvodPonudaDialog = ({ ponudaId }) => {
 
     return (
         <>
-    <button onClick={onOpen} className='novi-proizvod-ponuda'>Novi Proizvod</button>
+    <Button  onClick={onOpen}>Novi Proizvod</Button>
     <Dialog
         open={open}
         onClose={onClose}
