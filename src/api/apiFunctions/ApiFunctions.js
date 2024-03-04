@@ -410,3 +410,14 @@ export async function kopirajKalkulaciju(kalkulacijaId){
     throw error;
   }
 }
+
+export async function getKalkulacijaByPonudaId(id){
+  try {
+    const response = await AxiosConfig.get(`/api/kalkulacija/ponuda/${id}`);
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}

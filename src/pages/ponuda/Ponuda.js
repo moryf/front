@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import NoviProizvodPonudaDialog from '../../components/noviProizvodPonudaDialog/NoviProizvodPonudaDialog';
 import './Ponuda.css'
+import NapraviKompletnuPonudu from '../../components/napraviKompletnuPonudu/NapraviKompletnuPonudu';
 
 
 function Ponuda() {
@@ -84,6 +85,8 @@ function Ponuda() {
   }}>
         Upit
       </Typography>
+
+        <NapraviKompletnuPonudu ponudaId={id} />
 
 
           {(ponuda.status === "NOVA" || ponuda.status ==="OBRADJENA") &&

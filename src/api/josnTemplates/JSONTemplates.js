@@ -81,7 +81,9 @@ export const ponudaTemplate = {
   izradaPoKg: 0.0,
   rezijskiTroskoviStepen: 0.0,
   stepenSigurnosti: 0.0,
-  koriscenjeCene: "VELEPRODAJNA_CENA"
+  koriscenjeCene: "VELEPRODAJNA_CENA",
+  ukupnoBezPdv: 0.0,
+  ukupnoSaPdv: 0.0
 };
 
 export const dashboardTemplate = {

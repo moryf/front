@@ -23,7 +23,9 @@ function ProizvodPonuda() {
                 naziv: kalkulacija.naziv,
                 datumOtvaranja: new Date(kalkulacija.datumOtvaranja).toLocaleDateString(),
                 poslednjiDatumIzmene: new Date(kalkulacija.poslednjiDatumIzmene).toLocaleDateString(),
-                kreirao: kalkulacija.kreirao.ime
+                kreirao: kalkulacija.kreirao.ime,
+                ukupnoBezPdv: kalkulacija.ukupnoBezPdv,
+                ukupnoSaPdv: kalkulacija.ukupnoSaPdv
             }
         }
         )
@@ -182,6 +184,8 @@ function ProizvodPonuda() {
                 { field: 'datumOtvaranja', headerName: 'Otvoren', width: 150,headerClassName: 'datagrid-header-kalkulacije' },
                 { field: 'poslednjiDatumIzmene', headerName: 'Izmenjen', width: 150 ,headerClassName: 'datagrid-header-kalkulacije'},
                 { field: 'kreirao', headerName: 'Kreirao', width: 150,headerClassName: 'datagrid-header-kalkulacije' },
+                {field: 'ukupnoBezPdv', headerName: 'Ukupno bez PDV', width: 150, headerClassName: 'datagrid-header-kalkulacije'},
+                {field: 'ukupnoSaPdv', headerName: 'Ukupno sa PDV', width: 150, headerClassName: 'datagrid-header-kalkulacije'},
                 {field: 'kopiraj', headerName: 'Kopiraj', width: 250, headerClassName: 'datagrid-header-kalkulacije', renderCell: (params) => {
                     return (
                         <Button

@@ -127,6 +127,8 @@ export default function Kalkulacija() {
         fetchKalkulacija();
     }, []);
 
+    
+
     useEffect(() => {
       const cinkovanjeStavke = stavkeKalkulacije.filter(stavka => stavka.cinkovanje);
       console.log(cinkovanjeStavke);
@@ -154,15 +156,29 @@ export default function Kalkulacija() {
       setSpecificnaPovrsina(specificnaPovrsina);
       const sumaCenaPoKomadu = (cinkovanjeSuma + farbanjeSuma + montazaSuma + izradaSuma + sumaMaterijal)*kalkulacija.stepenSigurnosti*kalkulacija.rezijskiTroskoviStepen;
       setsumaCenaPoKomadu(sumaCenaPoKomadu);
-
+    
       const sumaCenaUkupno = sumaCenaPoKomadu * kalkulacija.proizvodPonuda.ukupnoKomada;
       setSumaCenaUkupno(sumaCenaUkupno);
-
+    
       const povrsinaProizvoda = kalkulacija.proizvodPonuda.duzinaPoKomadu  * kalkulacija.proizvodPonuda.visinaPoKomadu;
       setPovrsinaProizvoda(povrsinaProizvoda);
 
+      if(kalkulacija === kalkulacijaTemplate){
+        return;
+      }else{
+        setKalkulacija(prevState => ({
+          ...prevState,
+          ukupnoBezPdv: sumaCenaUkupno,
+          ukupnoSaPdv: sumaCenaUkupno*1.2
+      }
+      ));}
+
+    
     }, [stavkeKalkulacije]);
 
+    if(kalkulacija === kalkulacijaTemplate) {
+      return <h1>Loading...</h1>
+    }
     
 
   const handleInputChange = (event) => {
@@ -171,13 +187,18 @@ export default function Kalkulacija() {
       ...prevState,
       [name]: type === 'checkbox' ? checked : value
     }));
+    
   };
 
   const handleSubmit = async () => {
+    
+
     kalkulacija.poslednjiDatumIzmene = new Date();
     // Submit logic, possibly involving an API call
     // Implement API call or state update logic here
+    
     try {
+      
       const novaKalkulacija = await updateKalkulacija(kalkulacija);
       setKalkulacija(novaKalkulacija);
       const noveStavke = await updateStavkeKalkulacije(stavkeKalkulacije);
@@ -195,9 +216,7 @@ export default function Kalkulacija() {
     }
   };
 
-  if(kalkulacija === kalkulacijaTemplate) {
-    return <h1>Loading...</h1>
-  }
+  
 
 
   const handleKoriscenjeCeneChange = (event) => {
