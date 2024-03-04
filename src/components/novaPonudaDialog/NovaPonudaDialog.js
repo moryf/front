@@ -146,6 +146,7 @@ function NovaPonudaDialog() {
                 id="rokPonude"
                 label="Rok ponude"
                 type="date"
+                defaultValue={new Date().toISOString().split('T')[0]}
                 fullWidth
             />
             <TextField
