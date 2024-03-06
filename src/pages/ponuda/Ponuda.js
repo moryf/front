@@ -1,12 +1,13 @@
 import React from 'react'
-import { getPonuda, getAllProizvodiPonudeForPonuda, prihvatiPonudu, odbijPonudu } from '../../api/apiFunctions/ApiFunctions'
-import { Container, Paper, Typography, TextField, Button,Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { getPonuda, getAllProizvodiPonudeForPonuda, prihvatiPonudu, odbijPonudu, getDokumentiPonudeLinkoviByPonudaId } from '../../api/apiFunctions/ApiFunctions'
+import { Container, Paper, Typography, TextField, Button,Accordion, AccordionSummary, AccordionDetails, Table, TableContainer, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState, useEffect } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import NoviProizvodPonudaDialog from '../../components/noviProizvodPonudaDialog/NoviProizvodPonudaDialog';
 import './Ponuda.css'
 import NapraviKompletnuPonudu from '../../components/napraviKompletnuPonudu/NapraviKompletnuPonudu';
+import DodajDokumentLinkDialog from '../../components/dodajDokumentLinkDialog/DodajDokumentLinkDialog';
 
 
 function Ponuda() {
@@ -18,6 +19,7 @@ function Ponuda() {
   };
 
   const [proizvodiPonude, setProizvodiPonude] = useState([]);
+  const [dokumentiPonude, setDokumentiPonude] = useState([]);
 
 
 
@@ -38,6 +40,8 @@ function Ponuda() {
       dubinaPoKomadu: proizvodPonuda.dubinaPoKomadu,
       id: proizvodPonuda.id
     }));
+    const dokumentiPonude = await getDokumentiPonudeLinkoviByPonudaId(id)
+    setDokumentiPonude(dokumentiPonude)
     setProizvodiPonude(flattenedProizvodiPonude)
     setPonuda(ponuda)
   }
@@ -407,6 +411,46 @@ function Ponuda() {
         />
       </div>
     </Paper>
+    <Paper elevation={3} sx={{marginBottom: 4,
+    padding: 4,
+    backgroundColor: 'var(--background-color)',
+  }}>
+    
+      <Typography variant="h5" component="h2" sx={{
+    color: 'var(--color-5-green)',
+    marginBottom: 2,
+  }}>
+        Dokumenti Ponude
+      </Typography>
+      <DodajDokumentLinkDialog ponudaId={id} />
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell align="right">Naziv</TableCell>
+              <TableCell align="right">Link</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {dokumentiPonude.map((dokumentPonude) => (
+              <TableRow
+                key={dokumentPonude.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {dokumentPonude.id}
+                </TableCell>
+                <TableCell align="right">{dokumentPonude.naziv}</TableCell>
+                <TableCell align="right"><a href={dokumentPonude.link}>{dokumentPonude.link}</a></TableCell>
+              </TableRow>
+            ))}
+
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      </Paper>
     <Button
       variant="contained"
       sx={{

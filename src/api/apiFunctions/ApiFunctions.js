@@ -1,7 +1,7 @@
 import AxiosConfig from "../axios/AxiosConfig";
 
 export async function postPonuda(ponuda) {
-  AxiosConfig.post("/api/ponuda/dodaj", ponuda)
+  await AxiosConfig.post("/api/ponuda/dodaj", ponuda)
   .then(response =>{
     confirm("Uspesno uneta ponuda")
     console.log(response)
@@ -11,7 +11,7 @@ export async function postPonuda(ponuda) {
         alert(error.response.data)
         console.log(error);
         
-        return
+        return;
     });
 }
 
@@ -414,6 +414,29 @@ export async function kopirajKalkulaciju(kalkulacijaId){
 export async function getKalkulacijaByPonudaId(id){
   try {
     const response = await AxiosConfig.get(`/api/kalkulacija/ponuda/${id}`);
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getDokumentiPonudeLinkoviByPonudaId(id){
+  try {
+    const response = await AxiosConfig.get(`/api/dokumenti-ponude-linkovi/ponuda/${id}`);
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function postDokumentPonudeLinkForPonuda(idPonude, dokument){
+  try {
+    const response = await AxiosConfig.post(`/api/dokumenti-ponude-linkovi/ponuda/${idPonude}`, dokument);
+    confirm("Uspesno unet dokument")
     return response.data;
   } catch (error) {
     alert(error.response.data);

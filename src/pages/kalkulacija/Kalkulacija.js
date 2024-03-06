@@ -131,7 +131,6 @@ export default function Kalkulacija() {
 
     useEffect(() => {
       const cinkovanjeStavke = stavkeKalkulacije.filter(stavka => stavka.cinkovanje);
-      console.log(cinkovanjeStavke);
       const farbanjeStavke = stavkeKalkulacije.filter(stavka => stavka.farbanje);
       const montazaStavke = stavkeKalkulacije.filter(stavka => stavka.montaza);
       const izradaStavke = stavkeKalkulacije.filter(stavka => stavka.izrada);
@@ -712,7 +711,7 @@ const handleSwitchChange = (event) => {
             </TableRow>
             <TableRow sx={{color:"var( --color-5-green)"}}>
               <TableCell><b>Cena po komadu sa PDV-om</b></TableCell>
-              <TableCell sx={{ fontSize:"16px"}}><b>{sumaCenaPoKomadu.toFixed(2)*1.2} rsd</b></TableCell>
+              <TableCell sx={{ fontSize:"16px"}}><b>{(sumaCenaPoKomadu*1.2).toFixed(2)} rsd</b></TableCell>
             </TableRow>
             <TableRow sx={{color:"var( --color-3-dark-brown)"}}>
                   <TableCell><b>Suma cena ukupno</b></TableCell>

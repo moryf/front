@@ -55,8 +55,9 @@ function NovaPonudaDialog() {
         novaPonuda.opis = document.getElementById('opis').value;
         novaPonuda.otvorioPonudu.id = JSON.parse(sessionStorage.getItem('korisnik')).id;
         console.log(novaPonuda);
-        await postPonuda(novaPonuda);
-        window.location.reload();
+        await postPonuda(novaPonuda)
+        onClose()
+        
 
     }
 

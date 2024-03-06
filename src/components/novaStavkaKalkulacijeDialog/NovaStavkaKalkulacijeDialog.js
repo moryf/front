@@ -55,7 +55,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
     }
 
     const handleInputChange = (e) => {
-        const { name, value, type, checked } = event.target;
+        const { name, value, type, checked } = e.target;
         setStavkaKalkulacije(prevState => ({
             ...prevState,
             [name]: type === 'checkbox' ? checked : value,
@@ -156,6 +156,8 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
         setStavkaKalkulacije(stavkaKalkulacijeTemplate);
         setProizvod(proizvodTemplate);
         setProizvodLoaded(false);
+        setNacinRacunanjaDuzineKomada("UPISANO");
+        setNacinRacunanjaKomada("KOMAD");
         return;
     }
 

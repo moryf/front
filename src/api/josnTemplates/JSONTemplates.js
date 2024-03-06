@@ -138,6 +138,17 @@ export const stavkaKalkulacijeTemplate = {
   cena: 0.0
 };
 
+export const dokumentPonudeLinkTemplate = {
+  id: null,
+  ponuda: {
+    id: null
+  },
+  naziv: "",
+  link: "",
+  uneoKorisnik: {
+    id: null
+  }
+};
 
 
 
