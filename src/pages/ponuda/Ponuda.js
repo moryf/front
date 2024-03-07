@@ -428,8 +428,8 @@ function Ponuda() {
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell align="right">Naziv</TableCell>
-              <TableCell align="right">Link</TableCell>
+              <TableCell align="left">Naziv</TableCell>
+              <TableCell align="left">Link</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -441,8 +441,8 @@ function Ponuda() {
                 <TableCell component="th" scope="row">
                   {dokumentPonude.id}
                 </TableCell>
-                <TableCell align="right">{dokumentPonude.naziv}</TableCell>
-                <TableCell align="right"><a href={dokumentPonude.link}>{dokumentPonude.link}</a></TableCell>
+                <TableCell align="left">{dokumentPonude.naziv}</TableCell>
+                <TableCell align="left"><a href={dokumentPonude.link}>{dokumentPonude.link}</a></TableCell>
               </TableRow>
             ))}
 

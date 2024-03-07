@@ -18,8 +18,8 @@
 
 .home-tile {
   width: 30%;
-  border: 2px solid;
-  background-color: white;
+  border: 1px solid;
+  background-color: var(--background-color);
   min-width: 250px;
   max-width: 350px;
   height: 200px;
@@ -30,25 +30,30 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: var(--color-1-dark-grey);
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  color: var(--color-3-dark-brown);
+  
 }
 
 .home-tile:nth-child(5n + 1) {
   border-color: var(--color-4-orange);
+  box-shadow: 0 2px 5px 1px var(--color-4-orange);
 }
 
 .home-tile:nth-child(5n + 2) {
   border-color: var(--color-5-green);
+  box-shadow: 0 2px 5px 1px var(--color-5-green);
 }
 
 .home-tile:nth-child(5n + 3) {
   border-color: var(--color-3-dark-brown);
+  box-shadow: 0 2px 5px 1px var(--color-3-dark-brown);
 }
 
 .home-tile:nth-child(5n + 4) {
   border-color: var(--color-2-light-grey);
+  box-shadow: 0 2px 5px 1px var(--color-2-light-grey);
 }
 .home-tile:nth-child(5n) {
   border-color: var(--color-1-dark-grey);
+  box-shadow: 0 2px 5px 1px var(--color-1-dark-grey);
 }

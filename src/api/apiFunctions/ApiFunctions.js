@@ -444,3 +444,14 @@ export async function postDokumentPonudeLinkForPonuda(idPonude, dokument){
     throw error;
   }
 }
+
+export async function getAllProizvodi(){
+  try {
+    const response = await AxiosConfig.get('/api/proizvod/svi');
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
