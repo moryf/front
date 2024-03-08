@@ -49,7 +49,7 @@ function Home() {
           <h2>Novih ponuda ove nedelje</h2>
         </div>
       </div>
-      <NovaPonudaDialog/>
+      {(sessionStorage.getItem('trenutnaUloga') === 'Admin' || sessionStorage.getItem('trenutnaUloga')==='Komercijalista') ? <NovaPonudaDialog /> : null}
       
     </>
   )

@@ -13,6 +13,7 @@ function Login() {
             lozinka:password
         }).then((response) => {
             sessionStorage.setItem('korisnik', JSON.stringify(response.data))
+            sessionStorage.setItem('trenutnaUloga', response.data.uloge[0].naziv)
             alert('Uspesno ste se ulogovali')
             window.location.reload()
         }).catch((error) => {

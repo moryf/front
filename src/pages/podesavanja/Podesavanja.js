@@ -81,6 +81,7 @@ function Podesavanja() {
             <Button size="small" onClick={azurirajkorisnikovePodatke}>Sacuvaj</Button>
         </AccordionActions>
     </Accordion>
+    {(sessionStorage.getItem('trenutnaUloga') === 'Admin' || sessionStorage.getItem('trenutnaUloga')==='Komercijalista') ?
     <Accordion sx={{margin:2}}>
         <AccordionSummary  expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h5">Podesavanje podrazumevanih vrednosti</Typography>
@@ -109,7 +110,7 @@ function Podesavanja() {
         <AccordionActions>
             <Button onClick={azurirajPodrazumevaneVrednosti} size="small">Sacuvaj</Button>
         </AccordionActions>
-    </Accordion>   
+    </Accordion>   : null}
     </>
   )
 }

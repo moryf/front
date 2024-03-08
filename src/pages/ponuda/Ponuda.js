@@ -93,9 +93,10 @@ function Ponuda() {
         <NapraviKompletnuPonudu ponudaId={id} />
 
 
-          {(ponuda.status === "NOVA" || ponuda.status ==="OBRADJENA") &&
+          {(ponuda.status === "NOVA" || ponuda.status ==="OBRADJENA") && (sessionStorage.getItem('trenutnaUloga') === 'Admin' || sessionStorage.getItem('trenutnaUloga')==='Komercijalista') &&
           
           <div>
+             
           <Button variant="contained" sx={{
               margin: 1,
               backgroundColor: 'var(--color-5-green)',

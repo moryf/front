@@ -39,8 +39,8 @@ function Proizvodi() {
 
 
   return (
-    <Container maxWidth="xl">
-    <Typography variant='h1'>Proizvodi</Typography>
+    <Container sx={{margin:10}} maxWidth="xl">
+    <Typography variant='h3'>Proizvodi</Typography>
     <DataGrid
     rows={proizvodi}
     columns={

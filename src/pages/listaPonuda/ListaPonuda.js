@@ -59,7 +59,7 @@ function ListaPonuda() {
                     sx={{ width: '100%', height: '100%'}}
                 />
             </div>
-            <NovaPonudaDialog/>
+            {(sessionStorage.getItem('trenutnaUloga') === 'Admin' || sessionStorage.getItem('trenutnaUloga')==='Komercijalista') ? <NovaPonudaDialog /> : null}
         </>
     );
 }
