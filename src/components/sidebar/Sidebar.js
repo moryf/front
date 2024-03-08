@@ -34,6 +34,9 @@ function Sidebar() {
           <li>
             <a href='/podesavanja'>Podesavanja</a>
           </li>
+          <li>
+            <a href='/proizvodi'>Proizvodi</a>
+          </li>
         </ul>
       </div>
     </div>

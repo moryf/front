@@ -455,3 +455,28 @@ export async function getAllProizvodi(){
     throw error;
   }
 }
+
+export async function updateProizvod(proizvod){
+  try {
+    const response = await AxiosConfig.put('/api/proizvod/izmeni', proizvod);
+    confirm("Uspesno izmenjen proizvod")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function promeniSifruKorisnika(staraSifra, novaSifra){
+  try {
+    const id = JSON.parse(sessionStorage.getItem('korisnik')).id;
+    const response = await AxiosConfig.put(`/api/korisnik/promeni-sifru/${id}`, {staraSifra, novaSifra});
+    confirm("Uspesno promenjena sifra")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}

@@ -2,10 +2,12 @@ import { Accordion, AccordionDetails, AccordionSummary, Typography, TextField, A
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { useEffect } from 'react'
 import { getAllPodrazumevaneVrednosti,updateKorisnik, updatePodrazumevanaVrednost } from '../../api/apiFunctions/ApiFunctions';
+import PromeniSifruDialog from '../../components/promeniSifruDialog/PromeniSifruDialog';
 
 function Podesavanja() {
 
     const [korisnik, setKorisnik] = React.useState(JSON.parse(sessionStorage.getItem('korisnik')));
+
 
     const [podrazumevaneVrednosti, setPodrazumevaneVrednosti] = React.useState(null);
 
@@ -73,6 +75,7 @@ function Podesavanja() {
                 onChange={(e) => setKorisnik({...korisnik, korisnickoIme: e.target.value})}
 
             />
+            <PromeniSifruDialog />
         </AccordionDetails>
         <AccordionActions>
             <Button size="small" onClick={azurirajkorisnikovePodatke}>Sacuvaj</Button>
