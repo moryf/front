@@ -480,3 +480,15 @@ export async function promeniSifruKorisnika(staraSifra, novaSifra){
     throw error;
   }
 }
+
+export async function registrujKorisnika(korisnik){
+  try {
+    const response = await AxiosConfig.post('/api/korisnik/register', korisnik);
+    confirm("Uspesno registrovan korisnik")
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}

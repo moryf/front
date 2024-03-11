@@ -1,8 +1,9 @@
-import { Accordion, AccordionDetails, AccordionSummary, Typography, TextField, AccordionActions, Button } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Typography, TextField, AccordionActions, Button, Select, FormControl, ToggleButtonGroup, FormControlLabel, Switch } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { useEffect } from 'react'
 import { getAllPodrazumevaneVrednosti,updateKorisnik, updatePodrazumevanaVrednost } from '../../api/apiFunctions/ApiFunctions';
 import PromeniSifruDialog from '../../components/promeniSifruDialog/PromeniSifruDialog';
+import { registrujKorisnika } from '../../api/apiFunctions/ApiFunctions';
 
 function Podesavanja() {
 
@@ -34,6 +35,16 @@ function Podesavanja() {
         }
         confirm("Uspesno azurirane podrazumevane vrednosti");
     }
+
+    const [noviKorisnik, setNoviKorisnik] = React.useState({
+        id: null,
+        ime: '',
+        prezime: '',
+        korisnickoIme: '',
+        lozinka: '',
+        uloge: []
+    })
+
 
     useEffect(() => {
         fetchPodrazumevaneVrednosti();
@@ -111,6 +122,106 @@ function Podesavanja() {
             <Button onClick={azurirajPodrazumevaneVrednosti} size="small">Sacuvaj</Button>
         </AccordionActions>
     </Accordion>   : null}
+    {sessionStorage.getItem('trenutnaUloga') === 'Admin' ?
+    <Accordion>
+        <AccordionSummary  expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="h5">Dodavanje Korisnika</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+            <TextField
+                fullWidth
+                label="Ime"
+                margin="normal"
+                name="ime"
+                value={noviKorisnik.ime}
+                onChange={(e) => setNoviKorisnik({...noviKorisnik, ime: e.target.value})}
+            />
+            <TextField
+                fullWidth
+                label="Prezime"
+                margin="normal"
+                name="prezime"
+                value={noviKorisnik.prezime}
+                onChange={(e) => setNoviKorisnik({...noviKorisnik, prezime: e.target.value})}
+            />
+            <TextField
+                fullWidth
+                label="Korisnicko Ime"
+                margin="normal"
+                name="korisnickoIme"
+                value={noviKorisnik.korisnickoIme}
+                onChange={(e) => setNoviKorisnik({...noviKorisnik, korisnickoIme: e.target.value})}
+            />
+            <TextField
+                fullWidth
+                label="Sifra"
+                margin="normal"
+                name="sifra"
+                type="password"
+                value={noviKorisnik.lozinka}
+                onChange={(e) => setNoviKorisnik({...noviKorisnik, lozinka: e.target.value})}
+            />
+            <FormControl fullWidth>
+                <FormControlLabel
+                    control={<Switch
+                        name="admin"
+                        value={noviKorisnik.uloge.includes('Admin')}
+                        onChange={(e) => {
+                            let noveUloge = [...noviKorisnik.uloge];
+                            if (e.target.checked) {
+                                noveUloge.push('Admin');
+                            } else {
+                                noveUloge = noveUloge.filter((uloga) => uloga !== 'Admin');
+                            }
+                            setNoviKorisnik({...noviKorisnik, uloge: noveUloge});
+                        }}
+                    />}
+                    label="Admin"
+                />
+                <FormControlLabel
+                    control={<Switch
+                        name="komercijalista"
+                        value={noviKorisnik.uloge.includes('Komercijalista')}
+                        onChange={(e) => {
+                            let noveUloge = [...noviKorisnik.uloge];
+                            if (e.target.checked) {
+                                noveUloge.push('Komercijalista');
+                            } else {
+                                noveUloge = noveUloge.filter((uloga) => uloga !== 'Komercijalista');
+                            }
+                            setNoviKorisnik({...noviKorisnik, uloge: noveUloge});
+                        }}
+                    />}
+                    label="Komercijalista"
+                />
+                <FormControlLabel
+                    control={<Switch
+                        name="projektant"
+                        value={noviKorisnik.uloge.includes('Projektant')}
+                        onChange={(e) => {
+                            let noveUloge = [...noviKorisnik.uloge];
+                            if (e.target.checked) {
+                                noveUloge.push('Projektant');
+                            } else {
+                                noveUloge = noveUloge.filter((uloga) => uloga !== 'Projektant');
+                            }
+                            setNoviKorisnik({...noviKorisnik, uloge: noveUloge});
+                        }}
+                    />}
+                    label="Projektant"
+                />
+            </FormControl>
+
+
+        </AccordionDetails>
+        <AccordionActions>
+            <Button onClick={async ()=>{console.log(await registrujKorisnika(noviKorisnik))}} size="small">Dodaj</Button>
+        </AccordionActions>
+
+    </Accordion>
+    : null
+
+}
     </>
   )
 }
