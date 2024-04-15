@@ -7,9 +7,10 @@ import { getPonuda,getAllProizvodiPonudeForPonuda,getKalkulacijaByPonudaId } fro
 import { ponudaTemplate } from '../../api/josnTemplates/JSONTemplates'
 import { DataGrid } from '@mui/x-data-grid'
 import { saveAs } from 'file-saver'
-import { Image, pdf, Svg } from '@react-pdf/renderer'
+import { Font, Image, pdf, Svg } from '@react-pdf/renderer'
 import { Document, Page, Text, View } from '@react-pdf/renderer'
 import logo from '../../assets/images/logo.png'
+import Monsterat from '../../assets/Rubik-VariableFont_wght.ttf'
 
 function NapraviKompletnuPonudu({ponudaId}) {
 
@@ -105,10 +106,17 @@ function NapraviKompletnuPonudu({ponudaId}) {
 
     const styles = {
         page: {
+            display: 'flex', // Display the page as a flex container
+            justifyContent: 'start', // Center the content horizontally
+            fontFamily: 'Montserrat', // Set the font family
+            fontWeight: 'bold', // Set the font weight
             flexDirection: 'column',
             backgroundColor: '#FFF', // white background
-            alignItems: 'stretch',
-            padding: 10
+            padding: 10,
+            fontSize: 12, // Adjust font size as needed
+            width: '100%', // Set the width to 100% of the page
+            height: '100%', // Set the height to 100% of the page
+            overflow:"hidden"
         },
         section: {
             margin: 0,
@@ -120,6 +128,9 @@ function NapraviKompletnuPonudu({ponudaId}) {
             justifyContent: 'space-between',
             alignItems: 'center',
             marginBottom: 5,
+            height:"150px",
+            borderBottomWidth: 1,
+            borderBottomColor: '#000', // Black border at the bottom of the header
         },
         logo: {
             width: '25%', // Logo on the left half of the header
@@ -186,10 +197,6 @@ function NapraviKompletnuPonudu({ponudaId}) {
             textAlign: 'left', // Align text to the left
         },
         footer: {
-            position: 'absolute',
-            bottom: 10,
-            left: 0,
-            right: 0,
             textAlign: 'center', // Center align footer text
             fontSize: 10, // Adjust font size as needed
         }
@@ -199,6 +206,7 @@ function NapraviKompletnuPonudu({ponudaId}) {
 
 
     const PonudaPDF = () =>{
+        Font.register({family: 'Montserrat', src: Monsterat})
         return (
             <Document>
                 <Page size="A4" style={styles.page}>
@@ -208,6 +216,18 @@ function NapraviKompletnuPonudu({ponudaId}) {
                     </View>
                     <View style={styles.offerNumber}>
                     <Text style={styles.title}>PONUDA broj: {ponuda.naziv}</Text>
+                    <Text style={styles.title}>Joilart Kostil doo</Text>
+                    <Text style={styles.title}>Adresa: Bogoljuba Petkovića 1a, Barajevo, 11460</Text>
+                    <Text style={styles.title}>PIB: 104054786</Text>
+                    <Text style={styles.title}>Maticni broj: 20068680</Text>
+                    <Text style={styles.title}>Telefon: 060-0-48-48-48</Text>
+                    <Text style={styles.title}>Email: 
+                        <Text style={{color: 'blue'}}>
+                            kontakt@joilart.org
+                        </Text>
+                    </Text>
+
+
                     </View>
                 </View>
                 <View style={styles.section}>
@@ -290,7 +310,7 @@ function NapraviKompletnuPonudu({ponudaId}) {
   return (
     <>
         <Button onClick={hancleCLickOpen} variant="contained" color="primary" sx={{margin: 2}}>Napravi kompletnu ponudu</Button>
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog  open={open} onClose={handleClose}>
             <DialogTitle>Napravi kompletnu ponudu</DialogTitle>
             <DialogContent>
                 <DialogContentText>
