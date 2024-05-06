@@ -1,8 +1,7 @@
 import React from 'react'
 import Logo from '../../assets/images/logo.png'
 import './Sidebar.css'
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { TextField } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 
 
 function Sidebar() {
@@ -17,7 +16,7 @@ function Sidebar() {
   return (
     <>
     <button className={open? 'sidebar-button':'sidebar-button open'} onClick={handleClickOpen}>
-    <KeyboardArrowRightIcon/>
+    <MenuIcon/> Meni
     </button>
     <div className={open?'sidebar':'sidebar closed'}>
       <div className='sidebar-content'>

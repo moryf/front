@@ -63,8 +63,10 @@
 }
 
 .sidebar-button {
-  transform: rotate(180deg);
-  display: inline;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;  
   position: fixed;
   top: 10px;
   left: 30px;
@@ -75,8 +77,10 @@
   border: none;
   cursor: pointer;
   z-index: 1000;
-  width: 50px;
   transition: 0.3s ease-in-out;
+  font-family: Jost;
+  font-size: 1rem;
+  font-weight: 300;
 }
 
 .sidebar-button:hover {

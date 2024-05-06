@@ -46,8 +46,8 @@ function Proizvodi() {
     columns={
         [
             {field:'sifra', headerName:'Šifra', width: 100},
-            {field:'naziv', headerName:'Naziv', width: 250},
-            {field:'opis', headerName:'Opis', width: 250},
+            {field:'naziv', headerName:'Naziv', width: 300},
+            {field:'opis', headerName:'Opis', width: 300},
             {field:'jedinicaMere', headerName:'Jedinica mere', width: 120},
             {field:'masa', headerName:'Masa', width: 100},
             {field:'specificnaPovrsina', headerName:'Specifična površina', width: 100},

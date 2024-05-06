@@ -7,6 +7,16 @@
   --color-5-green: #008b28;
 }
 
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/src/assets/Montserrat-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Jost';
+  src: url('/src/assets/Jost-VariableFont_wght.ttf') format('truetype');
+}
+
 .App {
   text-align: center;
   max-width: 100vw;
@@ -18,6 +28,7 @@
   flex-direction: column;
   padding-left: 6px;
   padding-right: 6px;
+  font-family: Jost;
 }
 
 .content {
@@ -31,4 +42,9 @@
   width: 100%;
   overflow: hidden;
   margin: auto;
+}
+
+*{
+  font-family: Jost;
+  
 }
