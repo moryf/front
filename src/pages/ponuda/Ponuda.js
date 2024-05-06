@@ -396,13 +396,13 @@ function Ponuda() {
           rows={proizvodiPonude}
           columns={[
             { field: 'id', headerName: 'ID', width: 100, headerAlign: 'center',align: 'center',headerClassName: 'datagrid-header'},
-            { field: 'tipProizvodaPonuda', headerName: 'Tip Proizvoda Ponude', width:200 ,headerClassName: 'datagrid-header'},
-            { field: 'naziv', headerName: 'Naziv', width:250 ,headerClassName: 'datagrid-header'},
-            { field: 'ukupnoMetara', headerName: 'Metara', width:120 ,headerClassName: 'datagrid-header'},
-            { field: 'ukupnoKomada', headerName: 'Komada', width:120 ,headerClassName: 'datagrid-header'},
-            { field: 'duzinaPoKomadu', headerName: 'Duzina Po Komadu', width:120 ,headerClassName: 'datagrid-header'},
-            { field: 'visinaPoKomadu', headerName: 'Visina Po Komadu', width:120 ,headerClassName: 'datagrid-header'},
-            { field: 'dubinaPoKomadu', headerName: 'Dubina Po Komadu', width:120,headerClassName: 'datagrid-header'},
+            { field: 'tipProizvodaPonuda', headerName: 'Tip Proizvoda Ponude', width:250 ,headerClassName: 'datagrid-header'},
+            { field: 'naziv', headerName: 'Naziv', width:300 ,headerClassName: 'datagrid-header'},
+            { field: 'ukupnoMetara', headerName: 'Metara', width:150 ,headerClassName: 'datagrid-header'},
+            { field: 'ukupnoKomada', headerName: 'Komada', width:150 ,headerClassName: 'datagrid-header'},
+            { field: 'duzinaPoKomadu', headerName: 'Duzina Po Komadu', width:150 ,headerClassName: 'datagrid-header'},
+            { field: 'visinaPoKomadu', headerName: 'Visina Po Komadu', width:150 ,headerClassName: 'datagrid-header'},
+            { field: 'dubinaPoKomadu', headerName: 'Dubina Po Komadu', width:150,headerClassName: 'datagrid-header'},
           ]}
           onRowDoubleClick={(row) => {
             window.location.href = `/proizvod-ponuda/${row.id}`; // Redirect to the ponuda page when a row is double-clicked

@@ -16,6 +16,8 @@
   color: black;
   display: flex;
   flex-direction: column;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 .content {
@@ -28,6 +30,5 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  max-width: 1200px;
   margin: auto;
 }

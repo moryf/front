@@ -488,14 +488,14 @@ const handleSwitchChange = (event) => {
               rows={flatennedStavkeKalkulacije}
               columns={[
                 { field: 'id', headerName: 'ID', width: 50, headerClassName: 'datagrid-header'},
-                { field: 'naziv', headerName: 'Naziv', width: 150 , headerClassName: 'datagrid-header'},
-                {field: 'opis', headerName: 'Opis', width: 150, headerClassName: 'datagrid-header' },
+                { field: 'naziv', headerName: 'Naziv', width: 250 , headerClassName: 'datagrid-header'},
+                {field: 'opis', headerName: 'Opis', width: 250, headerClassName: 'datagrid-header' },
                 { field: 'proizvodId', headerName: 'Sifra Proizvoda', width: 100, headerClassName: 'datagrid-header' },
                 { field: 'jedinicaMere', headerName: 'Jedinica Mere', width: 100 , headerClassName: 'datagrid-header'},
                 { field: 'kolicina', headerName: 'Kolicina', width: 100, headerClassName: 'datagrid-header'},
                 { field: 'cena', headerName: 'Cena', width: 100 , headerClassName: 'datagrid-header'},
                 { field: 'ukupno', headerName: 'Ukupno', width: 150, headerClassName: 'datagrid-header'},
-                { field: 'izmeni', headerName: 'Izmeni', width: 100, headerClassName: 'datagrid-header', renderCell: (params) => (
+                { field: 'izmeni', headerName: 'Izmeni', width: 150, headerClassName: 'datagrid-header', renderCell: (params) => (
                   <Button variant="contained" color="primary" onClick={() => {
                     setMode("IZMENA");
                     setIzmenaStavka(stavkeKalkulacije.find(stavka => stavka.id === params.row.id));
@@ -503,7 +503,7 @@ const handleSwitchChange = (event) => {
                   }}>Izmeni</Button>
                 )
                 },
-                { field: 'obrisi', headerName: 'Obrisi', width: 100, headerClassName: 'datagrid-header', renderCell: (params) => (
+                { field: 'obrisi', headerName: 'Obrisi', width: 150, headerClassName: 'datagrid-header', renderCell: (params) => (
                   <Button variant="contained" color="secondary" onClick={() => deleteStavka(params.row.id)}>Obrisi</Button>
                 )
                 }

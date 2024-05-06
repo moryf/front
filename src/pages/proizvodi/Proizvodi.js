@@ -46,14 +46,14 @@ function Proizvodi() {
     columns={
         [
             {field:'sifra', headerName:'Šifra', width: 100},
-            {field:'naziv', headerName:'Naziv', width: 150},
-            {field:'opis', headerName:'Opis', width: 200},
-            {field:'jedinicaMere', headerName:'Jedinica mere', width: 100},
-            {field:'masa', headerName:'Masa', width: 75},
-            {field:'specificnaPovrsina', headerName:'Specifična površina', width: 75},
+            {field:'naziv', headerName:'Naziv', width: 250},
+            {field:'opis', headerName:'Opis', width: 250},
+            {field:'jedinicaMere', headerName:'Jedinica mere', width: 120},
+            {field:'masa', headerName:'Masa', width: 100},
+            {field:'specificnaPovrsina', headerName:'Specifična površina', width: 100},
             {field:'cenaA', headerName:'Cena A', width: 100},
             {field:'veleprodajnaCena', headerName:'Veleprodajna cena', width: 100},
-            {field:'izmeni', headerName:'Izmeni', width: 150, renderCell: (params) => {
+            {field:'izmeni', headerName:'Izmeni', width: 175, renderCell: (params) => {
                     return (
                         <Button color='primary' variant='outlined' onClick={
                             () => {

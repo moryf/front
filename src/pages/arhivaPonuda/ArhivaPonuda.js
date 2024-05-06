@@ -12,14 +12,14 @@ function ArhivaPonuda() {
         { field: 'id', headerName: 'Ponuda ID', width:100 },
         { field: 'naziv', headerName: 'Naziv', width:100 },
         { field: 'kupacId', headerName: 'Kupac ID', width:100 },
-        { field: 'imeIPrezime', headerName: 'Ime i prezime', width:100 },
-        { field: 'adresa', headerName: 'Adresa', width:100 },
-        { field: 'brojTelefona', headerName: 'Broj telefona', width:100 },
-        { field: 'email', headerName: 'Email', width:100 },
+        { field: 'imeIPrezime', headerName: 'Ime i prezime', width:175 },
+        { field: 'adresa', headerName: 'Adresa', width:200 },
+        { field: 'brojTelefona', headerName: 'Broj telefona', width:200 },
+        { field: 'email', headerName: 'Email', width:250 },
         { field: 'datumOtvaranja', headerName: 'Datum otvaranja', width:100 },
         { field: 'rokPonude', headerName: 'Rok ponude', width:100 },
         { field: 'status', headerName: 'Status', width:100 },
-        { field: 'opis', headerName: 'Opis', width:100 }
+        { field: 'opis', headerName: 'Opis', width:300 }
     ];
 
     async function fetchData() {
