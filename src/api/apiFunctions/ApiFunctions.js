@@ -85,7 +85,6 @@ export async function getAllTipoviProizvodaPonude() {
 export async function postProizvodPonuda(proizvodPonuda, ponudaId) {
   try{
     const response = await AxiosConfig.post(`/api/proizvod-ponuda/ponuda/${ponudaId}/dodaj`, proizvodPonuda);
-    confirm("Uspesno unet proizvod")
     console.log(response)
     return response.data;
   }
@@ -115,7 +114,6 @@ export async function findProizvodPonudaById(id) {
 export async function prihvatiPonudu(id) {
   try {
     const response = await AxiosConfig.put(`/api/ponuda/prihvati/${id}`);
-    confirm("Ponuda prihvacena")
     return response.data;
   } catch (error) {
     alert(error.response.data);
@@ -130,7 +128,6 @@ export async function odbijPonudu(id) {
   try {
     console.log(id)
     const response = await AxiosConfig.put(`/api/ponuda/odbij/${id}`);
-    confirm("Ponuda odbijena")
     return response.data;
   } catch (error) {
     alert(error.response.data);
@@ -341,7 +338,6 @@ export async function findProizvodyBySifraAndNaziv(sifra, naziv, opis){
 export async function addStavkaKalkulacije(stavkaKalkulacije, kalkulacijaId){
   try {
     const response = await AxiosConfig.post(`/api/stavka-kalkulacije/dodaj/kalkulacija/${kalkulacijaId}`, stavkaKalkulacije);
-    confirm("Uspesno uneta stavka")
     return response.data;
   } catch (error) {
     alert(error.response.data);
@@ -353,7 +349,6 @@ export async function addStavkaKalkulacije(stavkaKalkulacije, kalkulacijaId){
 export async function updateStavkeKalkulacije(stavkeKalkulacije){
   try {
     const response = await AxiosConfig.put(`/api/stavka-kalkulacije/izmeni/lista`, stavkeKalkulacije);
-    confirm("Uspesno izmenjene stavke")
     return response.data;
   } catch (error) {
     alert(error.response.data);
@@ -365,7 +360,6 @@ export async function updateStavkeKalkulacije(stavkeKalkulacije){
 export async function updateStavkaKalkulacije(stavkaKalkulacije){
   try {
     const response = await AxiosConfig.put(`/api/stavka-kalkulacije/izmeni`, stavkaKalkulacije);
-    confirm("Uspesno izmenjena stavka")
     return response.data;
   } catch (error) {
     alert(error.response.data);
@@ -378,7 +372,6 @@ export async function updateStavkaKalkulacije(stavkaKalkulacije){
 export async function deleteStavkaKalkulacije(id){
   try {
     const response = await AxiosConfig.delete(`/api/stavka-kalkulacije/obrisi/${id}`);
-    confirm("Uspesno obrisana stavka")
     return response.data;
   } catch (error) {
     alert(error.response.data);
@@ -390,7 +383,6 @@ export async function deleteStavkaKalkulacije(id){
 export async function saveProizvod(proizvod){
   try {
     const response = await AxiosConfig.post('/api/proizvod/sacuvaj', proizvod);
-    confirm("Uspesno sacuvan proizvod")
     return response.data;
   } catch (error) {
     alert(error.response.data);
@@ -436,7 +428,6 @@ export async function getDokumentiPonudeLinkoviByPonudaId(id){
 export async function postDokumentPonudeLinkForPonuda(idPonude, dokument){
   try {
     const response = await AxiosConfig.post(`/api/dokumenti-ponude-linkovi/ponuda/${idPonude}`, dokument);
-    confirm("Uspesno unet dokument")
     return response.data;
   } catch (error) {
     alert(error.response.data);
@@ -459,7 +450,6 @@ export async function getAllProizvodi(){
 export async function updateProizvod(proizvod){
   try {
     const response = await AxiosConfig.put('/api/proizvod/izmeni', proizvod);
-    confirm("Uspesno izmenjen proizvod")
     return response.data;
   } catch (error) {
     alert(error.response.data);
