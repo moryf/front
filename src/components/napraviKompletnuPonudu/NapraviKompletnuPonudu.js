@@ -88,13 +88,6 @@ function NapraviKompletnuPonudu({ponudaId}) {
 
    const napraviPonudu = async () =>{
         console.log('Napravi ponudu')
-        for (const [key, value] of Object.entries(rowselectionModels)) {
-            if(value.length>1){
-                alert('Mozete izabrati samo jednu kalkulaciju po proizvodu')
-                return;
-            }
-            
-        }
 
         if(confirm('Da li ste sigurni da zelite da napravite ponudu?'))
         {
