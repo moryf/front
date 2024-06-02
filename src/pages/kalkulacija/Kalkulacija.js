@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {AccordionSummary,AccordionDetails, Container, Paper, Typography, TextField, Button, Switch, FormControlLabel, FormGroup, Select, Accordion, Divider, TableRow, TableCell, Table, Tab } from '@mui/material';
+import {AccordionSummary,AccordionDetails, Container, Paper, Typography, TextField, Button, Switch, FormControlLabel, FormGroup, Select, Accordion, Divider, TableRow, TableCell, Table, Tab, TableHead } from '@mui/material';
 import { kalkulacijaTemplate } from '../../api/josnTemplates/JSONTemplates';
 import {deleteStavkaKalkulacije, getKalkulacija, updateKalkulacija,getStavkeKalkulacijeByKalkulacijaId, addStavkaKalkulacije,updateStavkeKalkulacije, updateStavkaKalkulacije } from '../../api/apiFunctions/ApiFunctions';
 import NoviSablon from '../../components/noviSablon/NoviSablon';
@@ -36,6 +36,7 @@ export default function Kalkulacija() {
 
   const[povrsinaProizvoda, setPovrsinaProizvoda] = useState(0);
 
+  const [kursEur, setKursEur] = useState(117.5);
 
 
 
@@ -283,7 +284,7 @@ const handleSwitchChange = (event) => {
 
   return (
     <Container maxWidth="xl">
-      <Paper elevation={3} sx={{ padding: 2, margin: 2, backgroundColor:"var(--background-color)" }}>
+      <Paper elevation={3} sx={{ padding: 2, margin: 2, backgroundColor:"var(--background-color)", display:"flex", flexDirection:"column",alignContent:"center" }}>
         <Typography variant="h5" sx={{ marginBottom: 2 }}>Edit Kalkulacija</Typography>
         
         <TextField
@@ -348,7 +349,7 @@ const handleSwitchChange = (event) => {
         />
 
         {/* Switch components for boolean fields */}
-        <FormGroup>
+        <FormGroup sx={{width:"max-content", alignSelf:"center"}}>
           <FormControlLabel
             control={<Switch checked={kalkulacija.cinkovanje} onChange={handleSwitchChange} name="cinkovanje" />}
             label="Cinkovanje"
@@ -447,7 +448,7 @@ const handleSwitchChange = (event) => {
             value={kalkulacija.izradaPoKg}
             onChange={handleInputChange}
           />
-          <TextField
+{ /**          <TextField
             sx={{ margin: 1}}
             label="Rezijski troskovi stepen"
             margin="normal"
@@ -455,7 +456,7 @@ const handleSwitchChange = (event) => {
             type="number"
             value={kalkulacija.rezijskiTroskoviStepen}
             onChange={handleInputChange}
-          />
+          />*/}
           <TextField
             sx={{ margin: 1}}
             label="Stepen sigurnosti"
@@ -730,22 +731,53 @@ const handleSwitchChange = (event) => {
               <Typography variant="h6">Rezultat kalkulacije</Typography>
             </AccordionSummary>
             <AccordionDetails>
+              <TextField
+                fullWidth
+                label="Kurs EUR"
+                margin="normal"
+                name="kursEur"
+                type="number"
+                value={kursEur}
+                onChange={(event) => setKursEur(event.target.value)}
+
+              />
               <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell>RSD Bez PDV-a</TableCell>
+                    <TableCell>EUR Bez PDV-a</TableCell>
+                    <TableCell>RSD Sa PDV-om</TableCell>
+                    <TableCell>EUR Sa PDV-om</TableCell>
+                  </TableRow>
+                </TableHead>
                 <TableRow>
                   <TableCell>Cena po kg</TableCell>
                   <TableCell>{(sumaCenaPoKomadu/masaProizvoda).toFixed(2)} rsd</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/masaProizvoda/kursEur).toFixed(2)} eur</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/masaProizvoda*1.2).toFixed(2)} rsd</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/masaProizvoda/kursEur*1.2).toFixed(2)} eur</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Cena po m2</TableCell>
                   <TableCell>{(sumaCenaPoKomadu/povrsinaProizvoda).toFixed(2)} rsd</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/povrsinaProizvoda/kursEur).toFixed(2)} eur</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/povrsinaProizvoda*1.2).toFixed(2)} rsd</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/povrsinaProizvoda/kursEur*1.2).toFixed(2)} eur</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Cena po duzini</TableCell>
                   <TableCell>{(sumaCenaPoKomadu/kalkulacija.proizvodPonuda.duzinaPoKomadu).toFixed(2)} rsd</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/kalkulacija.proizvodPonuda.duzinaPoKomadu/kursEur).toFixed(2)} eur</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/kalkulacija.proizvodPonuda.duzinaPoKomadu*1.2).toFixed(2)} rsd</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/kalkulacija.proizvodPonuda.duzinaPoKomadu/kursEur*1.2).toFixed(2)} eur</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Cena po komadu</TableCell>
                   <TableCell>{sumaCenaPoKomadu.toFixed(2)} rsd</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/kursEur).toFixed(2)} eur</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu*1.2).toFixed(2)} rsd</TableCell>
+                  <TableCell>{(sumaCenaPoKomadu/kursEur*1.2).toFixed(2)} eur</TableCell>
                 </TableRow>
 
               </Table>

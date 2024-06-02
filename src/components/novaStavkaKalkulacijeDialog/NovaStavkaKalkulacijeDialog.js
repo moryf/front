@@ -238,6 +238,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                             label="Referentna duzina"
                             margin="normal"
                             name="referentnaDuzina"
+                            type='number'
                             
                             value={stavkaKalkulacije.referentnaDuzina}
                             fullWidth
@@ -248,6 +249,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                             label="Razlika duzine"
                             margin="normal"
                             name="razlikaDuzine"
+                            type='number'
                             
                             value={stavkaKalkulacije.razlikaDuzine}
                             onChange={handleInputChange}
@@ -258,6 +260,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                             label="Duzina komada"
                             margin="normal"
                             name="duzinaKomada"
+                            type='number'
                             
                             value={stavkaKalkulacije.duzinaKomada}
                             disabled
@@ -269,6 +272,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                         label="Duzina komada"
                         margin="normal"
                         name="duzinaKomada"
+                        type='number'
                         
                         value={stavkaKalkulacije.duzinaKomada}
                         onChange={handleInputChange}
@@ -299,6 +303,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                             label="Razmak"
                             margin="normal"
                             name="razmak"
+                            type='number'
                             
                             value={stavkaKalkulacije.razmak}
                             onChange={handleInputChange}
@@ -309,6 +314,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                         label="Multiplikator"
                         margin="normal"
                         name="multiplikator"
+                        type='number'
                         
                         value={stavkaKalkulacije.multiplikator}
                         onChange={handleInputChange}
@@ -319,6 +325,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                         label="Rucni dodatak"
                         margin="normal"
                         name="rucniDodatak"
+                        type='number'
                         
                         value={stavkaKalkulacije.rucniDodatak}
                         onChange={handleInputChange}
@@ -334,6 +341,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                         label="Kolicina komada"
                         margin="normal"
                         name="kolicinaKomada"
+                        type='number'
                         
                         value={stavkaKalkulacije.kolicinaKomada}
                         onChange={handleInputChange}
@@ -347,6 +355,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                     label="Kolicina"
                     margin="normal"
                     name="kolicina"
+                    type='number'
                     
                     value={stavkaKalkulacije.kolicina}
                     disabled
@@ -358,6 +367,7 @@ export default function NovaStavkaKalkulacijeDialog({open, handleClose,mode,izme
                     label="Cena"
                     margin="normal"
                     name="cena"
+                    type='number'
                     
                     value={stavkaKalkulacije.cena}
                     fullWidth
