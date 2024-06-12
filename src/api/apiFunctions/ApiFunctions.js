@@ -28,6 +28,29 @@ export async function findKupacByImeAndBrojTelefona(imeIPrezime, brojTelefona) {
   }
 }
 
+export async function getAllKupci() {
+  try {
+    const response = await AxiosConfig.get('/api/kupac/svi');
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getKupacById(id){
+  try{
+    const response = await AxiosConfig.get('/api/kupac/'+id)
+    return response.data;
+  }
+  catch(error){
+    alert(error.response.data)
+    console.error(error)
+    throw error;
+  }
+}
+
 
 export async function getAllPonude(){
   try{
@@ -53,6 +76,19 @@ export async function getPonuda(id) {
     // Rethrow the error if you want the calling code to handle it
     throw error;
     // Or return a default value or handle the error in some other way
+  }
+}
+
+export async function getPonudeByKupac(id){
+  try {
+    const response = await AxiosConfig.get('/api/ponuda/kupac/'+id)
+    console.log(response)
+    return response.data;
+    
+  } catch (error) {
+    alert(error.response.data)
+    console.error(error)
+    throw error
   }
 }
 

@@ -37,6 +37,9 @@ function Sidebar() {
           <li>
             <a href='/proizvodi'>Proizvodi</a>
           </li>
+          <li>
+            <a href='/kupci'>Kupci</a>
+          </li>
         </ul>
         <select defaultValue={sessionStorage.getItem('trenutnaUloga')} name="trenutnaUloga" id="trenutnaUlogaSelect" className='trenutnaUlogaSelect' onChange={(e) => {
           sessionStorage.setItem('trenutnaUloga', e.target.value)
