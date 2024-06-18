@@ -779,6 +779,13 @@ const handleSwitchChange = (event) => {
                   <TableCell>{(sumaCenaPoKomadu*1.2).toFixed(2)} rsd</TableCell>
                   <TableCell>{(sumaCenaPoKomadu/kursEur*1.2).toFixed(2)} eur</TableCell>
                 </TableRow>
+                <TableRow>
+                  <TableCell><b>Cena UKUPNO</b></TableCell>
+                  <TableCell><b>{sumaCenaUkupno.toFixed(2)} rsd</b></TableCell>
+                  <TableCell><b>{(sumaCenaUkupno/kursEur).toFixed(2)} eur</b></TableCell>
+                  <TableCell><b>{(sumaCenaUkupno*1.2).toFixed(2)} rsd</b></TableCell>
+                  <TableCell><b>{(sumaCenaUkupno/kursEur*1.2).toFixed(2)} eur</b></TableCell>
+                </TableRow>
 
               </Table>
             </AccordionDetails>
