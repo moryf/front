@@ -14,6 +14,8 @@ import Calculator from './pages/test/calculator/Calculator';
 import Proizvodi from './pages/proizvodi/Proizvodi';
 import Kupci from './pages/kupci/Kupci';
 import Kupac from './pages/kupac/Kupac';
+import Sabloni from './pages/sabloni/Sabloni';
+import Sablon from './pages/sabloni/sablon/Sablon';
 
 function App() {
   const isLoggedIn = sessionStorage.getItem('korisnik')!==null;
@@ -38,6 +40,8 @@ function App() {
             <Route path='/kupci' element={<Kupci/>}/>
             <Route path='/calculator' element={<Calculator/>}/>
             <Route path='/kupac/:id' element={<Kupac/>}/>
+            <Route path='/sabloni' element={<Sabloni/>}/>
+            <Route path='/sablon/:id' element={<Sablon/>}/>
           </Routes>
         </BrowserRouter>
         </div>

@@ -5,6 +5,7 @@ import { getAllProizvodi } from '../../api/apiFunctions/ApiFunctions'
 import { DataGrid } from '@mui/x-data-grid'
 import IzmeniProizvodDialog from '../../components/izmeniProizvodDialog/IzmeniProizvodDialog'
 import { proizvodTemplate } from '../../api/josnTemplates/JSONTemplates'
+import NoviProizvod from '../../components/noviProizvod/NoviProizvod'
 
 function Proizvodi() {
     const [proizvodi, setProizvodi] = useState([])
@@ -19,6 +20,10 @@ function Proizvodi() {
     async function preuzmiProizvode() {
         const proizvodiResult = await getAllProizvodi()
         setProizvodi(proizvodiResult)
+    }
+
+    function setProizvodState(newProizvod) {
+        setProizvodi(...proizvodi, newProizvod)
     }
 
 
@@ -41,6 +46,7 @@ function Proizvodi() {
   return (
     <Container sx={{margin:10}} maxWidth="xl">
     <Typography variant='h3'>Proizvodi</Typography>
+    <NoviProizvod setProizvodState={setProizvodState}/>
     <DataGrid
     rows={proizvodi}
     columns={

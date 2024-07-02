@@ -274,6 +274,29 @@ export async function noviSablon(naziv, idKalkulacije){
   }
 }
 
+export async function getAllSabloni(){
+  try {
+    const response = await AxiosConfig.get('/api/sablon-kalkulacija/svi');
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getSablon(id){
+  try {
+    const response = await AxiosConfig.get(`/api/sablon-kalkulacija/${id}`);
+    return response.data;
+  } catch (error) {
+    alert(error.response.data);
+    console.error(error);
+    throw error;
+  }
+}
+
+
 
 export async function findSablonByNaziv(naziv){
   try {
