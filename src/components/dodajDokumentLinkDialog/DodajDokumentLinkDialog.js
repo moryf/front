@@ -12,7 +12,7 @@ function DodajDokumentLinkDialog({ponudaId}) {
         setOpen(false)
     }
 
-    const [dokumentLink, setDokumentLink] = React.useState({...dokumentPonudeLinkTemplate,uneoKorisnik:JSON.parse(localStorage.getItem('korisnik'))})
+    const [dokumentLink, setDokumentLink] = React.useState({...dokumentPonudeLinkTemplate,uneoKorisnik:localStorage.getItem("korisnik")})
 
     const handleDodaj = () => {
         postDokumentPonudeLinkForPonuda(ponudaId, dokumentLink)

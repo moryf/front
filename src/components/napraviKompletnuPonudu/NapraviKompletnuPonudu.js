@@ -251,7 +251,7 @@ function NapraviKompletnuPonudu({ponudaId}) {
                     {kalkulacijaZaPonudu.map((kalkulacija, index) => (
                         <View style={styles.tableRow} key={index}>
                         <View style={styles.tableCol}>
-                            <Text>{kalkulacija.proizvodPonuda.naziv}</Text>
+                            <Text>{kalkulacija.proizvodPonuda.naziv} - {kalkulacija.naziv}</Text>
                         </View>
                         <View style={styles.tableCol}>
                             <Text>{kalkulacija.proizvodPonuda.ukupnoKomada}</Text>

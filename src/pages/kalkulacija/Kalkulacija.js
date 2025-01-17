@@ -36,7 +36,7 @@ export default function Kalkulacija() {
 
   const[povrsinaProizvoda, setPovrsinaProizvoda] = useState(0);
 
-  const [kursEur, setKursEur] = useState(117.5);
+  const [kursEur, setKursEur] = useState(116.5);
 
 
 
@@ -128,6 +128,7 @@ export default function Kalkulacija() {
         fetchKalkulacija();
     }, []);
 
+    
     
 
     useEffect(() => {
